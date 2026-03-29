@@ -19,3 +19,4 @@ export * from "./agents/index.js";
 export * from "./disruption/index.js";
 export * from "./provenance/index.js";
 export * from "./marketplace/index.js";
+export * from "./closed-loop/index.js";

@@ -41,6 +41,10 @@
     "./marketplace": {
       "types": "./dist/marketplace/index.d.ts",
       "import": "./dist/marketplace/index.js"
+    },
+    "./closed-loop": {
+      "types": "./dist/closed-loop/index.d.ts",
+      "import": "./dist/closed-loop/index.js"
     }
   },
   "scripts": {
