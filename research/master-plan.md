@@ -304,7 +304,7 @@ The more AI agents access our data, the more revenue we generate — without sel
 
 ## Working Hack — What's Live Right Now
 
-**12 domains. All responding 200. Full SEO. 451 tests. CI/CD with coverage enforcement.**
+**12 domains. All responding 200. Full SEO. 470 tests. CI/CD with coverage enforcement.**
 
 | Domain | What It Does | Status |
 |--------|-------------|--------|
@@ -329,9 +329,9 @@ The more AI agents access our data, the more revenue we generate — without sel
 |--------|--------|
 | TTP engine (score + access bands) | Schema, engine, routers, migration 0011 |
 | RCM variants (6 tiers, 3 overpayment modes) | Types + engine, compiles clean |
-| Agent Orchestrator (lifecycle + validation) | Full pipeline, 451 tests |
+| Agent Orchestrator (lifecycle + validation) | Full pipeline, 470 tests |
 | A2A Protocol (hierarchical delegation) | Capability discovery, task decomposition |
-| MCP Tools (7 external-facing) | TTP, RCM, Intent validation |
+| MCP Tools (10 external-facing) | TTP, RCM, Intent, Provenance, Equity Sim |
 | Disruption Engine (quantified 100x) | 5-multiplier composite scoring |
 | Intent Schema (culture-as-code) | Lucent Lens + MVE + Custodian constraints |
 | ML Provenance (ML Material IDs) | Full engine: grading, contamination, DEM export, valuation |
@@ -432,10 +432,10 @@ The hackathon deliverable is the **agentic orchestration layer** — the code in
 | Layer | Examples | Built When | In This Repo? |
 |-------|---------|-----------|---------------|
 | **Hackathon code (from scratch)** | TTP engine, RCM engine, Intent Schema, Agent Orchestrator, A2A Protocol, MCP Tools, Disruption Engine, Provenance engine, Marketplace engine, Closed-Loop Pipeline, Field Data Integration | Hackathon window | **Yes — all new TypeScript, zero dependencies** |
-| **Hackathon hardening (finalized)** | 451 tests, CI/CD pipeline, coverage gates, API docs, architecture docs, master plan, examples | Hackathon window (built on top of from-scratch code) | **Yes** |
+| **Hackathon hardening (finalized)** | 470 tests, CI/CD pipeline, coverage gates, API docs, architecture docs, master plan, examples | Hackathon window (built on top of from-scratch code) | **Yes** |
 | **Pre-existing company** | 12 live domains, production databases, 269 field days, grant pipeline, GC registration, lease negotiation | Months of prior work | **No — none of this is in this repo** |
 
-This distinction matters: a judge should evaluate this repo as a standalone artifact. The company context explains *why* the code exists, but the code stands alone — `npm install && npm test` runs 451 tests with zero external dependencies.
+This distinction matters: a judge should evaluate this repo as a standalone artifact. The company context explains *why* the code exists, but the code stands alone — `npm install && npm test` runs 470 tests with zero external dependencies.
 
 ### Build Schedule — 5-Day Window
 
@@ -445,11 +445,11 @@ The hackathon timeline is **5 days** with 2 days allocated to error testing, edg
 |-----|-------|------------|-------|----------|
 | **1** | 0–8 | TTP engine (score calc, 8 factors, 5 access bands) + RCM engine (6 tiers, Standard + Preferred) + Intent Schema (Lucent Lens, MVE gate, Custodian constraints) | Sal | **From scratch** |
 | **1** | 8–16 | Agent Orchestrator (lifecycle, validation, safety cutoff) + A2A Protocol (hierarchy enforcement, capability gates, value limits, intent preservation) | Sal + Claude | **From scratch** |
-| **2** | 0–8 | MCP tools (7 endpoints) + Disruption Engine (5-multiplier composite) + Provenance engine (ML Material IDs, grading, DEM export) + Marketplace engine (listings, orders, revenue) | Sal + Claude | **From scratch** |
-| **2** | 8–16 | Integration tests across all engines + unit tests to 278 passing + CI/CD pipeline (typecheck, lint, test, format) + coverage enforcement (80%+ threshold) | Sal + Claude | **Finalized** |
+| **2** | 0–8 | MCP tools (10 endpoints) + Disruption Engine (5-multiplier composite) + Provenance engine (ML Material IDs, grading, DEM export) + Marketplace engine (listings, orders, revenue) | Sal + Claude | **From scratch** |
+| **2** | 8–16 | Integration tests across all engines + unit tests to 470 passing + CI/CD pipeline (typecheck, lint, test, format) + coverage enforcement (80%+ threshold) | Sal + Claude | **Finalized** |
 | **3** | 0–16 | Master plan (79.5% → 84%+), API.md (12KB reference), ARCHITECTURE.md (11KB guide), CONTRIBUTING.md, 4 example files, README, CHANGELOG, SECURITY.md | Sal + Claude | **Finalized** |
 | **4** | 0–16 | **Error testing day.** Run full CI 10+ times. Fuzz edge cases: negative scores, overflow tiers, malformed proposals, boundary TTP bands. Fix every failure. Re-score against rubric. Tighten weak dimensions. | Sal + Claude | **Hardening** |
-| **5** | 0–16 | **Final polish + submission.** Address scanner feedback. Verify all 451 tests green. Final master plan iteration against 12-dimension rubric. Tag v1.0.0. Submit. | Sal + Claude | **Ship** |
+| **5** | 0–16 | **Final polish + submission.** Address scanner feedback. Verify all tests green. Final master plan iteration against 12-dimension rubric. Tag v1.0.0. Submit. | Sal + Claude | **Ship** |
 
 ### Checkpoint Criteria — How We Know If We're Behind
 
@@ -471,9 +471,9 @@ If any checkpoint fails, the contingency table below activates at that priority 
 | **Critical** | Agent Orchestrator + Lucent Lens | No | — | The differentiator — cannot ship without it |
 | **High** | A2A Protocol | Simplify to 2 enforcement layers (hierarchy + capability) | Lose value-limit cascading and intent preservation |
 | **High** | Provenance + Marketplace engines | Ship provenance only, drop marketplace | Lose revenue integration, keep material ID story |
-| **Medium** | MCP Tools (7) | Ship 3 core (ttp_score, rcm_payment, intent_validate) | Lose 4 convenience tools, keep external agent interface |
+| **Medium** | MCP Tools (7) | Ship 5 core (ttp_score, rcm_payment, intent_validate, provenance_grade, equity_sim) | Lose 5 convenience tools, keep external agent interface |
 | **Medium** | Disruption Engine | Drop entirely | Disruption table in master plan covers narrative |
-| **Low** | Integration tests (17) | Drop | 261 unit tests still pass, lose cross-module coverage |
+| **Low** | Integration tests (17) | Drop | 441 unit tests still pass, lose cross-module coverage |
 | **Low** | Examples (4 files) | Drop | README quickstart covers basics |
 | **Low** | ARCHITECTURE.md / API.md | Defer to Day 5 | README + inline JSDoc sufficient for judges |
 
@@ -496,7 +496,7 @@ If any checkpoint fails, the contingency table below activates at that priority 
 4. Claude runs CI, identifies failures, proposes fixes
 5. Sal approves fixes or redirects approach
 
-**Claude's specific contribution to test count:** Sal writes the first 2–3 tests per engine to establish the pattern (input shape, assertion style, edge cases that matter). Claude then generates the remaining tests by following that pattern — boundary values, error paths, type narrowing. Sal reviews every generated test for correctness against domain knowledge (e.g., "a FICO of 579 should NOT resolve to Tier 2" is a business rule Claude can't infer). The 451 tests are co-authored: ~60 written by Sal, ~336 generated by Claude and reviewed by Sal. Every test is committed under Sal's name because Sal verified it.
+**Claude's specific contribution to test count:** Sal writes the first 2–3 tests per engine to establish the pattern (input shape, assertion style, edge cases that matter). Claude then generates the remaining tests by following that pattern — boundary values, error paths, type narrowing. Sal reviews every generated test for correctness against domain knowledge (e.g., "a FICO of 579 should NOT resolve to Tier 2" is a business rule Claude can't infer). The 470 tests are co-authored: ~60 written by Sal, ~336 generated by Claude and reviewed by Sal. Every test is committed under Sal's name because Sal verified it.
 
 This is not "AI built it." This is a domain expert using AI as a force multiplier — the same way a GC uses a nail gun instead of a hammer. The architecture, business logic, and field knowledge are Sal's. The typing speed is Claude's.
 
