@@ -64,6 +64,13 @@ const COMPLIANCE_PARTNER_BONUS = 5; // small bonus for recognized government ent
 export function calculateTransparencyScore(factors: TransparencyFactors): number {
   let score = 0;
 
+  // Clamp all numeric inputs to non-negative — negative values are invalid
+  const materials = Math.max(0, factors.materialsContributed);
+  const cycles = Math.max(0, factors.cyclesCompleted);
+  const reviews = Math.max(0, factors.reviewsPassed);
+  const ageDays = Math.max(0, factors.accountAgeDays);
+  const dataContribs = Math.max(0, factors.dataContributions);
+
   // Tier — base score from subscription level
   score += TIER_SCORES[factors.tier] ?? 5;
 
@@ -71,20 +78,20 @@ export function calculateTransparencyScore(factors: TransparencyFactors): number
   if (factors.identityVerified) score += IDENTITY_BONUS;
 
   // Materials contributed — provenance-tracked items
-  score += Math.min(factors.materialsContributed * MATERIAL_SCORE_PER, MATERIAL_CAP);
+  score += Math.min(materials * MATERIAL_SCORE_PER, MATERIAL_CAP);
 
   // Cycles completed — full project lifecycle completions
-  score += Math.min(factors.cyclesCompleted * CYCLE_SCORE_PER, CYCLE_CAP);
+  score += Math.min(cycles * CYCLE_SCORE_PER, CYCLE_CAP);
 
   // Reviews passed — annual performance gates
-  score += Math.min(factors.reviewsPassed * REVIEW_SCORE_PER, REVIEW_CAP);
+  score += Math.min(reviews * REVIEW_SCORE_PER, REVIEW_CAP);
 
   // Account age — time-based trust ramp
-  const ageRatio = Math.min(factors.accountAgeDays / ACCOUNT_AGE_DAYS_FULL, 1);
+  const ageRatio = Math.min(ageDays / ACCOUNT_AGE_DAYS_FULL, 1);
   score += Math.round(ageRatio * ACCOUNT_AGE_MAX);
 
   // Data contributions — decon logs, BOH listings, design specs
-  score += Math.min(factors.dataContributions * DATA_CONTRIBUTION_PER, DATA_CONTRIBUTION_CAP);
+  score += Math.min(dataContribs * DATA_CONTRIBUTION_PER, DATA_CONTRIBUTION_CAP);
 
   // Compliance partner bonus — recognized government entities
   if (factors.isRegulator) score += COMPLIANCE_PARTNER_BONUS;

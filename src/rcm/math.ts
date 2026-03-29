@@ -79,5 +79,10 @@ export function rcmEquity(
   principalBalance: number,
   materialRecoveryValue: number = 0,
 ): number {
-  return propertyValue - principalBalance + materialRecoveryValue;
+  // Guard: property value and material recovery should be non-negative
+  const pv = Math.max(0, propertyValue);
+  const mrv = Math.max(0, materialRecoveryValue);
+  // Principal balance can't be negative (would mean overpayment — clamped to 0)
+  const pb = Math.max(0, principalBalance);
+  return pv - pb + mrv;
 }
