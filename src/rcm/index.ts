@@ -60,3 +60,13 @@ export type {
   DenialReason,
   PipelineResult,
 } from "./pipeline.js";
+
+// Simulator — month-by-month equity comparison
+export { simulateEquity, simulateMaria, extractKeyPoints } from "./simulator.js";
+export type {
+  SimulationInput,
+  MonthlySnapshot,
+  SimulationResult,
+  SimulationMilestones,
+  SimulationSummary,
+} from "./simulator.js";
