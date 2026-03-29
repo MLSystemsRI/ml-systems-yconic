@@ -252,3 +252,91 @@ describe("Closed Loop — Revenue Flow", () => {
     expect(result.stages.build.totalCost).toBeLessThan(buildPlan.estimatedCost);
   });
 });
+
+/* ─── Contaminated Materials Branch Coverage ─── */
+
+describe("Closed Loop — Contaminated Materials", () => {
+  it("skips confirmed-contaminated materials in marketplace", () => {
+    const { homeowner, designSpec, buildPlan, mve } = buildMariaScenario();
+
+    // Create a decon plan with some contaminated materials
+    const deconPlan = {
+      projectId: "PRV-CONTAM",
+      address: "123 Test St, Providence RI",
+      materials: [
+        {
+          category: "structural_lumber" as const,
+          description: "Clean 2x4",
+          boardFeet: 100,
+          grading: { structuralIntegrity: 80, surfaceCondition: 75, moistureContent: 12, loadTested: true, ageYears: 10 },
+          contamination: { leadPaint: false, asbestos: false, mold: false, chemicalTreatment: false, pestDamage: false },
+          weightLbs: 15,
+          dimensions: { length: 96, width: 3.5, depth: 1.5, unit: "in" as const },
+        },
+        {
+          category: "structural_lumber" as const,
+          description: "Lead-contaminated beam",
+          boardFeet: 200,
+          grading: { structuralIntegrity: 70, surfaceCondition: 60, moistureContent: 18, loadTested: false, ageYears: 50 },
+          contamination: { leadPaint: true, asbestos: true, mold: false, chemicalTreatment: false, pestDamage: false },
+          weightLbs: 30,
+          dimensions: { length: 120, width: 5.5, depth: 3.5, unit: "in" as const },
+        },
+      ],
+      totalBuildingMaterials: 10,
+    };
+
+    const result = executeClosedLoop(homeowner, deconPlan, designSpec, buildPlan, mve);
+    expect(result.loopComplete).toBe(true);
+
+    // Contaminated material should be tracked
+    expect(result.stages.deconstruct.contaminatedCount).toBeGreaterThan(0);
+    expect(result.stages.deconstruct.demReportRequired).toBeGreaterThan(0);
+    expect(result.stages.deconstruct.cleanRate).toBeLessThan(1);
+
+    // Marketplace should skip confirmed contamination
+    expect(result.stages.marketplace.listingsSkipped).toBeGreaterThan(0);
+    expect(result.stages.marketplace.listingsCreated).toBeLessThan(
+      result.stages.deconstruct.materialsRecovered,
+    );
+  });
+
+  it("handles mostly-contaminated materials with one clean item", () => {
+    const { homeowner, designSpec, buildPlan, mve } = buildMariaScenario();
+
+    const deconPlan = {
+      projectId: "PRV-MOSTCONTAM",
+      address: "456 Hazard St, Providence RI",
+      materials: [
+        {
+          category: "structural_lumber" as const,
+          description: "Asbestos-laden joist",
+          boardFeet: 150,
+          grading: { structuralIntegrity: 60, surfaceCondition: 50, moistureContent: 25, loadTested: false, ageYears: 60 },
+          contamination: { leadPaint: true, asbestos: true, mold: true, chemicalTreatment: true, pestDamage: true },
+          weightLbs: 20,
+          dimensions: { length: 96, width: 5.5, depth: 1.5, unit: "in" as const },
+        },
+        {
+          category: "doors" as const,
+          description: "Clean interior door",
+          boardFeet: 30,
+          grading: { structuralIntegrity: 75, surfaceCondition: 70, moistureContent: 10, loadTested: false, ageYears: 20 },
+          contamination: { leadPaint: false, asbestos: false, mold: false, chemicalTreatment: false, pestDamage: false },
+          weightLbs: 40,
+          dimensions: { length: 80, width: 36, depth: 1.75, unit: "in" as const },
+        },
+      ],
+      totalBuildingMaterials: 5,
+    };
+
+    const result = executeClosedLoop(homeowner, deconPlan, designSpec, buildPlan, mve);
+    expect(result.loopComplete).toBe(true);
+    expect(result.stages.deconstruct.contaminatedCount).toBe(1);
+    expect(result.stages.deconstruct.cleanRate).toBe(0.5);
+    // Contaminated material skipped in marketplace
+    expect(result.stages.marketplace.listingsCreated).toBeLessThan(
+      result.stages.deconstruct.materialsRecovered,
+    );
+  });
+});

@@ -153,6 +153,58 @@ describe("RCM Equity Simulator — Key Points", () => {
   });
 });
 
+describe("RCM Equity Simulator — Short Term Loan", () => {
+  it("handles a short 60-month loan with fast payoff", () => {
+    const result = simulateEquity({
+      loanAmount: 50_000,
+      annualRate: 0.065,
+      termMonths: 60,
+      propertyValue: 100_000,
+      appreciationRate: 0.02,
+      monthlyMaterialRevenueCents: 20_000,
+      materialRevenueSharePercent: 0.51,
+    });
+
+    expect(result.snapshots).toHaveLength(60);
+    expect(result.milestones.rcmPayoffMonth).not.toBeNull();
+    // Short term = RCM pays off quickly
+    expect(result.milestones.rcmPayoffMonth!).toBeLessThanOrEqual(60);
+    // Traditional crossover happens relatively late even on short loans
+    expect(result.milestones.traditionalCrossoverMonth).not.toBeNull();
+  });
+
+  it("handles very low interest rate", () => {
+    const result = simulateEquity({
+      loanAmount: 100_000,
+      annualRate: 0.001,
+      termMonths: 120,
+      propertyValue: 150_000,
+      appreciationRate: 0,
+      monthlyMaterialRevenueCents: 0,
+      materialRevenueSharePercent: 0.51,
+    });
+
+    expect(result.snapshots).toHaveLength(120);
+    // With near-0% interest, traditional interest is minimal
+    expect(result.summary.totalInterestPaid).toBeLessThan(1000);
+  });
+
+  it("handles high material revenue boosting early milestone", () => {
+    const result = simulateEquity({
+      loanAmount: 200_000,
+      annualRate: 0.065,
+      termMonths: 360,
+      propertyValue: 250_000,
+      appreciationRate: 0.03,
+      monthlyMaterialRevenueCents: 500_000, // $5000/mo — very high
+      materialRevenueSharePercent: 0.51,
+    });
+
+    expect(result.milestones.rcm20PercentEquityMonth).toBe(1); // Immediate 20% with high material revenue
+    expect(result.summary.totalMaterialEquity).toBeGreaterThan(500_000);
+  });
+});
+
 describe("RCM Equity Simulator — No Material Revenue", () => {
   it("RCM still wins without material recovery", () => {
     const result = simulateEquity({
