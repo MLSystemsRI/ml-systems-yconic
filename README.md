@@ -72,7 +72,7 @@ Score 0-100 from 8 weighted factors. Five access bands gate API depth. AI crawle
 Lucent Lens: homeowner (0-40) > collective (0-30) > engine (0-30). MVE gate: every dollar must produce 3/4 returns. Custodian constraints and anti-SaaS pricing rules encoded as executable scoring functions, not mission statements.
 
 ### [Agents](src/agents/) — Multi-Agent Orchestration
-AgentOrchestrator manages lifecycle, validates every action through Lucent Lens + MVE. A2A protocol adds hierarchical task delegation with typed capability cards, domain-scoped discovery, and 4-rule delegation enforcement. 7 MCP-compatible tool definitions expose all engines to external AI agents.
+AgentOrchestrator manages lifecycle, validates every action through Lucent Lens + MVE. A2A protocol adds hierarchical task delegation with typed capability cards, domain-scoped discovery, and 4-rule delegation enforcement. 10 MCP-compatible tools expose all engines to external AI agents — TTP scoring, RCM payments, intent validation, provenance grading, material valuation, and equity simulation.
 
 ### [Disruption](src/disruption/) — Quantified Paradigm Shift
 Five disruption multipliers (equity velocity, material recovery, cost reduction, margin improvement, revenue streams) calculated as typed functions. Composite score via geometric mean. Closed-loop validation. Traditional-vs-ML Systems paradigm comparison.
