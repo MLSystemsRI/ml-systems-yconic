@@ -23,7 +23,7 @@ ML Systems fixes all three at once. Not incrementally — the old system looks a
 ## Core Engines
 
 ### [Transparency Trust Protocol](src/ttp/) — The Moat
-Score 0-100. Five access bands. Every API response carries `X-TT-Score` headers. AI crawlers pay per-query verification fees. Regulators get scoped compliance access. The moat deepens as more entities participate. **105 tests, strict TypeScript.**
+Score 0-100. Five access bands. Every API response carries `X-TT-Score` headers. AI crawlers pay per-query verification fees. Regulators get scoped compliance access. The moat deepens as more entities participate. **126 tests, strict TypeScript.**
 
 ### [Reverse Construction Mortgage](src/rcm/) — Anti-SaaS Finance
 Not a subscription. Not a fee. 100% of every payment → principal. Interest deferred. 6 tiers by credit score — no existing mortgage product does this. Outcome-based: you pay, you own. Period.
@@ -42,7 +42,7 @@ src/
 ├── ttp/          # Transparency Trust Protocol (scoring, access bands, AI crawler detection)
 ├── rcm/          # Reverse Construction Mortgage (6-tier engine, daily arithmetic payments)
 ├── intent/       # Intent Schema (Lucent Lens + value hierarchy as executable code)
-└── schema/       # Drizzle ORM (30+ tables, full enum set)
+└── schema/       # Database schema reference (Drizzle ORM, 30+ tables)
 ```
 
 ```
@@ -59,7 +59,7 @@ Next.js 15 · tRPC · Drizzle/Postgres · Clerk · Stripe · Inngest · Fly.io �
 ## Run
 
 ```bash
-npm install && npm run ci   # typecheck + lint + 105 tests
+npm install && npm run ci   # typecheck + lint + 126 tests
 ```
 
 ---

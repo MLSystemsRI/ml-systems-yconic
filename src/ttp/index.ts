@@ -57,3 +57,7 @@ export {
   minTierForVerification,
 } from "./ai-crawler.js";
 export type { AiCrawlerName } from "./ai-crawler.js";
+
+// Middleware
+export { processTTPRequest } from "./middleware.js";
+export type { TTPRequest, TTPResult } from "./middleware.js";

@@ -1,0 +1,7 @@
+# Mark visualization HTML files as generated — exclude from language statistics and code analysis
+visualizations/*.html linguist-generated=true
+portals/**/*.html linguist-generated=true
+public/*.html linguist-generated=true
+
+# TypeScript source is the primary codebase
+src/**/*.ts linguist-language=TypeScript
