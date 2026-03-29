@@ -3,7 +3,7 @@
 [![CI](https://github.com/MLSystemsRI/ml-systems-yconic/actions/workflows/ci.yml/badge.svg)](https://github.com/MLSystemsRI/ml-systems-yconic/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
 [![Node](https://img.shields.io/badge/Node-%3E%3D20-green.svg)](https://nodejs.org/)
-[![Tests](https://img.shields.io/badge/Tests-430%20passing-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-450%20passing-brightgreen.svg)]()
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-0-brightgreen.svg)]()
 
 > Closed-loop construction: Finance → Deconstruct → Design → Build → repeat. Every dollar returns 4x.
@@ -66,7 +66,7 @@ const loop = executeClosedLoop(
 Score 0-100 from 8 weighted factors. Five access bands gate API depth. AI crawlers detected and charged per-query verification fees. Regulators get scoped compliance access. Framework-agnostic middleware processes every request.
 
 ### [RCM](src/rcm/) — Reverse Construction Mortgage
-6 credit tiers. 100% of every payment → principal (interest deferred). Standard tiers (1-3): monthly with tier-specific overpayment allocation. Preferred tiers (4-6): daily arithmetic payments ($N/day × streams). Full amortization schedule generation and 6-tier comparison.
+6 credit tiers. 100% of every payment → principal (interest deferred). Standard tiers (1-3): monthly with tier-specific overpayment allocation. Preferred tiers (4-6): daily arithmetic payments ($N/day × streams). Full amortization schedule generation, 6-tier comparison, equity simulator (360-month RCM vs traditional comparison with material revenue integration).
 
 ### [Intent](src/intent/) — Culture as Code
 Lucent Lens: homeowner (0-40) > collective (0-30) > engine (0-30). MVE gate: every dollar must produce 3/4 returns. Custodian constraints and anti-SaaS pricing rules encoded as executable scoring functions, not mission statements.
@@ -106,6 +106,7 @@ src/
 │   ├── engine.ts          # 6-tier resolution, schedule generation
 │   ├── math.ts            # Payment, interest, equity calculations
 │   ├── pipeline.ts        # End-to-end loan origination (TTP→RCM→Intent)
+│   ├── simulator.ts       # 360-month equity simulator (RCM vs traditional)
 │   └── types.ts           # CreditTier, ProductClass, ScheduleRow
 ├── intent/                # Intent Schema — culture as code
 │   └── schema.ts          # Lucent Lens, MVE gate, Custodian constraints
@@ -139,7 +140,7 @@ src/
 |---------|-------------|
 | `npm run build` | Compile TypeScript to `dist/` |
 | `npm run typecheck` | Type-check without emitting |
-| `npm test` | Run 430 tests (`vitest run`) |
+| `npm test` | Run 450 tests (`vitest run`) |
 | `npm run demo` | Run full closed-loop demo (Maria scenario) |
 | `npm run test:coverage` | Tests with V8 coverage report |
 | `npm run lint` | Lint with ESLint (strict TS rules) |
