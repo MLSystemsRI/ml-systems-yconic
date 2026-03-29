@@ -182,6 +182,129 @@ describe("execute intent_validate_action", () => {
   });
 });
 
+/* ─── Provenance Tool Execution ─── */
+
+describe("execute provenance_grade_material", () => {
+  it("grades a high-quality structural timber as A", () => {
+    const result = executeToolCall({
+      tool: "provenance_grade_material",
+      arguments: {
+        structuralIntegrity: 95,
+        surfaceCondition: 90,
+        moistureContent: 12,
+        loadTested: true,
+        ageYears: 5,
+      },
+    });
+
+    expect(result.success).toBe(true);
+    expect(result.result?.["grade"]).toBe("A");
+    expect(result.result?.["score"]).toBeGreaterThan(80);
+  });
+
+  it("grades damaged material as C or lower", () => {
+    const result = executeToolCall({
+      tool: "provenance_grade_material",
+      arguments: {
+        structuralIntegrity: 40,
+        surfaceCondition: 35,
+        moistureContent: 30,
+        loadTested: false,
+        ageYears: 50,
+      },
+    });
+
+    expect(result.success).toBe(true);
+    expect(["C", "D", "salvage"]).toContain(result.result?.["grade"]);
+  });
+});
+
+describe("execute provenance_estimate_value", () => {
+  it("estimates value for grade-A structural lumber", () => {
+    const result = executeToolCall({
+      tool: "provenance_estimate_value",
+      arguments: {
+        category: "structural_lumber",
+        grade: "A",
+        boardFeet: 100,
+        contamination: "clean",
+      },
+    });
+
+    expect(result.success).toBe(true);
+    expect(result.result?.["valueCents"]).toBeGreaterThan(0);
+  });
+
+  it("reduces value for contaminated material", () => {
+    const clean = executeToolCall({
+      tool: "provenance_estimate_value",
+      arguments: {
+        category: "structural_lumber",
+        grade: "B",
+        boardFeet: 100,
+        contamination: "clean",
+      },
+    });
+    const contaminated = executeToolCall({
+      tool: "provenance_estimate_value",
+      arguments: {
+        category: "structural_lumber",
+        grade: "B",
+        boardFeet: 100,
+        contamination: "confirmed",
+      },
+    });
+
+    expect(clean.success).toBe(true);
+    expect(contaminated.success).toBe(true);
+    const cleanValue = clean.result?.["valueCents"] as number;
+    const contaminatedValue = contaminated.result?.["valueCents"] as number;
+    expect(cleanValue).toBeGreaterThan(contaminatedValue);
+  });
+});
+
+/* ─── RCM Equity Simulation Tool Execution ─── */
+
+describe("execute rcm_simulate_equity", () => {
+  it("simulates a 360-month equity comparison", () => {
+    const result = executeToolCall({
+      tool: "rcm_simulate_equity",
+      arguments: {
+        loanAmount: 200_000,
+        annualRate: 0.065,
+        termMonths: 360,
+        propertyValue: 280_000,
+        appreciationRate: 0.03,
+        monthlyMaterialRevenueCents: 50_000,
+      },
+    });
+
+    expect(result.success).toBe(true);
+    expect(result.result?.["milestones"]).toBeDefined();
+    expect(result.result?.["summary"]).toBeDefined();
+    expect(result.result?.["rcmPayment"]).toBeGreaterThan(0);
+    expect(result.result?.["traditionalPayment"]).toBeGreaterThan(0);
+  });
+
+  it("shows RCM advantage in equity summary", () => {
+    const result = executeToolCall({
+      tool: "rcm_simulate_equity",
+      arguments: {
+        loanAmount: 200_000,
+        annualRate: 0.065,
+        termMonths: 360,
+        propertyValue: 280_000,
+        appreciationRate: 0.03,
+        monthlyMaterialRevenueCents: 50_000,
+      },
+    });
+
+    expect(result.success).toBe(true);
+    const summary = result.result?.["summary"] as Record<string, unknown>;
+    expect(summary["finalRCMEquity"]).toBeGreaterThan(summary["finalTraditionalEquity"] as number);
+  });
+});
+
 /* ─── Error Handling ─── */
 
 describe("runtime error handling", () => {
