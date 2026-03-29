@@ -43,6 +43,7 @@ import {
 } from "../marketplace/engine.js";
 import type { Listing, Order } from "../marketplace/engine.js";
 import { calculateDisruptionScore } from "../disruption/engine.js";
+import { materialCategoryToZone } from "../shared/zones.js";
 
 /* ─── Input Types ─── */
 
@@ -315,7 +316,7 @@ function executeDeconstructStage(
 
   for (let i = 0; i < plan.materials.length; i++) {
     const input = plan.materials[i]!;
-    const zone = categoryToZone(input.category);
+    const zone = materialCategoryToZone(input.category);
     const mlId = generateMaterialId(2026, plan.projectId, zone, i + 1);
 
     // Grade the material
@@ -508,29 +509,6 @@ function executeEquityStage(
       preferredMonths: Math.round((preferredDay / 30) * 10) / 10,
     },
   };
-}
-
-/* ─── Helpers ─── */
-
-function categoryToZone(category: MaterialCategory): number {
-  const zones: Record<MaterialCategory, number> = {
-    structural_lumber: 2,
-    finish_lumber: 2,
-    doors: 3,
-    windows: 3,
-    trim: 3,
-    flooring: 5,
-    fixtures: 5,
-    hardware: 6,
-    roofing: 8,
-    siding: 8,
-    concrete: 7,
-    sheathing: 4,
-    drywall: 4,
-    electrical: 6,
-    plumbing: 6,
-  };
-  return zones[category];
 }
 
 /* ─── Scenario Builders ─── */

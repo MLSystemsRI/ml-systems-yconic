@@ -25,6 +25,7 @@ import {
   assessContamination,
   estimateValue,
 } from "../provenance/engine.js";
+import { materialCategoryToZone } from "../shared/zones.js";
 
 /* ─── Field Inspection Types ─── */
 
@@ -420,25 +421,3 @@ export function batchIngest(
   };
 }
 
-/* ─── Helpers ─── */
-
-function materialCategoryToZone(category: MaterialCategory): number {
-  const zones: Record<MaterialCategory, number> = {
-    structural_lumber: 2,
-    finish_lumber: 2,
-    doors: 3,
-    windows: 3,
-    trim: 3,
-    flooring: 5,
-    fixtures: 5,
-    hardware: 6,
-    roofing: 8,
-    siding: 8,
-    concrete: 7,
-    sheathing: 4,
-    drywall: 4,
-    electrical: 6,
-    plumbing: 6,
-  };
-  return zones[category];
-}
