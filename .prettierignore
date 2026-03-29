@@ -1,0 +1,7 @@
+dist/
+node_modules/
+public/
+visualizations/
+portals/
+*.html
+*.md

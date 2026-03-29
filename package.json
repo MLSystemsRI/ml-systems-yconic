@@ -1,0 +1,66 @@
+{
+  "name": "@ml-systems/yconic",
+  "version": "1.0.0",
+  "description": "ML Systems — Construction proptech ecosystem. Closed-loop system that finances, deconstructs, designs, and builds.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./ttp": {
+      "types": "./dist/ttp/index.d.ts",
+      "import": "./dist/ttp/index.js"
+    },
+    "./rcm": {
+      "types": "./dist/rcm/index.d.ts",
+      "import": "./dist/rcm/index.js"
+    },
+    "./schema": {
+      "types": "./dist/schema/index.d.ts",
+      "import": "./dist/schema/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "ci": "npm run typecheck && npm run lint && npm run test"
+  },
+  "keywords": [
+    "construction",
+    "proptech",
+    "transparency-trust-protocol",
+    "reverse-construction-mortgage",
+    "deconstruction",
+    "material-provenance",
+    "ai-crawler-detection",
+    "closed-loop-construction"
+  ],
+  "author": "ML Systems LLC",
+  "license": "UNLICENSED",
+  "private": true,
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.4.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.38.0"
+  }
+}
