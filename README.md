@@ -3,7 +3,7 @@
 [![CI](https://github.com/MLSystemsRI/ml-systems-yconic/actions/workflows/ci.yml/badge.svg)](https://github.com/MLSystemsRI/ml-systems-yconic/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
 [![Node](https://img.shields.io/badge/Node-%3E%3D20-green.svg)](https://nodejs.org/)
-[![Tests](https://img.shields.io/badge/Tests-239%20passing-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-278%20passing-brightgreen.svg)]()
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-0-brightgreen.svg)]()
 
 > Closed-loop construction: Finance → Deconstruct → Design → Build → repeat. Every dollar returns 4x.
@@ -83,13 +83,15 @@ src/
 ├── rcm/                   # Reverse Construction Mortgage
 │   ├── engine.ts          # 6-tier resolution, schedule generation
 │   ├── math.ts            # Payment, interest, equity calculations
+│   ├── pipeline.ts        # End-to-end loan origination (TTP→RCM→Intent)
 │   └── types.ts           # CreditTier, ProductClass, ScheduleRow
 ├── intent/                # Intent Schema — culture as code
 │   └── schema.ts          # Lucent Lens, MVE gate, Custodian constraints
 ├── agents/                # Multi-agent orchestration
 │   ├── orchestrator.ts    # Agent lifecycle + action validation
 │   ├── a2a.ts             # A2A protocol — capability discovery + delegation
-│   └── tools.ts           # 7 MCP-compatible tool definitions
+│   ├── tools.ts           # 7 MCP-compatible tool definitions
+│   └── runtime.ts         # MCP tool executor — runs tools against real engines
 ├── disruption/            # Disruption scoring engine
 │   └── engine.ts          # 5 multipliers, composite score, paradigm comparison
 └── schema/                # Database schema reference
@@ -102,7 +104,7 @@ src/
 |---------|-------------|
 | `npm run build` | Compile TypeScript to `dist/` |
 | `npm run typecheck` | Type-check without emitting |
-| `npm test` | Run 239 tests (`vitest run`) |
+| `npm test` | Run 278 tests (`vitest run`) |
 | `npm run test:coverage` | Tests with V8 coverage report |
 | `npm run lint` | Lint with ESLint (strict TS rules) |
 | `npm run ci` | Full pipeline: typecheck + lint + test |
