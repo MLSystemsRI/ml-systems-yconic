@@ -169,6 +169,7 @@ export function allocateOverpayment(
     case "split": {
       const half = excess / 2;
       const toInt = Math.min(half, accruedInt);
+      // If interest portion is less than half, the remainder rolls into principal
       const toPrin = Math.min(half + (half - toInt), principalBal);
       return { toPrincipal: toPrin, toInterest: toInt };
     }
@@ -190,8 +191,8 @@ export function generateStandardSchedule(
   tier: StandardTier,
   overpaymentFn?: (month: number, principalBal: number, accruedInt: number) => number,
 ): StandardAnalysis {
-  const r = annualRate / 12;
-  const M = rcmMonthlyPayment(loanAmount, annualRate, termMonths);
+  const r = annualRate / 12; // Monthly interest rate
+  const M = rcmMonthlyPayment(loanAmount, annualRate, termMonths); // Fixed monthly payment (all → principal)
 
   const schedule: StandardScheduleRow[] = [];
   let principalBal = loanAmount;
@@ -296,7 +297,9 @@ export function preferredPayoffDay(
   streamCount: StreamCount,
   dailyIncrement: number = 1,
 ): number {
+  // k = total dollars added per day across all streams
   const k = streamCount * dailyIncrement;
+  // Quadratic formula: k * D(D+1)/2 = L  →  D = (-1 + √(1 + 8L/k)) / 2
   return Math.ceil((-1 + Math.sqrt(1 + (8 * loanAmount) / k)) / 2);
 }
 
@@ -320,6 +323,7 @@ export function preferredCumulativePaid(
   dailyIncrement: number = 1,
 ): number {
   const k = streamCount * dailyIncrement;
+  // Arithmetic series sum: 1+2+...+D = D(D+1)/2, scaled by k (streams × increment)
   return (k * day * (day + 1)) / 2;
 }
 
@@ -411,7 +415,7 @@ export function generatePreferredSchedule(
     tier,
     schedule,
     principalPayoffDay: actualPayoffDay,
-    principalPayoffMonths: +(actualPayoffDay / 30.44).toFixed(1),
+    principalPayoffMonths: +(actualPayoffDay / 30.44).toFixed(1), // Convert days → months (avg 30.44 days/month)
     finalDailyPayment: finalPayment,
     totalInterestAccrued,
     deferredInterestAtPayoff: accruedInt,
@@ -436,10 +440,11 @@ export function compareAllTiers(
   overpaymentAmount: number = 500,
 ): FullComparison {
   const flatM = rcmMonthlyPayment(loanAmount, annualRate, termMonths);
-  const flatPayoff = Math.ceil(loanAmount / flatM);
+  // Flat RCM baseline: no overpayments, no tier allocation — pure principal paydown
+  const flatPayoff = Math.ceil(loanAmount / flatM); // Months until principal = 0
   const flatInterest = rcmAccruedInterest(loanAmount, flatM, annualRate, termMonths);
-  const flatEquity5 = propertyValue - Math.max(loanAmount - 60 * flatM, 0);
-  const flatEquity10 = propertyValue - Math.max(loanAmount - 120 * flatM, 0);
+  const flatEquity5 = propertyValue - Math.max(loanAmount - 60 * flatM, 0);  // Equity at month 60
+  const flatEquity10 = propertyValue - Math.max(loanAmount - 120 * flatM, 0); // Equity at month 120
 
   const standard = STANDARD_TIERS.map((tier) =>
     generateStandardSchedule(
