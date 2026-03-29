@@ -78,7 +78,7 @@ AgentOrchestrator manages lifecycle, validates every action through Lucent Lens 
 Five disruption multipliers (equity velocity, material recovery, cost reduction, margin improvement, revenue streams) calculated as typed functions. Composite score via geometric mean. Closed-loop validation. Traditional-vs-ML Systems paradigm comparison.
 
 ### [Closed Loop](src/closed-loop/) — Full Pipeline Orchestration
-Finance → Deconstruct → Design → Build in a single executable pipeline. TTP scoring feeds credit tier resolution, provenance grading flows to marketplace listings, material revenue contributes to homeowner equity. 33 tests verify the Maria scenario end-to-end.
+Finance → Deconstruct → Design → Build in a single executable pipeline. TTP scoring feeds credit tier resolution, provenance grading flows to marketplace listings, material revenue contributes to homeowner equity. 35 tests verify the Maria scenario end-to-end.
 
 ### [Provenance](src/provenance/) — ML Material ID System
 Every recovered material gets an ML Material ID (ML-{year}-{project}-{zone}-{seq}), structural grade (A/B/C/D/salvage), contamination assessment, and DEM export for environmental compliance. 15 material categories with zone-based pricing. Round-trip parsing. Recovery reports with value aggregation.
@@ -113,7 +113,7 @@ src/
 ├── agents/                # Multi-agent orchestration
 │   ├── orchestrator.ts    # Agent lifecycle + action validation
 │   ├── a2a.ts             # A2A protocol — capability discovery + delegation
-│   ├── tools.ts           # 7 MCP-compatible tool definitions
+│   ├── tools.ts           # 10 MCP-compatible tool definitions
 │   └── runtime.ts         # MCP tool executor — runs tools against real engines
 ├── closed-loop/           # Full pipeline orchestration
 │   └── engine.ts          # Finance→Deconstruct→Design→Build pipeline

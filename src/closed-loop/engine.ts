@@ -44,6 +44,7 @@ import {
 import type { Listing, Order } from "../marketplace/engine.js";
 import { calculateDisruptionScore } from "../disruption/engine.js";
 import { materialCategoryToZone } from "../shared/zones.js";
+import { roundMoney, createGradeCounter, safeRatio, isMarketplaceSafe } from "../shared/math.js";
 
 /* ─── Input Types ─── */
 
@@ -308,7 +309,7 @@ function executeDeconstructStage(
   plan: DeconstructionPlan,
 ): DeconstructStageResult {
   const materialRecords: MaterialRecord[] = [];
-  const byGrade: Record<MaterialGrade, number> = { A: 0, B: 0, C: 0, D: 0, salvage: 0 };
+  const byGrade = createGradeCounter();
   let totalValueCents = 0;
   let cleanCount = 0;
   let contaminatedCount = 0;
@@ -365,10 +366,10 @@ function executeDeconstructStage(
   return {
     materialsRecovered: materialRecords.length,
     materialRecords,
-    recoveryRate: plan.totalBuildingMaterials > 0 ? materialRecords.length / plan.totalBuildingMaterials : 0,
+    recoveryRate: safeRatio(materialRecords.length, plan.totalBuildingMaterials),
     byGrade,
     totalValueCents,
-    cleanRate: materialRecords.length > 0 ? cleanCount / materialRecords.length : 0,
+    cleanRate: safeRatio(cleanCount, materialRecords.length),
     contaminatedCount,
     demReportRequired,
   };
@@ -385,7 +386,7 @@ function executeMarketplaceStage(
   // Create listings for clean and remediated materials
   for (let i = 0; i < materialRecords.length; i++) {
     const record = materialRecords[i]!;
-    if (record.contamination === "confirmed") {
+    if (!isMarketplaceSafe(record.contamination)) {
       skipped++;
       continue;
     }
@@ -443,8 +444,8 @@ function executeDesignStage(
   return {
     spec,
     recycledMaterialsAvailable: materialsRecovered,
-    recycledMaterialsUsedPercent: Math.round(recycledUsedPercent * 100) / 100,
-    costSavingsFromRecycled: Math.round(costSavingsFromRecycled * 100) / 100,
+    recycledMaterialsUsedPercent: roundMoney(recycledUsedPercent),
+    costSavingsFromRecycled: roundMoney(costSavingsFromRecycled),
   };
 }
 
@@ -459,9 +460,9 @@ function executeBuildStage(
 
   return {
     plan,
-    totalCost: Math.round(adjustedCost * 100) / 100,
-    gcMargin: Math.round(gcMargin * 100) / 100,
-    materialCostReduction: Math.round(materialCostReduction * 100) / 100,
+    totalCost: roundMoney(adjustedCost),
+    gcMargin: roundMoney(gcMargin),
+    materialCostReduction: roundMoney(materialCostReduction),
     constructionStartApproved: financeApproved,
   };
 }
@@ -500,13 +501,13 @@ function executeEquityStage(
   return {
     equityFromPayments,
     equityFromMaterials,
-    totalEquityYear1: Math.round(totalEquityYear1 * 100) / 100,
-    traditionalEquityYear1: Math.round(traditionalEquityYear1 * 100) / 100,
-    equityAdvantage: Math.round((totalEquityYear1 - traditionalEquityYear1) * 100) / 100,
+    totalEquityYear1: roundMoney(totalEquityYear1),
+    traditionalEquityYear1: roundMoney(traditionalEquityYear1),
+    equityAdvantage: roundMoney(totalEquityYear1 - traditionalEquityYear1),
     payoffComparison: {
       standardMonths: homeowner.termMonths,
       preferredPayoffDay: preferredDay,
-      preferredMonths: Math.round((preferredDay / 30) * 10) / 10,
+      preferredMonths: roundMoney(preferredDay / 30),
     },
   };
 }

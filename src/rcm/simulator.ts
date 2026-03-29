@@ -12,6 +12,7 @@
  */
 
 import { rcmMonthlyPayment, rcmEquity } from "./math.js";
+import { roundMoney } from "../shared/math.js";
 
 /* ─── Simulation Types ─── */
 
@@ -155,22 +156,22 @@ export function simulateEquity(input: SimulationInput): SimulationResult {
       month,
       rcm: {
         principalPaid: rcmPrincipal,
-        balance: Math.round(rcmBalance * 100) / 100,
-        equity: Math.round(rcmEquityValue * 100) / 100,
-        materialEquity: Math.round(cumulativeMaterialEquity * 100) / 100,
-        totalEquity: Math.round(rcmTotalEquity * 100) / 100,
+        balance: roundMoney(rcmBalance),
+        equity: roundMoney(rcmEquityValue),
+        materialEquity: roundMoney(cumulativeMaterialEquity),
+        totalEquity: roundMoney(rcmTotalEquity),
       },
       traditional: {
-        principalPaid: Math.round(tradPrincipal * 100) / 100,
-        interestPaid: Math.round(tradInterest * 100) / 100,
-        balance: Math.round(tradBalance * 100) / 100,
-        equity: Math.round(tradEquity * 100) / 100,
+        principalPaid: roundMoney(tradPrincipal),
+        interestPaid: roundMoney(tradInterest),
+        balance: roundMoney(tradBalance),
+        equity: roundMoney(tradEquity),
       },
       delta: {
-        equityAdvantage: Math.round((rcmTotalEquity - tradEquity) * 100) / 100,
-        cumulativeInterestSaved: Math.round(cumulativeInterestSaved * 100) / 100,
+        equityAdvantage: roundMoney(rcmTotalEquity - tradEquity),
+        cumulativeInterestSaved: roundMoney(cumulativeInterestSaved),
       },
-      propertyValue: Math.round(currentPropertyValue * 100) / 100,
+      propertyValue: roundMoney(currentPropertyValue),
     });
 
     // Track milestones
@@ -190,8 +191,8 @@ export function simulateEquity(input: SimulationInput): SimulationResult {
 
   return {
     input,
-    rcmPayment: Math.round(rcmPayment * 100) / 100,
-    traditionalPayment: Math.round(traditionalPayment * 100) / 100,
+    rcmPayment: roundMoney(rcmPayment),
+    traditionalPayment: roundMoney(traditionalPayment),
     snapshots,
     milestones: {
       rcm20PercentEquityMonth: rcm20Month,
@@ -201,19 +202,18 @@ export function simulateEquity(input: SimulationInput): SimulationResult {
       traditionalPayoffMonth: input.termMonths,
     },
     summary: {
-      totalRCMPaid: Math.round(totalRCMPaid * 100) / 100,
-      totalTraditionalPaid: Math.round(totalTraditionalPaid * 100) / 100,
-      totalInterestPaid: Math.round(totalInterestPaid * 100) / 100,
-      totalInterestSaved: Math.round(cumulativeInterestSaved * 100) / 100,
-      totalMaterialEquity: Math.round(cumulativeMaterialEquity * 100) / 100,
+      totalRCMPaid: roundMoney(totalRCMPaid),
+      totalTraditionalPaid: roundMoney(totalTraditionalPaid),
+      totalInterestPaid: roundMoney(totalInterestPaid),
+      totalInterestSaved: roundMoney(cumulativeInterestSaved),
+      totalMaterialEquity: roundMoney(cumulativeMaterialEquity),
       finalRCMEquity: snapshots[snapshots.length - 1]?.rcm.totalEquity ?? 0,
       finalTraditionalEquity: snapshots[snapshots.length - 1]?.traditional.equity ?? 0,
       equityMultiplier: snapshots.length > 0
-        ? Math.round(
-            ((snapshots[snapshots.length - 1]?.rcm.totalEquity ?? 0) /
-              Math.max(snapshots[snapshots.length - 1]?.traditional.equity ?? 1, 1)) *
-              100,
-          ) / 100
+        ? roundMoney(
+            (snapshots[snapshots.length - 1]?.rcm.totalEquity ?? 0) /
+              Math.max(snapshots[snapshots.length - 1]?.traditional.equity ?? 1, 1),
+          )
         : 0,
     },
   };

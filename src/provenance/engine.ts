@@ -272,6 +272,8 @@ export function estimateValue(
   return { valueCents, pricePerBoardFoot, discount };
 }
 
+import { createGradeCounter, safeRatio } from "../shared/math.js";
+
 /* ─── Recovery Metrics ─── */
 
 export interface RecoveryReport {
@@ -297,7 +299,7 @@ export function generateRecoveryReport(
   materials: MaterialRecord[],
   totalBuildingMaterials: number,
 ): RecoveryReport {
-  const byGrade: Record<MaterialGrade, number> = { A: 0, B: 0, C: 0, D: 0, salvage: 0 };
+  const byGrade = createGradeCounter();
   const byCategory: Record<string, number> = {};
   let totalValueCents = 0;
   let cleanCount = 0;
@@ -315,8 +317,8 @@ export function generateRecoveryReport(
     byGrade,
     byCategory,
     totalValueCents,
-    recoveryRate: totalBuildingMaterials > 0 ? materials.length / totalBuildingMaterials : 0,
-    cleanRate: materials.length > 0 ? cleanCount / materials.length : 0,
+    recoveryRate: safeRatio(materials.length, totalBuildingMaterials),
+    cleanRate: safeRatio(cleanCount, materials.length),
     averageGradeScore: 0,
   };
 }
