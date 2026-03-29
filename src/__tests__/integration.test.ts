@@ -32,6 +32,9 @@ import {
 import type { MaterialRecord } from "../provenance/engine.js";
 import { processLoanApplication } from "../rcm/pipeline.js";
 import { calculateDisruptionScore, validateClosedLoop } from "../disruption/engine.js";
+import { validateInspection, classifyMaterial, ingestInspection } from "../field-data/engine.js";
+import type { InspectionReport } from "../field-data/engine.js";
+import { executeClosedLoop, buildMariaScenario } from "../closed-loop/engine.js";
 
 /* ─── Helpers ─── */
 
@@ -466,5 +469,128 @@ describe("Loan pipeline uses provenance-validated data", () => {
     expect(result.approved).toBe(true);
     expect(result.intent.mveApproved).toBe(true);
     expect(result.intent.mveReturnCount).toBe(4);
+  });
+});
+
+/* ─── Test 8: Field Inspection → Provenance → Marketplace ─── */
+
+describe("Field inspection flows through entire pipeline", () => {
+  it("field report → ML Material IDs → marketplace listings", () => {
+    /* Step 1: Create a field inspection report */
+    const report: InspectionReport = {
+      inspectorId: "inspector_005",
+      projectId: "PRV003",
+      address: "456 Benefit St, Providence RI 02903",
+      inspectionDate: "2026-03-29",
+      items: [
+        {
+          fieldDescription: "2x6 Douglas Fir joist, structural framing",
+          location: "Second floor, north bay",
+          estimatedBoardFeet: 180,
+          estimatedWeightLbs: 240,
+          dimensions: { length: 12, width: 6, depth: 2, unit: "in" },
+          visualStructuralScore: 78,
+          visualSurfaceScore: 65,
+          moistureReading: 15,
+          loadTested: false,
+          estimatedAgeYears: 40,
+          observations: {
+            paintChipping: false, paintAge: "post_1978", visibleMold: false,
+            chemicalOdor: false, insectDamage: false, waterStaining: false,
+            previousRepairs: false, asbestosLabeled: false,
+          },
+        },
+        {
+          fieldDescription: "Oak hardwood floor strips, 3/4 inch",
+          location: "Living room",
+          estimatedBoardFeet: 280,
+          estimatedWeightLbs: 420,
+          dimensions: { length: 96, width: 2.25, depth: 0.75, unit: "in" },
+          visualStructuralScore: 88,
+          visualSurfaceScore: 72,
+          moistureReading: 10,
+          loadTested: true,
+          estimatedAgeYears: 40,
+          observations: {
+            paintChipping: false, paintAge: "post_1978", visibleMold: false,
+            chemicalOdor: false, insectDamage: false, waterStaining: false,
+            previousRepairs: false, asbestosLabeled: false,
+          },
+        },
+      ],
+      siteConditions: {
+        weather: "clear", temperature: 55, humidity: 40,
+        accessDifficulty: "easy", hazardsPresent: [],
+      },
+      photos: [
+        { filename: "joist_01.jpg", itemIndex: 0, type: "overview" },
+        { filename: "floor_01.jpg", itemIndex: 1, type: "overview" },
+      ],
+    };
+
+    /* Step 2: Validate the inspection */
+    const validation = validateInspection(report);
+    expect(validation.valid).toBe(true);
+
+    /* Step 3: Ingest into provenance chain */
+    const ingestion = ingestInspection(report);
+    expect(ingestion.records).toHaveLength(2);
+    expect(ingestion.totalValueCents).toBeGreaterThan(0);
+
+    /* Step 4: Verify ML Material IDs are assigned */
+    for (const record of ingestion.records) {
+      expect(record.mlId).toMatch(/^ML-2026-PRV003-Z\d+-\d{3}$/);
+      expect(record.auditTrail.length).toBeGreaterThanOrEqual(2);
+    }
+
+    /* Step 5: Auto-classify materials */
+    const classification1 = classifyMaterial("2x6 Douglas Fir joist, structural framing");
+    expect(classification1.category).toBe("structural_lumber");
+    expect(classification1.confidence).toBe("high");
+
+    const classification2 = classifyMaterial("Oak hardwood floor strips, 3/4 inch");
+    expect(classification2.category).toBe("flooring");
+
+    /* Step 6: Create marketplace listings from ingested records */
+    const { listings, totalValueCents } = createBatchListings(ingestion.records, 100);
+    expect(listings.length).toBe(2);
+    expect(totalValueCents).toBeGreaterThan(0);
+
+    /* Step 7: Sell and verify equity contribution */
+    for (const listing of listings) listing.status = "active";
+    const { order } = createOrder(listings, "contractor_007");
+    expect(order).not.toBeNull();
+    confirmOrder(order!, listings);
+
+    const equity = materialRecoveryEquityContribution(listings);
+    expect(equity.equityContributionCents).toBeGreaterThan(0);
+    expect(equity.listingCount).toBe(2);
+  });
+});
+
+/* ─── Test 9: Full Closed-Loop Pipeline ─── */
+
+describe("Closed-loop pipeline runs end-to-end", () => {
+  it("Maria scenario: finance → deconstruct → design → build → equity", () => {
+    const { homeowner, deconPlan, designSpec, buildPlan, mve } = buildMariaScenario();
+    const result = executeClosedLoop(homeowner, deconPlan, designSpec, buildPlan, mve);
+
+    /* Verify all stages complete */
+    expect(result.loopComplete).toBe(true);
+    expect(result.stages.finance.approved).toBe(true);
+    expect(result.stages.deconstruct.materialsRecovered).toBe(10);
+    expect(result.stages.marketplace.listingsCreated).toBeGreaterThan(0);
+    expect(result.stages.build.constructionStartApproved).toBe(true);
+
+    /* Verify equity advantage */
+    expect(result.stages.equity.equityAdvantage).toBeGreaterThan(0);
+    expect(result.stages.equity.equityFromMaterials).toBeGreaterThan(0);
+
+    /* Verify disruption score */
+    expect(result.disruption.closedLoop).toBe(true);
+    expect(result.disruption.compositeMultiplier).toBeGreaterThan(3);
+
+    /* Total value created should be positive */
+    expect(result.totalValueCreatedCents).toBeGreaterThan(0);
   });
 });
