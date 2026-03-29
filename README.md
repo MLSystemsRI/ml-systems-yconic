@@ -3,7 +3,7 @@
 [![CI](https://github.com/MLSystemsRI/ml-systems-yconic/actions/workflows/ci.yml/badge.svg)](https://github.com/MLSystemsRI/ml-systems-yconic/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
 [![Node](https://img.shields.io/badge/Node-%3E%3D20-green.svg)](https://nodejs.org/)
-[![Tests](https://img.shields.io/badge/Tests-396%20passing-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-430%20passing-brightgreen.svg)]()
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-0-brightgreen.svg)]()
 
 > Closed-loop construction: Finance → Deconstruct → Design → Build → repeat. Every dollar returns 4x.
@@ -60,7 +60,7 @@ const loop = executeClosedLoop(
 | 16% GC margin | 25.9% margin | 1.6x |
 | Demolition = pure cost | Deconstruction = 4 revenue streams | 4x |
 
-## Nine Modules
+## Ten Modules
 
 ### [TTP](src/ttp/) — Transparency Trust Protocol
 Score 0-100 from 8 weighted factors. Five access bands gate API depth. AI crawlers detected and charged per-query verification fees. Regulators get scoped compliance access. Framework-agnostic middleware processes every request.
@@ -85,6 +85,9 @@ Every recovered material gets an ML Material ID (ML-{year}-{project}-{zone}-{seq
 
 ### [Marketplace](src/marketplace/) — Secondary Materials Exchange
 Recovered materials flow from provenance into marketplace listings with zone-based categorization and provenance-linked pricing. Order processing with availability checks. Revenue from material sales contributes to homeowner equity via RCM — closing the loop.
+
+### [Field Data](src/field-data/) — Physical → Digital Bridge
+Field crews capture material data on-site via structured inspection forms. Engine validates reports, auto-classifies materials via keyword matching, maps field observations to contamination tests, and ingests into the ML Material ID provenance chain. Batch processing for end-of-day uploads.
 
 ### [Schema](src/schema/) — Database Reference
 Typed table names and enum types for the production database (Drizzle ORM). Validates table existence. Used by the monorepo's migration system.
@@ -119,6 +122,10 @@ src/
 │   └── engine.ts          # Material IDs, grading, contamination, valuation
 ├── marketplace/           # Secondary materials exchange
 │   └── engine.ts          # Listings, orders, revenue → equity integration
+├── field-data/            # Physical → digital bridge
+│   └── engine.ts          # Inspection validation, classification, ingestion
+├── shared/                # Cross-module utilities
+│   └── zones.ts           # Material category → zone mapping
 ├── demo/                  # Live demo runner
 │   ├── runner.ts          # 10-step Maria scenario — full closed loop
 │   └── simulation.test.ts # 35 tests validating the demo pipeline
@@ -132,7 +139,7 @@ src/
 |---------|-------------|
 | `npm run build` | Compile TypeScript to `dist/` |
 | `npm run typecheck` | Type-check without emitting |
-| `npm test` | Run 396 tests (`vitest run`) |
+| `npm test` | Run 430 tests (`vitest run`) |
 | `npm run demo` | Run full closed-loop demo (Maria scenario) |
 | `npm run test:coverage` | Tests with V8 coverage report |
 | `npm run lint` | Lint with ESLint (strict TS rules) |
