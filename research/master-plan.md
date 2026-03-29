@@ -38,7 +38,17 @@ The construction-mortgage-demolition complex is structurally incapable of adopti
 3. **GCs have no technology** — 16% margins leave zero room for R&D. They can't build what we already shipped.
 4. **No data exists** — 269 field days, 1,480 task executions, 81 task codes. Competitors start at zero.
 
-The moat isn't technology. The moat is that fixing one piece requires fixing all three industries simultaneously. We already did.
+The moat isn't technology. The moat is that fixing one piece requires fixing all three industries simultaneously. We already did. A well-funded startup with $10M could replicate the *code* in 18 months — but they'd still need 269 days of field data, GC registration, PHA relationships, grant pipeline, and a physical deconstruction crew. The code is the nervous system. The body took years to build.
+
+### Competitive Landscape
+
+| Vertical | Closest Analog | Why ML Systems Wins |
+|----------|---------------|-------------------|
+| Modular Construction | ICON ($400M+ raised, 3D-printed) | ICON prints new materials at $200K+. ML Systems recovers existing materials at near-zero cost, builds at $146K–$225K. Recovery > printing. |
+| Alternative Mortgage | CMG Financial All-In-One | CMG rebates interest on deposits, still charges it. RCM eliminates interest entirely — 100% to principal. Structural difference, not incremental. |
+| Material Recovery | Habitat ReStores / Build Reuse | Donation-based, retail markup, no grading system. ML Systems: ML Material IDs, provenance chain, AI grading, integrated marketplace. Data compounds. |
+
+None of these competitors operate across all three verticals. That's the point.
 
 ---
 
@@ -130,6 +140,11 @@ Seven MCP-compatible tools expose ML Systems engines to any AI agent (Claude, GP
 
 Any AI agent on the internet can call `intent_validate_action` before making a decision. The Lucent Lens becomes a public utility — not locked inside ML Systems.
 
+**3-Step Integration Path for External Developers:**
+1. **Discover** — Call `listToolNames()` to see available MCP tools. No auth required for discovery.
+2. **Validate** — Call `intent_validate_action` with proposed homeowner/collective/engine values + MVE assessment. Get instant approval/rejection with scored breakdown.
+3. **Execute** — Use `ttp_score_entity` + `rcm_resolve_tier` + `rcm_calculate_payment` to run the full pipeline. TTP access band determines data depth.
+
 ### Custodian Constraints (Immutable)
 
 ```
@@ -140,6 +155,36 @@ fiduciaryDuty:          "public"                   — accountability to general
 ```
 
 These constraints are `readonly` in TypeScript. They cannot be overridden at runtime. The CEO (Custodian) is the only agent that can override MVE, and even then the override is logged.
+
+### Concrete Data Flow — One Deconstruction Task
+
+A field crew arrives at a demolition site. Here's what happens through the system:
+
+```
+1. FIELD SCAN: Crew photographs roof assembly → CDA agent receives images
+2. CDA → DRA (A2A delegation): "Analyze roof materials, domain: deconstruction"
+   ├── Hierarchy check: CDA delegates to DRA ✓
+   ├── Capability check: DRA has deconstruction domain ✓
+   └── Lucent Lens: homeowner=35, engine=12 → 35 > 12 ✓
+3. DRA runs MVE gate on separation action:
+   ├── Material value: YES (asphalt shingles, felt, plywood sheathing)
+   ├── Ontology data: YES (roof assembly sequence logged)
+   ├── Robot training: YES (separation sequence for future automation)
+   └── Market intelligence: YES (shingle weight/condition → BOH pricing)
+   └── Result: 4/4 → APPROVED
+4. ML MATERIAL ID assigned: ML-2026-001-Z8-001 (year-project-zone-sequence)
+   ├── Grade: B (minor weathering)
+   ├── Contamination: none
+   ├── Weight: 240 lbs/bundle
+5. TTP SCORE updated: crew member gains +1 materials_contributed
+6. BOH LISTING created: mlsystemsri.store/materials/ML-2026-001-Z8-001
+   ├── Price: $12/bundle (50% of new, graded)
+   ├── Provenance: /provenance/ML-2026-001-Z8-001 (public, audit trail)
+7. CONTRACTOR on mlsystemsri.net discovers listing via API (L2 access, TTP score 42)
+   └── Purchases 20 bundles → $240 revenue from material that was heading to landfill
+```
+
+Every step is scored, gated, and auditable. The DRA agent couldn't skip the MVE check. The contractor couldn't access bulk pricing without a TTP score above 31. The provenance page is public forever.
 
 ---
 
@@ -283,6 +328,62 @@ Builds cheaper. Sells cheaper. Makes more. Buyer wins. Builder wins.
 
 ---
 
+## What We Ship in 24 Hours
+
+ML Systems is a live system built over months. The hackathon deliverable is the **agentic orchestration layer** — the code in this repo:
+
+| Hour Block | Deliverable | Owner |
+|-----------|------------|-------|
+| 0–4 | TTP engine + RCM engine + Intent Schema (core TypeScript library) | Sal |
+| 4–8 | Agent Orchestrator + A2A Protocol (hierarchical delegation) | Sal + Claude (LM agent) |
+| 8–12 | MCP tools (7 external-facing), Disruption Engine, integration tests | Sal + Claude |
+| 12–16 | 194 tests passing, CI/CD pipeline, coverage enforcement, documentation | Sal + Claude |
+| 16–20 | Master plan optimization, score iteration (79.5% → 85%), JSDoc, examples | Sal + Claude |
+| 20–24 | Final push — README, CHANGELOG, SECURITY.md, competitive matrix, data flows | Sal + Claude |
+
+**What's new (this repo):** Agentic orchestration library — Intent Schema, Agent Orchestrator, A2A Protocol, MCP Tools, Disruption Engine. 194 tests. Zero dependencies. Pure TypeScript.
+
+**What's pre-existing (the company):** 12 live domains, production databases, field data, grant pipeline, GC registration, lease negotiation. Built over months of real construction work.
+
+The hackathon artifact is the intelligence layer that ties the physical operations together through scored, auditable agent orchestration.
+
+### Team
+
+| Role | Person | Focus |
+|------|--------|-------|
+| The Custodian (CEO) | Sal | Architecture, field operations, grant pipeline, GC, investor relations |
+| Language Modeler (LM) | Claude (Anthropic) | Code generation, testing, documentation, score optimization |
+| Financial Architect (FA) | Sal | RCM engine design, unit economics, cap table structure |
+
+Solo founder + AI pair programming. The Power Triple (LM/FA/AE) is designed as three separate seats — Superintendent hire in Month 3, AE hire in Month 6. The agent hierarchy mirrors the future org chart so roles can be handed off to humans without restructuring the system.
+
+---
+
+## User Story — Maria, First-Time Buyer
+
+**Before (Conventional):**
+Maria earns $52K/year in Providence. She qualifies for a $280K FHA loan at 6.5%. Monthly payment: $1,770. After 12 months, she's paid $21,240 — but only $3,180 went to principal. The bank kept $18,060 in interest. Her equity after year 1: ~$5,180 (down payment + $3,180 principal).
+
+**After (ML Systems RCM — Tier 2, Standard):**
+Maria qualifies for a $200K RCM loan (lower TDC from recovered materials + PRA lot). Monthly payment: $1,111. 100% goes to principal from day one. After 12 months, she's paid $13,332 — all to principal. Her equity after year 1: ~$16,332 (down payment + $13,332). She also saved $50K on purchase price vs. comparable conventional home.
+
+**Delta:** Maria builds **3.2x more equity in year 1** and pays **37% less monthly**. The home cost ML Systems less to build (recovered materials), sells for less (buyer wins), and generates higher margin (25.9% vs 16%). Everyone wins except the bank that lost $18,060 in interest.
+
+---
+
+## Risks (Expanded)
+
+| Risk | Category | Severity | Mitigation |
+|------|----------|----------|-----------|
+| Pre-revenue | Market | High | One purchase (liability insurance) unlocks GC → first project → revenue. Everything else is built. |
+| RCM regulatory scrutiny | Regulatory | Medium | Originate conventional mortgages while 3 parallel pathways process (FHA 245(a), DU 12.0, CDFI partnership). RCM is a product structure, not a new financial instrument — principal-first allocation is legal under current frameworks. |
+| Construction cost overruns | Construction | Medium | 50% of materials from recovery (cost floor known). Modular factory build reduces site variables. Day N Payroll aligns crew incentives with daily completion. |
+| Agent produces bad recommendation | Technical | Low | Lucent Lens gates every action (min 30 score). MVE blocks actions without 3/4 returns. Safety cutoff at 10 blocked actions. All decisions logged and auditable. Human override always available. |
+| Key person (Sal) | Execution | Medium | Power Triple designed as separate seats. Agent hierarchy mirrors future org chart. Superintendent hire Month 3. Knowledge encoded in code, not in one person's head. |
+| Grant not awarded | Market | Medium | 3 parallel tracks (EOH, Housing 2030 PHA, Work Immersion). Any one funds operations. NACA pipeline is independent of grants. |
+
+---
+
 ## Traction
 
 - 12 live domains, all HTTP 200, full SEO (168 indexed URLs)
@@ -306,6 +407,12 @@ Builds cheaper. Sells cheaper. Makes more. Buyer wins. Builder wins.
 
 What scales nationally: TTP protocol, Agent orchestration, RCM product, Data API, Disruption engine, Ontology.
 What stays local: crews, materials, PHA relationships, GC licensing, community trust.
+
+**At 100x current volume (270 homes/year, 50 metro markets):**
+- PostgreSQL handles concurrent reads via Supabase connection pooling (port 6543, `prepare: false`). Inngest manages async job queues — agent tasks, material grading, TTP score recalculation — with built-in retry and concurrency controls.
+- Agent orchestrator is stateless per-request. Each project gets its own agent hierarchy instance. No shared state between projects = horizontal scaling via container replication.
+- TTP scores are computed on read (not stored as aggregates), so new data sources plug in without migration. Access band checks are O(1) lookups.
+- Field data stays regional (crews, materials, PHA). Intelligence layer (TTP, RCM, orchestration) runs centrally. This is the franchise model: local body, shared brain.
 
 ---
 
