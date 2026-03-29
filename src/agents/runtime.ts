@@ -24,6 +24,9 @@ import { resolveTier } from "../rcm/engine.js";
 import { rcmMonthlyPayment } from "../rcm/math.js";
 import { preferredPayoffDay } from "../rcm/engine.js";
 import { scoreLucentLens, passesLucentLens, passesMVE } from "../intent/schema.js";
+import { gradeMaterial, estimateValue } from "../provenance/engine.js";
+import type { MaterialCategory, MaterialGrade, ContaminationStatus } from "../provenance/engine.js";
+import { simulateEquity } from "../rcm/simulator.js";
 import { getTool } from "./tools.js";
 import type { ToolDefinition, ToolParameter } from "./tools.js";
 
@@ -193,6 +196,44 @@ function executeIntentValidateAction(args: Record<string, unknown>): Record<stri
   };
 }
 
+function executeProvenanceGradeMaterial(args: Record<string, unknown>): Record<string, unknown> {
+  const result = gradeMaterial({
+    structuralIntegrity: args["structuralIntegrity"] as number,
+    surfaceCondition: args["surfaceCondition"] as number,
+    moistureContent: args["moistureContent"] as number,
+    loadTested: args["loadTested"] as boolean,
+    ageYears: args["ageYears"] as number,
+  });
+  return { grade: result.grade, score: result.score, reason: result.reason };
+}
+
+function executeProvenanceEstimateValue(args: Record<string, unknown>): Record<string, unknown> {
+  return estimateValue(
+    args["category"] as MaterialCategory,
+    args["grade"] as MaterialGrade,
+    args["boardFeet"] as number,
+    args["contamination"] as ContaminationStatus,
+  );
+}
+
+function executeRCMSimulateEquity(args: Record<string, unknown>): Record<string, unknown> {
+  const result = simulateEquity({
+    loanAmount: args["loanAmount"] as number,
+    annualRate: args["annualRate"] as number,
+    termMonths: args["termMonths"] as number,
+    propertyValue: args["propertyValue"] as number,
+    appreciationRate: args["appreciationRate"] as number,
+    monthlyMaterialRevenueCents: args["monthlyMaterialRevenueCents"] as number,
+    materialRevenueSharePercent: 0.51,
+  });
+  return {
+    milestones: result.milestones,
+    summary: result.summary,
+    rcmPayment: result.rcmPayment,
+    traditionalPayment: result.traditionalPayment,
+  };
+}
+
 /* ─── Executor Registry ─── */
 
 const EXECUTORS: Record<string, (args: Record<string, unknown>) => Record<string, unknown>> = {
@@ -203,6 +244,9 @@ const EXECUTORS: Record<string, (args: Record<string, unknown>) => Record<string
   rcm_calculate_payment: executeRCMCalculatePayment,
   rcm_preferred_payoff: executeRCMPreferredPayoff,
   intent_validate_action: executeIntentValidateAction,
+  provenance_grade_material: executeProvenanceGradeMaterial,
+  provenance_estimate_value: executeProvenanceEstimateValue,
+  rcm_simulate_equity: executeRCMSimulateEquity,
 };
 
 /* ─── Public API ─── */

@@ -241,6 +241,56 @@ export const intentValidateAction: ToolDefinition = {
   returns: "{ approved: boolean, lensScore: object, mveResult: object, blockedBy: string[] }",
 };
 
+/* ─── Provenance Tools ─── */
+
+export const provenanceGradeMaterial: ToolDefinition = {
+  name: "provenance_grade_material",
+  description:
+    "Grade a recovered material based on physical assessment factors. " +
+    "Returns grade (A/B/C/D/salvage), score, and reason. " +
+    "The grade feeds marketplace pricing and DEM compliance.",
+  parameters: [
+    { name: "structuralIntegrity", type: "number", description: "Structural integrity (0-100)", required: true },
+    { name: "surfaceCondition", type: "number", description: "Surface condition (0-100)", required: true },
+    { name: "moistureContent", type: "number", description: "Moisture content percentage", required: true },
+    { name: "loadTested", type: "boolean", description: "Whether material was load-tested", required: true },
+    { name: "ageYears", type: "number", description: "Age of material in years", required: true },
+  ],
+  returns: "{ grade: string, score: number, reason: string }",
+};
+
+export const provenanceEstimateValue: ToolDefinition = {
+  name: "provenance_estimate_value",
+  description:
+    "Estimate market value of a recovered material. " +
+    "Value = base price × category multiplier × contamination discount. " +
+    "Feeds BOH marketplace listing prices.",
+  parameters: [
+    { name: "category", type: "string", description: "Material category", required: true, enum: ["structural_lumber", "finish_lumber", "doors", "windows", "trim", "flooring", "fixtures", "hardware", "roofing", "siding", "concrete", "sheathing", "drywall", "electrical", "plumbing"] },
+    { name: "grade", type: "string", description: "Material grade", required: true, enum: ["A", "B", "C", "D", "salvage"] },
+    { name: "boardFeet", type: "number", description: "Quantity in board feet", required: true },
+    { name: "contamination", type: "string", description: "Contamination status", required: true, enum: ["clean", "suspected", "confirmed", "remediated"] },
+  ],
+  returns: "{ valueCents: number, pricePerBoardFoot: number, discount: number }",
+};
+
+export const rcmSimulateEquity: ToolDefinition = {
+  name: "rcm_simulate_equity",
+  description:
+    "Run a 360-month equity simulation comparing RCM vs traditional mortgage. " +
+    "Returns milestones (20% equity month, crossover month, payoff month) and summary. " +
+    "Proves RCM builds equity faster at every time horizon.",
+  parameters: [
+    { name: "loanAmount", type: "number", description: "Loan amount in dollars", required: true },
+    { name: "annualRate", type: "number", description: "Annual interest rate (decimal)", required: true },
+    { name: "termMonths", type: "number", description: "Loan term in months", required: true },
+    { name: "propertyValue", type: "number", description: "Property value in dollars", required: true },
+    { name: "appreciationRate", type: "number", description: "Annual property appreciation (decimal)", required: true },
+    { name: "monthlyMaterialRevenueCents", type: "number", description: "Monthly material recovery revenue (cents)", required: true },
+  ],
+  returns: "{ milestones: object, summary: object, rcmPayment: number, traditionalPayment: number }",
+};
+
 /* ─── Tool Registry ─── */
 
 /** All available MCP tools */
@@ -252,6 +302,9 @@ export const ALL_TOOLS: readonly ToolDefinition[] = [
   rcmCalculatePayment,
   rcmPreferredPayoff,
   intentValidateAction,
+  provenanceGradeMaterial,
+  provenanceEstimateValue,
+  rcmSimulateEquity,
 ] as const;
 
 /** Look up a tool by name */

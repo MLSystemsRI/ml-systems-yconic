@@ -2,8 +2,8 @@ import { describe, it, expect } from "vitest";
 import { ALL_TOOLS, getTool, listToolNames } from "./tools.js";
 
 describe("tool registry", () => {
-  it("contains 7 tools", () => {
-    expect(ALL_TOOLS).toHaveLength(7);
+  it("contains 10 tools", () => {
+    expect(ALL_TOOLS).toHaveLength(10);
   });
 
   it("all tools have unique names", () => {
@@ -49,7 +49,7 @@ describe("getTool", () => {
 describe("listToolNames", () => {
   it("returns all tool names", () => {
     const names = listToolNames();
-    expect(names).toHaveLength(7);
+    expect(names).toHaveLength(10);
     expect(names).toContain("ttp_score_entity");
     expect(names).toContain("rcm_calculate_payment");
     expect(names).toContain("intent_validate_action");
@@ -62,9 +62,14 @@ describe("tool categories", () => {
     expect(ttpTools).toHaveLength(3);
   });
 
-  it("has 3 RCM tools", () => {
+  it("has 4 RCM tools", () => {
     const rcmTools = ALL_TOOLS.filter((t) => t.name.startsWith("rcm_"));
-    expect(rcmTools).toHaveLength(3);
+    expect(rcmTools).toHaveLength(4);
+  });
+
+  it("has 2 Provenance tools", () => {
+    const provTools = ALL_TOOLS.filter((t) => t.name.startsWith("provenance_"));
+    expect(provTools).toHaveLength(2);
   });
 
   it("has 1 Intent tool", () => {
