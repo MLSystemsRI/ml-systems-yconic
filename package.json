@@ -33,6 +33,10 @@
     "./disruption": {
       "types": "./dist/disruption/index.d.ts",
       "import": "./dist/disruption/index.js"
+    },
+    "./provenance": {
+      "types": "./dist/provenance/index.d.ts",
+      "import": "./dist/provenance/index.js"
     }
   },
   "scripts": {

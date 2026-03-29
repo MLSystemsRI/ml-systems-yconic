@@ -17,3 +17,4 @@ export * from "./rcm/index.js";
 export * from "./intent/index.js";
 export * from "./agents/index.js";
 export * from "./disruption/index.js";
+export * from "./provenance/index.js";
