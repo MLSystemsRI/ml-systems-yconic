@@ -12,7 +12,11 @@
  * Every tool call hits a real calculation — no stubs, no mocks.
  */
 
-import { calculateTransparencyScore, getAccessBand, getVerificationFeeCents } from "../ttp/transparency.js";
+import {
+  calculateTransparencyScore,
+  getAccessBand,
+  getVerificationFeeCents,
+} from "../ttp/transparency.js";
 import { isAiCrawler, identifyCrawler } from "../ttp/ai-crawler.js";
 import { processTTPRequest } from "../ttp/middleware.js";
 import type { ApiTier, TransparencyFactors } from "../ttp/types.js";
@@ -40,10 +44,7 @@ export interface ToolCallResult {
 
 /* ─── Parameter Validation ─── */
 
-function validateParams(
-  definition: ToolDefinition,
-  args: Record<string, unknown>,
-): string | null {
+function validateParams(definition: ToolDefinition, args: Record<string, unknown>): string | null {
   for (const param of definition.parameters) {
     if (param.required && !(param.name in args)) {
       return `Missing required parameter: ${param.name}`;
@@ -102,7 +103,12 @@ function executeTTPDetectCrawler(args: Record<string, unknown>): Record<string, 
   const crawler = isAiCrawler(userAgent);
   const identified = identifyCrawler(userAgent);
   const feeCents = getVerificationFeeCents(
-    accessBand as "public_record" | "ml_verified" | "full_api" | "double_verified" | "ontology_licensed",
+    accessBand as
+      | "public_record"
+      | "ml_verified"
+      | "full_api"
+      | "double_verified"
+      | "ontology_licensed",
     crawler,
   );
 

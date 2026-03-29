@@ -48,3 +48,15 @@ export {
   preferredCumulativePaid,
   compareAllTiers,
 } from "./engine.js";
+
+// Pipeline — end-to-end loan processing
+export { processLoanApplication, checkEligibility, equityAdvantage } from "./pipeline.js";
+export type {
+  LoanApplication,
+  TTPStageResult,
+  CreditStageResult,
+  ScheduleStageResult,
+  IntentStageResult,
+  DenialReason,
+  PipelineResult,
+} from "./pipeline.js";
