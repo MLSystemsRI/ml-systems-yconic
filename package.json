@@ -37,6 +37,10 @@
     "./provenance": {
       "types": "./dist/provenance/index.d.ts",
       "import": "./dist/provenance/index.js"
+    },
+    "./marketplace": {
+      "types": "./dist/marketplace/index.d.ts",
+      "import": "./dist/marketplace/index.js"
     }
   },
   "scripts": {
