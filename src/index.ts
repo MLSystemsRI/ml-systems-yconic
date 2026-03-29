@@ -8,8 +8,11 @@
  * This package exports the core engines:
  * - TTP: Transparency Trust Protocol — credential-gated access scoring
  * - RCM: Reverse Construction Mortgage — novel mortgage product
+ * - Intent: Culture-as-code constraints inherited by every agent
+ * - Agents: Multi-agent orchestrator with MCP-compatible tool interface
  */
 
 export * from "./ttp/index.js";
 export * from "./rcm/index.js";
 export * from "./intent/index.js";
+export * from "./agents/index.js";

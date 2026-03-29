@@ -2,20 +2,12 @@ import { describe, it, expect } from "vitest";
 import {
   calculateTransparencyScore,
   getAccessBand,
-  ACCESS_BAND_THRESHOLDS,
   VERIFICATION_FEE,
   transparencyHeaders,
   getVerificationFeeCents,
 } from "../ttp/transparency.js";
 import type { TransparencyFactors } from "../ttp/types.js";
-import {
-  resolveTier,
-  ALL_TIERS,
-  STANDARD_TIERS,
-  PREFERRED_TIERS,
-  compareAllTiers,
-  preferredPayoffDay,
-} from "../rcm/engine.js";
+import { resolveTier, ALL_TIERS, compareAllTiers } from "../rcm/engine.js";
 import { rcmMonthlyPayment } from "../rcm/math.js";
 import {
   scoreLucentLens,
@@ -286,7 +278,9 @@ describe("Agent intent enforces constraints across modules", () => {
       marketIntelligence: true,
     });
     expect(fullDecon.passes).toBe(true);
-    expect(fullDecon.returnCount).toBeGreaterThanOrEqual(CUSTODIAN_CONSTRAINTS.minimumViableExpense - 1);
+    expect(fullDecon.returnCount).toBeGreaterThanOrEqual(
+      CUSTODIAN_CONSTRAINTS.minimumViableExpense - 1,
+    );
 
     // Office supply purchase fails MVE — no construction returns
     const officePurchase = passesMVE({
