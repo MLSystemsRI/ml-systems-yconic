@@ -12,3 +12,4 @@
 
 export * from "./ttp/index.js";
 export * from "./rcm/index.js";
+export * from "./intent/index.js";
