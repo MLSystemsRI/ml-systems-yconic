@@ -26,12 +26,17 @@ npm run ci          # typecheck + lint + test (run before every PR)
 
 ## Architecture
 
-Three engines, one barrel export:
+Ten engines, one barrel export. See `docs/ARCHITECTURE.md` for the full map.
 
 | Engine | Path | Purpose |
 |--------|------|---------|
 | TTP | `src/ttp/` | Transparency Trust Protocol — scoring, access bands, AI crawler detection |
-| RCM | `src/rcm/` | Reverse Construction Mortgage — 6-tier engine, daily arithmetic payments |
-| Intent | `src/intent/` | Lucent Lens + MVE + Custodian constraints as executable code |
-
-See `docs/ARCHITECTURE.md` for details.
+| RCM | `src/rcm/` | Reverse Construction Mortgage — 6 tiers, equity simulator |
+| Intent | `src/intent/` | Lucent Lens + MVE + Custodian constraints |
+| Agents | `src/agents/` | Orchestrator, A2A protocol, 10 MCP tools |
+| Provenance | `src/provenance/` | ML Material IDs, grading, contamination, valuation |
+| Marketplace | `src/marketplace/` | Listings, orders, revenue → equity |
+| Closed Loop | `src/closed-loop/` | Finance → Deconstruct → Design → Build pipeline |
+| Field Data | `src/field-data/` | Inspection validation, auto-classification, ingestion |
+| Disruption | `src/disruption/` | 5-multiplier composite paradigm scoring |
+| Shared | `src/shared/` | Zone mapping, cross-module utilities |
