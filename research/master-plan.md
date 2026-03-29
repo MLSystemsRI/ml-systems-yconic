@@ -4,11 +4,29 @@
 
 We replace the construction-mortgage-demolition system with a closed loop that makes the old way look absurd.
 
+**The wedge:** One home. One deconstruction. One RCM mortgage. That single transaction proves the loop — recovered materials lower the build cost, principal-first mortgage builds the buyer's equity, and the data from both feeds the next project. Everything else scales from that first closed cycle.
+
 **Old system:** Bank takes 18 years of interest before you build equity. Demolition destroys 90% of materials. Contractors operate at 16% margins with zero technology. Three industries, $63 trillion, completely disconnected.
 
 **ML Systems:** 100% of your mortgage payment builds equity from day one. Deconstruction recovers 80–90% of materials. AI agents score every decision through a value hierarchy that puts homeowners first. One company, one loop: Finance → Deconstruct → Design → Build → Repeat.
 
 **This is not a SaaS product.** We don't sell subscriptions. We build homes, recover materials, and originate mortgages. Revenue comes from outcomes — a home built, a material sold, a loan closed. The software is the nervous system, not the product.
+
+**In one sentence:** ML Systems gives first-time buyers a home that costs less, builds equity faster, and wastes almost nothing — and no combination of existing banks, builders, or demolition contractors can replicate it because doing so would destroy their own business models.
+
+---
+
+## User Story — Maria, First-Time Buyer
+
+**Before (Conventional):**
+Maria earns $52K/year in Providence. She qualifies for a $280K FHA loan at 6.5%. Monthly payment: $1,770. After 12 months, she's paid $21,240 — but only $3,180 went to principal. The bank kept $18,060 in interest. Her equity after year 1: ~$5,180 (down payment + $3,180 principal).
+
+**After (ML Systems RCM — Tier 2, Standard):**
+Maria qualifies for a $200K RCM loan (lower TDC from recovered materials + PRA lot). Monthly payment: $1,111. 100% goes to principal from day one. After 12 months, she's paid $13,332 — all to principal. Her equity after year 1: ~$16,332 (down payment + $13,332). She also saved $50K on purchase price vs. comparable conventional home.
+
+**Delta:** Maria builds **3.2x more equity in year 1** and pays **37% less monthly**. The home cost ML Systems less to build (recovered materials), sells for less (buyer wins), and generates higher margin (25.9% vs 16%). Everyone wins except the bank that lost $18,060 in interest.
+
+**Addressable population:** Rhode Island has ~11,000 renter households earning $40K–$75K who are mortgage-eligible but priced out of conventional construction. The Providence-Warwick MSA alone has ~8,200. New England expansion (MA, CT, NH) adds ~145,000 equivalent households. Every Maria-equivalent is a closed-loop cycle waiting to happen.
 
 ---
 
@@ -25,7 +43,6 @@ We don't pitch disruption. We calculate it. The `disruption/engine.ts` computes 
 | $300K+ per home (RI avg) | $146K–$225K TDC | **39–42% cost reduction** |
 | 16% GC margins (RI avg) | 25.9% target (Toll Brothers benchmark) | **+62% margin improvement** |
 | Zero shingle recyclers in RI | ML Systems builds the market | **∞ — category creation** |
-| $44M garage earning $0 for 14 years | $41.6M in lease revenue | **$0 → $41.6M** |
 
 **Composite disruption score:** Geometric mean of equity velocity (18x), material recovery (8.5x), cost reduction (1.89x), margin improvement (1.62x), and revenue streams (4x per dollar) = **5.5x paradigm shift** vs. industry baseline. This isn't a slide — it's a function you can call.
 
@@ -39,6 +56,8 @@ The construction-mortgage-demolition complex is structurally incapable of adopti
 4. **No data exists** — 269 field days, 1,480 task executions, 81 task codes. Competitors start at zero.
 
 The moat isn't technology. The moat is that fixing one piece requires fixing all three industries simultaneously. We already did. A well-funded startup with $10M could replicate the *code* in 18 months — but they'd still need 269 days of field data, GC registration, PHA relationships, grant pipeline, and a physical deconstruction crew. The code is the nervous system. The body took years to build.
+
+**Why PropTech fast-followers can't acquire their way in:** Opendoor and Offerpad optimize *transactions* on existing homes — they don't build, deconstruct, or originate. Acquiring the RCM product structure is meaningless without the deconstruction pipeline that lowers TDC, the field data that trains the agents, and the GC registration that lets you swing a hammer. The bundle is the moat. No single acquisition gets you the loop.
 
 ### Competitive Landscape
 
@@ -76,6 +95,29 @@ GATE: Minimum 30 points to execute. Below 30 = blocked.
 ```
 
 This is culture-as-code. The Lucent Lens isn't a mission statement — it's a scoring function that gates every agent action before execution.
+
+### Core Type Signatures
+
+```typescript
+interface ActionProposal {
+  agentId: string;
+  action: string;
+  homeownerValue: number;   // 0–40
+  collectiveValue: number;  // 0–30
+  engineValue: number;      // 0–30
+  mve: MVEAssessment;
+}
+
+interface ActionResult {
+  approved: boolean;
+  lensScore: number;
+  mveResult: { passed: boolean; returnCount: number };
+  blockedBy: string[];       // which gate rejected
+}
+
+// AgentOrchestrator.submitAction(proposal: ActionProposal): ActionResult
+// — every agent action passes through this before execution
+```
 
 ### Agent Hierarchy (Enforced, Not Suggested)
 
@@ -145,16 +187,20 @@ Any AI agent on the internet can call `intent_validate_action` before making a d
 2. **Validate** — Call `intent_validate_action` with proposed homeowner/collective/engine values + MVE assessment. Get instant approval/rejection with scored breakdown.
 3. **Execute** — Use `ttp_score_entity` + `rcm_resolve_tier` + `rcm_calculate_payment` to run the full pipeline. TTP access band determines data depth.
 
+**Partner example:** A regional contractor in Warwick with TTP score 45 (Full API band) can build on top of ML Systems: query available recovered materials via `ttp_check_access`, get real-time BOH pricing feeds, run `rcm_calculate_payment` to quote buyers, and validate their own subcontractor actions against the Lucent Lens. They get a technology stack they could never build at 16% margins — and ML Systems gets network data from every transaction.
+
 ### Custodian Constraints (Immutable)
 
-```
-transparencyTrust:      "optimize_user_compute"    — we don't profit from users' compute
-equityOrder:            "public_before_private"    — public institutions get equity first
-minimumViableExpense:   4                          — every dollar returns 4x
-fiduciaryDuty:          "public"                   — accountability to general public
+```typescript
+const CUSTODIAN_CONSTRAINTS = {
+  transparencyTrust:      "optimize_user_compute",    // we don't profit from users' compute
+  equityOrder:            "public_before_private",    // public institutions get equity first
+  minimumViableExpense:   4,                          // every dollar returns 4x
+  fiduciaryDuty:          "public",                   // accountability to general public
+} as const;  // readonly — cannot be overridden at runtime
 ```
 
-These constraints are `readonly` in TypeScript. They cannot be overridden at runtime. The CEO (Custodian) is the only agent that can override MVE, and even then the override is logged.
+The CEO (Custodian) is the only agent that can override MVE, and even then the override is logged.
 
 ### Concrete Data Flow — One Deconstruction Task
 
@@ -262,6 +308,17 @@ The more AI agents access our data, the more revenue we generate — without sel
 
 Real construction data from real job sites. Not scraped. Not synthetic. Every decon project generates more.
 
+### Observability & Analytics
+
+| System | Coverage | What It Tracks |
+|--------|----------|---------------|
+| Google Analytics (GA4) | Cross-domain, all 12 domains | Unified property `G-S7L16PQTX9` tracks user journeys across mlsystemsri.com → .store → .info → subdomains. Single funnel visibility from awareness to conversion. |
+| Cloudflare Analytics | All domains (DNS + CDN) | HTTP requests, unique visitors, page views, bot traffic, cache hit ratio. 7-day rolling aggregates via API (`CF_API_TOKEN` + zone-level pull). |
+| Custodian Deploy System | 12-phase automated audit | Uptime, response time, SEO health (OG/JSON-LD/canonical), security headers, git status, app health — runs on demand, outputs `custodian-report.json`. |
+| Google Search Console | All 5 TLDs + subdomains | 168 indexed URLs across domains. mlsystemsri.store leads organic traffic (marketplace demand signal without paid ads). |
+
+**Key traction signal:** mlsystemsri.store (Builder's Open House) generates the most organic search traffic across all domains — contractors are already searching for secondary building materials in RI. This is unpaid demand discovery validating the marketplace thesis before a single ad dollar is spent.
+
 ### Stack
 
 Next.js 15 + tRPC + Drizzle/PostgreSQL + Clerk + Anthropic Claude + XGBoost + Expo + Stripe + Inngest + Cloudflare R2 + Vercel + Fly.io + Vitest + GitHub Actions CI/CD
@@ -302,14 +359,6 @@ Completed homes are the marketing. Neighbors see it. Next buyer comes from the b
 
 ---
 
-## The Anchor — 1011 Ten Rod Road
-
-$44M state-funded MBTA parking garage. 1,100 spaces. 4 stories. **Operated at a loss for 14 years.** 157 daily riders vs 3,386 projected. Floors 3–4 roped off. $0 parking revenue.
-
-**ML Systems enters it for $1,692,146.** 25-year arithmetic lease (Day N = $N). Total: $41.6M. 1,100 parking spaces become 1,100 inventory bays. Gate infrastructure becomes AI checkout. $0-revenue asset becomes $41.6M in lease payments.
-
----
-
 ## Unit Economics — One Home
 
 | | Conventional | ML Systems | Delta |
@@ -330,22 +379,36 @@ Builds cheaper. Sells cheaper. Makes more. Buyer wins. Builder wins.
 
 ## What We Ship in 24 Hours
 
-ML Systems is a live system built over months. The hackathon deliverable is the **agentic orchestration layer** — the code in this repo:
+The hackathon deliverable is the **agentic orchestration layer** — the code in this repo. ML Systems (the company) is pre-existing infrastructure built over months. This repo is what we built in 24 hours.
 
-| Hour Block | Deliverable | Owner |
-|-----------|------------|-------|
-| 0–4 | TTP engine + RCM engine + Intent Schema (core TypeScript library) | Sal |
-| 4–8 | Agent Orchestrator + A2A Protocol (hierarchical delegation) | Sal + Claude (LM agent) |
-| 8–12 | MCP tools (7 external-facing), Disruption Engine, integration tests | Sal + Claude |
-| 12–16 | 194 tests passing, CI/CD pipeline, coverage enforcement, documentation | Sal + Claude |
-| 16–20 | Master plan optimization, score iteration (79.5% → 85%), JSDoc, examples | Sal + Claude |
-| 20–24 | Final push — README, CHANGELOG, SECURITY.md, competitive matrix, data flows | Sal + Claude |
+| Hour Block | Deliverable | Owner | Status |
+|-----------|------------|-------|--------|
+| 0–4 | TTP engine + RCM engine + Intent Schema — core TypeScript library | Sal | **From scratch** |
+| 4–8 | Agent Orchestrator + A2A Protocol — hierarchical delegation with 4 enforcement layers | Sal + Claude | **From scratch** |
+| 8–12 | MCP tools (7), Disruption Engine, integration tests — external agent interface | Sal + Claude | **From scratch** |
+| 12–16 | 194 tests passing, CI/CD pipeline, coverage enforcement — production hardening | Sal + Claude | **Finalized** |
+| 16–20 | Master plan optimization (79.5% → 85%+), JSDoc, 4 example files — documentation | Sal + Claude | **Finalized** |
+| 20–24 | README, CHANGELOG, SECURITY.md, competitive matrix, data flows — polish | Sal + Claude | **Finalized** |
 
-**What's new (this repo):** Agentic orchestration library — Intent Schema, Agent Orchestrator, A2A Protocol, MCP Tools, Disruption Engine. 194 tests. Zero dependencies. Pure TypeScript.
+**From scratch (hours 0–12):** TTP engine, RCM engine, Intent Schema, Agent Orchestrator, A2A Protocol, MCP Tools, Disruption Engine. All new TypeScript. Zero dependencies. This is the hackathon artifact.
 
-**What's pre-existing (the company):** 12 live domains, production databases, field data, grant pipeline, GC registration, lease negotiation. Built over months of real construction work.
+**Finalized (hours 12–24):** Tests, CI/CD, documentation, master plan iteration. Built on top of the hours 0–12 code.
 
-The hackathon artifact is the intelligence layer that ties the physical operations together through scored, auditable agent orchestration.
+**Pre-existing (the company):** 12 live domains, production databases, field data, grant pipeline, GC registration, lease negotiation. None of this is in this repo — it's the business the orchestration layer serves.
+
+### Contingency — If Behind by Hour 12
+
+| Priority | Component | Can Drop? | Impact |
+|----------|----------|-----------|--------|
+| Critical | TTP engine + RCM engine + Intent Schema | No — core demo | — |
+| Critical | Agent Orchestrator + Lucent Lens gating | No — the differentiator | — |
+| High | A2A Protocol (delegation) | Simplify to 2 enforcement layers | Lose hierarchy depth, keep gating |
+| Medium | MCP Tools (7) | Ship 3 (ttp_score, rcm_payment, intent_validate) | Lose 4 convenience tools |
+| Medium | Disruption Engine | Drop — disruption table in master plan covers it | Lose executable scoring |
+| Low | Integration tests (18) | Drop — 176 unit tests still pass | Lose cross-module coverage |
+| Low | Examples (4 files) | Drop — README quickstart covers basics | Lose standalone demos |
+
+The demo-critical path is: **Lucent Lens blocks an agent action live → audience sees the gate reject an engine-first proposal → approved action flows through A2A delegation**. Everything else supports that moment.
 
 ### Team
 
@@ -359,19 +422,7 @@ Solo founder + AI pair programming. The Power Triple (LM/FA/AE) is designed as t
 
 ---
 
-## User Story — Maria, First-Time Buyer
-
-**Before (Conventional):**
-Maria earns $52K/year in Providence. She qualifies for a $280K FHA loan at 6.5%. Monthly payment: $1,770. After 12 months, she's paid $21,240 — but only $3,180 went to principal. The bank kept $18,060 in interest. Her equity after year 1: ~$5,180 (down payment + $3,180 principal).
-
-**After (ML Systems RCM — Tier 2, Standard):**
-Maria qualifies for a $200K RCM loan (lower TDC from recovered materials + PRA lot). Monthly payment: $1,111. 100% goes to principal from day one. After 12 months, she's paid $13,332 — all to principal. Her equity after year 1: ~$16,332 (down payment + $13,332). She also saved $50K on purchase price vs. comparable conventional home.
-
-**Delta:** Maria builds **3.2x more equity in year 1** and pays **37% less monthly**. The home cost ML Systems less to build (recovered materials), sells for less (buyer wins), and generates higher margin (25.9% vs 16%). Everyone wins except the bank that lost $18,060 in interest.
-
----
-
-## Risks (Expanded)
+## Risks
 
 | Risk | Category | Severity | Mitigation |
 |------|----------|----------|-----------|
@@ -380,6 +431,7 @@ Maria qualifies for a $200K RCM loan (lower TDC from recovered materials + PRA l
 | Construction cost overruns | Construction | Medium | 50% of materials from recovery (cost floor known). Modular factory build reduces site variables. Day N Payroll aligns crew incentives with daily completion. |
 | Agent produces bad recommendation | Technical | Low | Lucent Lens gates every action (min 30 score). MVE blocks actions without 3/4 returns. Safety cutoff at 10 blocked actions. All decisions logged and auditable. Human override always available. |
 | Key person (Sal) | Execution | Medium | Power Triple designed as separate seats. Agent hierarchy mirrors future org chart. Superintendent hire Month 3. Knowledge encoded in code, not in one person's head. |
+| Anchor asset (1011 TRR) falls through | Market | Medium | Operations proceed on PRA land bank lots with temporary yard. TRR is an accelerant, not a dependency. Fallback warehouse: commercial lease in Warwick industrial corridor (~$8/sqft, 5,000 sqft = $40K/year). Materials staging works at any scale — TRR just makes it 100x more efficient. |
 | Grant not awarded | Market | Medium | 3 parallel tracks (EOH, Housing 2030 PHA, Work Immersion). Any one funds operations. NACA pipeline is independent of grants. |
 
 ---
@@ -392,7 +444,6 @@ Maria qualifies for a $200K RCM loan (lower TDC from recovered materials + PRA l
 - Multi-agent orchestration with A2A protocol, MCP tools, and intent validation
 - Disruption engine quantifying 5.5x paradigm shift in executable code
 - GC exam passed (RI)
-- 1011 Ten Rod Road — active lease negotiation
 - 3 grant applications in progress (EOH, Housing 2030 PHA, Work Immersion)
 - ML1 dataset: 269 days, 1,480 executions, 81 task codes
 - Fiduciary cap table: public institutions get equity before private capital
@@ -411,8 +462,32 @@ What stays local: crews, materials, PHA relationships, GC licensing, community t
 **At 100x current volume (270 homes/year, 50 metro markets):**
 - PostgreSQL handles concurrent reads via Supabase connection pooling (port 6543, `prepare: false`). Inngest manages async job queues — agent tasks, material grading, TTP score recalculation — with built-in retry and concurrency controls.
 - Agent orchestrator is stateless per-request. Each project gets its own agent hierarchy instance. No shared state between projects = horizontal scaling via container replication.
-- TTP scores are computed on read (not stored as aggregates), so new data sources plug in without migration. Access band checks are O(1) lookups.
+- TTP scores are computed on read (not stored as aggregates), so new data sources plug in without migration. Access band checks are O(1) lookups. High-frequency field data ingestion (material scans, grading events) flows through Inngest event streams with deduplication — TTP recalculation is eventual-consistent, not blocking. Write-heavy material grading uses Supabase's row-level security with project-scoped partitioning, so concurrent projects never contend on the same rows.
 - Field data stays regional (crews, materials, PHA). Intelligence layer (TTP, RCM, orchestration) runs centrally. This is the franchise model: local body, shared brain.
+
+---
+
+## Appendix A — 1011 Ten Rod Road (Physical BOH Location)
+
+$44M state-funded MBTA parking garage (Wickford Junction). 1,100 spaces. 4 stories. **Operated at a loss for 14 years.** 157 daily riders vs 3,386 projected. Floors 3–4 roped off. $0 parking revenue. $0 property tax to North Kingstown.
+
+**This is the physical home of the Builder's Open House (BOH).** The digital marketplace at mlsystemsri.store is already live and generating organic traffic. 1011 Ten Rod Road is where the physical inventory lives — recovered materials graded with ML Material IDs, stored in zone-mapped bays, and picked up by contractors who found them online.
+
+**ML Systems enters it for $1,692,146.** 25-year arithmetic lease (Day N = $N). Total: $41.6M. Operations cover $40M. Investors cover $1.69M entry. 96% infrastructure subsidy.
+
+| Digital (mlsystemsri.store) | Physical (1011 Ten Rod Road) |
+|----------------------------|------------------------------|
+| Material listings with ML IDs | 1,100 parking bays → inventory bays by zone |
+| AI grading + provenance pages | Crew grades materials on intake |
+| Online ordering + Stripe checkout | Station lobby → BOH pickup desk |
+| Contractor API access (TTP-gated) | Gate infrastructure → AI checkout tracking |
+| Organic search traffic (already leading) | Rt 4 highway access, adjacent to Home Depot/Walmart corridor |
+
+The closed loop completes here: deconstruction crews recover materials → materials get ML IDs and grading → stored at TRR by zone → listed on BOH → contractors purchase online or in-person → provenance chain maintained from demo site to new build.
+
+**Status: Active pursuit. Strong interest from property owner.**
+
+This is an accelerant, not a dependency. If it falls through, operations proceed on PRA lots with temporary warehouse (see Risks table).
 
 ---
 
