@@ -20,3 +20,4 @@ export * from "./disruption/index.js";
 export * from "./provenance/index.js";
 export * from "./marketplace/index.js";
 export * from "./closed-loop/index.js";
+export * from "./field-data/index.js";

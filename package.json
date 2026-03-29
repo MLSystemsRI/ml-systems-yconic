@@ -45,6 +45,10 @@
     "./closed-loop": {
       "types": "./dist/closed-loop/index.d.ts",
       "import": "./dist/closed-loop/index.js"
+    },
+    "./field-data": {
+      "types": "./dist/field-data/index.d.ts",
+      "import": "./dist/field-data/index.js"
     }
   },
   "scripts": {
