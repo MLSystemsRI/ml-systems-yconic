@@ -1,6 +1,6 @@
 # API Reference
 
-> `@ml-systems/yconic` — Three engines, pure TypeScript, strict mode.
+> `@ml-systems/yconic` — Ten engines, pure TypeScript, zero dependencies.
 
 ---
 
@@ -268,3 +268,212 @@ Create a new agent intent with default constraints. All agents inherit: transpar
 |----------|-------------|
 | `CUSTODIAN_CONSTRAINTS` | Non-negotiable rules: optimize user compute, public before private, 4x MVE, fiduciary duty |
 | `PRICING_RULES` | Anti-SaaS pricing: own data = free, AI crawlers = per-query, ecosystem = earned, revenue = outcome-based |
+
+---
+
+## Agents — Multi-Agent Orchestration
+
+```ts
+import { AgentOrchestrator, validateAction, A2ARouter, executeToolCall, executeBatch } from "@ml-systems/yconic/agents";
+```
+
+### AgentOrchestrator
+
+#### `new AgentOrchestrator()`
+
+Create a new orchestrator instance. Manages agent lifecycle and action validation.
+
+#### `orchestrator.register(agentId: string, agentName: string, parentId?: string): AgentState`
+
+Register an agent with inherited intent constraints. Returns the agent's initial state.
+
+#### `orchestrator.submitAction(proposal: ActionProposal): ActionResult`
+
+Submit an action for validation. Runs through Lucent Lens + MVE gate. Returns approval/rejection with scored breakdown.
+
+### A2ARouter
+
+#### `new A2ARouter()`
+
+Create a new A2A protocol router for hierarchical task delegation.
+
+#### `router.registerCard(card: AgentCard): void`
+
+Register an agent's capability card. Throws if agent already registered.
+
+#### `router.discover(agentId: string): AgentCard | undefined`
+
+Discover an agent's capabilities by ID.
+
+#### `router.findByCapability(domain: CapabilityDomain): AgentCard[]`
+
+Find available agents with a specific capability domain.
+
+#### `router.delegate(fromId, toId, action, domain, values, mve, payload?, priority?, parentTaskId?): DelegationResult`
+
+Delegate a task. Enforces: hierarchy, capability, value limits, Lucent Lens.
+
+#### `router.decompose(parentTaskId, subtasks): DelegationResult[]`
+
+Decompose a task into subtasks and delegate each.
+
+#### `router.completeTask(taskId, result): Task | undefined`
+
+Complete a task and free the agent.
+
+### MCP Runtime
+
+#### `executeToolCall(input: ToolCallInput): ToolCallResult`
+
+Execute a single MCP tool call against real engines. Validates tool name, parameters, then executes.
+
+#### `executeBatch(inputs: ToolCallInput[]): ToolCallResult[]`
+
+Execute multiple tool calls in sequence.
+
+### MCP Tools (10)
+
+| Tool | Description |
+|------|-------------|
+| `ttp_score_entity` | Calculate trust score (0-100) from 8 factors |
+| `ttp_detect_crawler` | Identify AI crawlers, calculate verification fees |
+| `ttp_check_access` | Gate API access by trust band |
+| `rcm_resolve_tier` | FICO → mortgage tier (1-6) |
+| `rcm_calculate_payment` | Monthly payment calculation |
+| `rcm_preferred_payoff` | Preferred tier payoff day |
+| `rcm_simulate_equity` | 360-month RCM vs traditional equity comparison |
+| `intent_validate_action` | Lucent Lens + MVE validation |
+| `provenance_grade_material` | Grade recovered materials (A/B/C/D/salvage) |
+| `provenance_estimate_value` | Market valuation with contamination discounts |
+
+---
+
+## Provenance — ML Material ID System
+
+```ts
+import { generateMaterialId, gradeMaterial, assessContamination, estimateValue } from "@ml-systems/yconic/provenance";
+```
+
+#### `generateMaterialId(year, projectId, zone, sequence): string`
+
+Generate an ML Material ID: `ML-{year}-{project}-Z{zone}-{seq}`.
+
+#### `gradeMaterial(factors: GradingFactors): { grade: MaterialGrade; score: number; reason: string }`
+
+Grade a material from 5 weighted factors: structural integrity (40%), surface condition (30%), moisture (15%), load tested (10%), age (5%).
+
+#### `assessContamination(test: ContaminationTest): ContaminationResult`
+
+Assess contamination from 5 test fields (lead, asbestos, mold, chemical, pest). Returns status, hazards list, and remediation requirement.
+
+#### `estimateValue(category, grade, boardFeet, contamination): { valueCents, pricePerBoardFoot, discount }`
+
+Estimate market value. Base price by grade × category multiplier × contamination discount.
+
+#### `generateRecoveryReport(records: MaterialRecord[]): RecoveryReport`
+
+Generate aggregate recovery report from a set of material records.
+
+---
+
+## Marketplace — Secondary Materials Exchange
+
+```ts
+import { createListing, createBatchListings, createOrder, confirmOrder, materialRecoveryEquityContribution } from "@ml-systems/yconic/marketplace";
+```
+
+#### `createListing(material: MaterialRecord, boardFeet: number): Listing`
+
+Create a marketplace listing from a provenance-graded material record.
+
+#### `createBatchListings(materials: MaterialRecord[], boardFeetPerItem: number): { listings, skipped, totalValueCents }`
+
+Create listings for multiple materials. Skips salvage-grade materials.
+
+#### `createOrder(listings: Listing[], buyerId: string): { order, unavailable }`
+
+Create an order from active listings. Returns unavailable listings separately.
+
+#### `confirmOrder(order: Order, listings: Listing[]): void`
+
+Confirm an order: mark listings as sold, update order status.
+
+#### `materialRecoveryEquityContribution(listings: Listing[]): { totalRevenueCents, equityContributionCents, listingCount }`
+
+Calculate how much sold material revenue contributes to homeowner equity (51% share).
+
+---
+
+## Closed Loop — Full Pipeline Orchestration
+
+```ts
+import { executeClosedLoop, buildMariaScenario } from "@ml-systems/yconic/closed-loop";
+```
+
+#### `executeClosedLoop(homeowner, deconPlan, designSpec, buildPlan, mve): ClosedLoopPipelineResult`
+
+Execute the full closed loop: Finance → Deconstruct → Design → Build → Equity. Uses real engines at every stage.
+
+#### `buildMariaScenario(): { homeowner, deconPlan, designSpec, buildPlan, mve }`
+
+Build realistic defaults for the Maria demo scenario (FICO 640, $200K loan, Providence RI).
+
+---
+
+## Field Data — Physical → Digital Bridge
+
+```ts
+import { validateInspection, classifyMaterial, ingestInspection, batchIngest } from "@ml-systems/yconic/field-data";
+```
+
+#### `validateInspection(report: InspectionReport): ValidationResult`
+
+Validate a field inspection report. Returns errors (block ingestion) and warnings (flag for review).
+
+#### `classifyMaterial(description: string, suggested?: MaterialCategory): { category, confidence, method }`
+
+Auto-classify a field description into one of 15 material categories via keyword matching.
+
+#### `ingestInspection(report: InspectionReport, year?): { records, totalValueCents, classifications }`
+
+Transform a validated inspection into ML Material ID records with grading, contamination, and valuation.
+
+#### `batchIngest(reports: InspectionReport[], year?): BatchIngestionResult`
+
+Process multiple reports with aggregation by category, grade, and classification confidence.
+
+---
+
+## Disruption — Quantified Paradigm Shift
+
+```ts
+import { calculateDisruptionScore, validateClosedLoop } from "@ml-systems/yconic/disruption";
+```
+
+#### `calculateDisruptionScore(): DisruptionScore`
+
+Calculate the 5-multiplier composite disruption score via geometric mean.
+
+#### `validateClosedLoop(stages): { intact, missingStages, loopEfficiency }`
+
+Validate that all 4 closed-loop stages are present and operational.
+
+---
+
+## Shared — Cross-Module Utilities
+
+```ts
+import { materialCategoryToZone, zoneLabel, activeZones } from "@ml-systems/yconic/shared";
+```
+
+#### `materialCategoryToZone(category: MaterialCategory): number`
+
+Map a material category to its zone number (1-8). Single source of truth for 15 categories → 10 zones.
+
+#### `zoneLabel(zone: number): string`
+
+Get human-readable label for a zone number. Falls back to `"Zone N"` for unknown zones.
+
+#### `activeZones(categories: MaterialCategory[]): number[]`
+
+Get unique, sorted zone numbers from a set of material categories.
