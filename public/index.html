@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ML Systems — Construction Proptech Ecosystem</title>
+<meta name="description" content="12 domains, 16 apps, 23 Three.js visualizations, 9-node neural net. Built entirely through Language Modeling with Claude Code.">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0b0a0f;color:#d0cbbc;font-family:'SF Pro Display','Inter',system-ui,sans-serif;min-height:100vh;padding:40px 20px 80px}
+  .container{max-width:900px;margin:0 auto}
+
+  /* Hero */
+  .hero{text-align:center;margin-bottom:60px;padding-top:40px}
+  .hero h1{font-size:36px;font-weight:700;letter-spacing:.03em;margin-bottom:8px}
+  .hero h1 span{color:#22C55E;text-shadow:0 0 20px rgba(34,197,94,.3)}
+  .hero .tagline{font-size:13px;color:#8a8594;max-width:600px;margin:0 auto 20px;line-height:1.7}
+  .hero .stats{display:flex;justify-content:center;gap:32px;margin-top:24px;flex-wrap:wrap}
+  .hero .stat{text-align:center}
+  .hero .stat .num{font-size:28px;font-weight:700;color:#22C55E}
+  .hero .stat .label{font-size:9px;color:#5a566a;letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
+  .badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:4px;background:rgba(34,197,94,.08);color:#22C55E;border:1px solid rgba(34,197,94,.12);margin-bottom:20px}
+
+  /* Sections */
+  .section-label{font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#5a566a;margin:40px 0 16px}
+
+  /* App grid */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:480px){.grid{grid-template-columns:1fr}}
+
+  a.app{display:block;padding:16px;border-radius:10px;border:1px solid rgba(255,255,255,.06);background:rgba(14,12,20,.6);text-decoration:none;transition:all .3s;backdrop-filter:blur(8px)}
+  a.app:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.3)}
+  a.app .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:middle}
+  a.app .app-name{font-size:13px;font-weight:700;color:#d0cbbc}
+  a.app .app-domain{font-size:9px;color:#5a566a;margin-top:3px;display:block}
+  a.app .app-desc{font-size:10px;color:#4a4554;margin-top:6px;line-height:1.5}
+
+  /* Viz grid */
+  .viz-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  @media(max-width:600px){.viz-grid{grid-template-columns:1fr}}
+  a.viz{display:block;padding:18px;border-radius:10px;border:1px solid rgba(34,197,94,.08);background:rgba(14,12,20,.6);text-decoration:none;transition:all .3s}
+  a.viz:hover{border-color:rgba(34,197,94,.25);transform:translateY(-2px)}
+  a.viz .viz-name{font-size:14px;font-weight:700;color:#d0cbbc;margin-bottom:4px}
+  a.viz .viz-tag{display:inline-block;font-size:7px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border-radius:3px;margin-bottom:8px}
+  a.viz .viz-desc{font-size:10px;color:#5a566a;line-height:1.5}
+
+  /* Architecture */
+  .arch{background:rgba(14,12,20,.6);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:28px;margin:16px 0}
+  .arch pre{font-family:'SF Mono','Fira Code',monospace;font-size:11px;color:#6a6574;line-height:1.8;overflow-x:auto}
+  .arch pre span.g{color:#22C55E}
+  .arch pre span.b{color:#60A5FA}
+  .arch pre span.o{color:#F97316}
+  .arch pre span.r{color:#EF4444}
+  .arch pre span.t{color:#14B8A6}
+  .arch pre span.c{color:#06B6D4}
+  .arch pre span.e{color:#10B981}
+  .arch pre span.y{color:#FFE500}
+  .arch pre span.p{color:#A78BFA}
+
+  /* Footer */
+  .footer{text-align:center;margin-top:60px;padding-top:30px;border-top:1px solid rgba(255,255,255,.04)}
+  .footer p{font-size:10px;color:#3a3644;line-height:1.8}
+  .footer a{color:#5a566a;text-decoration:none;transition:color .2s}
+  .footer a:hover{color:#22C55E}
+
+  /* Source link */
+  .source{display:flex;gap:12px;margin-top:20px;justify-content:center}
+  .source a{font-size:10px;color:#5a566a;text-decoration:none;letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;border:1px solid rgba(255,255,255,.08);border-radius:6px;transition:all .2s}
+  .source a:hover{border-color:rgba(34,197,94,.3);color:#d0cbbc}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <div class="badge">Yconic Hackathon 2026</div>
+    <h1>ML <span>Systems</span></h1>
+    <p class="tagline">We help homeowners who struggle with building equity and affording construction costs in a closed-loop system that finances, deconstructs, designs, and builds — resulting in faster equity growth and lower costs with near-zero waste.</p>
+    <div class="stats">
+      <div class="stat"><div class="num">12</div><div class="label">Live Domains</div></div>
+      <div class="stat"><div class="num">16</div><div class="label">Applications</div></div>
+      <div class="stat"><div class="num">23</div><div class="label">3D Visualizations</div></div>
+      <div class="stat"><div class="num">9</div><div class="label">Neural Net Nodes</div></div>
+      <div class="stat"><div class="num">1</div><div class="label">Human + Claude</div></div>
+    </div>
+  </div>
+
+  <!-- Closed Loop -->
+  <p class="section-label">The Closed Loop</p>
+  <div class="arch">
+    <pre><span class="r">FINANCE</span> (The Pit — reverse auction loans, 7-tier fees, RCM mortgage)
+   ↓
+<span class="o">DECONSTRUCT</span> (Decon Lab — 80-90% material recovery, ML Material IDs)
+   ↓
+<span class="b">DESIGN</span> (Design Studio — Claude + DALL-E, 45+ sheet plan stacks)
+   ↓
+<span class="g">BUILD</span> (Platform — zone-based tracking, Day N scheduling, AI scoring)
+   ↓
+   └──→ Back to <span class="r">FINANCE</span> (equity growth, next cycle)</pre>
+  </div>
+
+  <!-- Live Apps -->
+  <p class="section-label">Live Applications</p>
+  <div class="grid">
+    <a class="app" href="https://mlsystemsri.com" target="_blank">
+      <span class="dot" style="background:#22C55E"></span><span class="app-name">Marketing</span>
+      <span class="app-domain">mlsystemsri.com</span>
+      <span class="app-desc">Platform front door. Next.js 15, tRPC.</span>
+    </a>
+    <a class="app" href="https://app.mlsystemsri.com" target="_blank">
+      <span class="dot" style="background:#22C55E"></span><span class="app-name">Platform App</span>
+      <span class="app-domain">app.mlsystemsri.com</span>
+      <span class="app-desc">Core app. Clerk auth, Stripe, RBAC.</span>
+    </a>
+    <a class="app" href="https://mlsystemsri.store" target="_blank">
+      <span class="dot" style="background:#14B8A6"></span><span class="app-name">Builder's Open House</span>
+      <span class="app-domain">mlsystemsri.store</span>
+      <span class="app-desc">Secondary materials marketplace. 10 zones.</span>
+    </a>
+    <a class="app" href="https://pit.mlsystemsri.com" target="_blank">
+      <span class="dot" style="background:#EF4444"></span><span class="app-name">The Pit</span>
+      <span class="app-domain">pit.mlsystemsri.com</span>
+      <span class="app-desc">Reverse auction for construction loans.</span>
+    </a>
+    <a class="app" href="https://collective.mlsystemsri.com" target="_blank">
+      <span class="dot" style="background:#22C55E"></span><span class="app-name">Builders Collective</span>
+      <span class="app-domain">collective.mlsystemsri.com</span>
+      <span class="app-desc">Design verification gate. 10/10 required.</span>
+    </a>
+    <a class="app" href="https://fa.mlsystemsri.com" target="_blank">
+      <span class="dot" style="background:#60A5FA"></span><span class="app-name">Financial Architect</span>
+      <span class="app-domain">fa.mlsystemsri.com</span>
+      <span class="app-desc">23 Three.js visualizations. Investment thesis.</span>
+    </a>
+    <a class="app" href="https://ae.mlsystemsri.com" target="_blank">
+      <span class="dot" style="background:#10B981"></span><span class="app-name">Accounting Engineer</span>
+      <span class="app-domain">ae.mlsystemsri.com</span>
+      <span class="app-desc">GAAP, construction accounting, tax strategy.</span>
+    </a>
+    <a class="app" href="https://lm.mlsystemsri.com" target="_blank">
+      <span class="dot" style="background:#06B6D4"></span><span class="app-name">Language Modeler</span>
+      <span class="app-domain">lm.mlsystemsri.com</span>
+      <span class="app-desc">AI-native development, prompt architecture.</span>
+    </a>
+    <a class="app" href="https://mlsystemsri.info" target="_blank">
+      <span class="dot" style="background:#94A3B8"></span><span class="app-name">Intelligence (.info)</span>
+      <span class="app-domain">mlsystemsri.info</span>
+      <span class="app-desc">DEM exports, salvage codices, compliance.</span>
+    </a>
+    <a class="app" href="https://mlsystemsri.net" target="_blank">
+      <span class="dot" style="background:#F59E0B"></span><span class="app-name">Network (.net)</span>
+      <span class="app-domain">mlsystemsri.net</span>
+      <span class="app-desc">Partnerships, institutional connections.</span>
+    </a>
+    <a class="app" href="https://mlsystemsri.xyz" target="_blank">
+      <span class="dot" style="background:#8B5CF6"></span><span class="app-name">Experience (.xyz)</span>
+      <span class="app-domain">mlsystemsri.xyz</span>
+      <span class="app-desc">3D tours, digital twins, innovation lab.</span>
+    </a>
+    <a class="app" href="https://boh.mlsystemsri.com" target="_blank">
+      <span class="dot" style="background:#14B8A6"></span><span class="app-name">BOH (alias)</span>
+      <span class="app-domain">boh.mlsystemsri.com</span>
+      <span class="app-desc">Builder's Open House subdomain alias.</span>
+    </a>
+  </div>
+
+  <!-- Agent Hierarchy -->
+  <p class="section-label">Agent Hierarchy — The Custodian's View</p>
+  <div class="arch">
+    <pre>                        <span class="g">CEO (Sal)</span>
+                     The Custodian
+                   ┌──────┼──────┐
+                 <span class="c">LM</span>      <span class="b">FA</span>     <span class="e">AE</span>          ← CEO Roles
+               ┌──┤     ┌─┤    ┌─┤
+             <span class="b">CDA</span>  <span class="b">DS</span>  <span class="r">Pit</span>  <span class="r">Scorer</span> <span class="g">Data</span> <span class="e">Prov</span>
+                  Lord
+         ┌───────┼──────────┐
+       <span class="y">PI</span>       <span class="g">TT</span>        TTP               ← Primary Agents
+     ┌──┼──┬──┐   ├──┐
+  <span class="o">Decon</span> <span class="t">BOH</span> <span class="g">BC</span>  <span class="y">LL</span> <span class="g">MVE</span>                  ← Domain + Ops
+  .info .net .xyz <span class="p">Dance</span>                  ← Extensions</pre>
+  </div>
+
+  <!-- Key Visualizations -->
+  <p class="section-label">Interactive Visualizations (Three.js)</p>
+  <div class="viz-grid">
+    <a class="viz" href="https://fa.mlsystemsri.com/genesis.html" target="_blank">
+      <span class="viz-tag" style="background:rgba(255,255,255,.06);color:#d0cbbc;border:1px solid rgba(255,255,255,.1)">Full Ecosystem</span>
+      <div class="viz-name">Genesis — The Value Engine</div>
+      <div class="viz-desc">Central core, 3 neural net orbital rings, DNA double helix value chain, equity ripple rings, 4000 stars.</div>
+    </a>
+    <a class="viz" href="https://fa.mlsystemsri.com/neural-topology.html" target="_blank">
+      <span class="viz-tag" style="background:rgba(239,68,68,.1);color:#EF4444;border:1px solid rgba(239,68,68,.15)">3 Neural Nets</span>
+      <div class="viz-name">Neural Topology</div>
+      <div class="viz-desc">Physical, Financial, Dance nets converge in a 3D cube. 9 nodes, interconnected pathways.</div>
+    </a>
+    <a class="viz" href="https://fa.mlsystemsri.com/income-streams.html" target="_blank">
+      <span class="viz-tag" style="background:rgba(20,184,166,.1);color:#14B8A6;border:1px solid rgba(20,184,166,.15)">Revenue</span>
+      <div class="viz-name">Income Streams</div>
+      <div class="viz-desc">93 revenue strands through a 3D wormhole tube. Nebula, tendrils, bloom.</div>
+    </a>
+    <a class="viz" href="https://fa.mlsystemsri.com/master-pitch.html" target="_blank">
+      <span class="viz-tag" style="background:rgba(34,197,94,.1);color:#22C55E;border:1px solid rgba(34,197,94,.15)">Investment</span>
+      <div class="viz-name">Master Pitch</div>
+      <div class="viz-desc">Complete investor narrative. The Ask, stranded asset, 5 structural advantages, $63T TAM.</div>
+    </a>
+    <a class="viz" href="https://fa.mlsystemsri.com/agent-hierarchy.html" target="_blank">
+      <span class="viz-tag" style="background:rgba(212,165,74,.1);color:#d4a54a;border:1px solid rgba(212,165,74,.15)">Agents</span>
+      <div class="viz-name">Agent Hierarchy</div>
+      <div class="viz-desc">All agents, roles & subagents. Hover to trace connections upstream and downstream.</div>
+    </a>
+    <a class="viz" href="https://fa.mlsystemsri.com/ecosystem-architecture.html" target="_blank">
+      <span class="viz-tag" style="background:rgba(34,197,94,.1);color:#22C55E;border:1px solid rgba(34,197,94,.15)">Architecture</span>
+      <div class="viz-name">Ecosystem Architecture</div>
+      <div class="viz-desc">Full 3D map — 14 repos, 12 domains, 2 agents, 3 APIs, 9 infrastructure services.</div>
+    </a>
+    <a class="viz" href="https://fa.mlsystemsri.com/fiduciary.html" target="_blank">
+      <span class="viz-tag" style="background:rgba(34,197,94,.1);color:#22C55E;border:1px solid rgba(34,197,94,.15)">Equity</span>
+      <div class="viz-name">Fiduciary Structure</div>
+      <div class="viz-desc">Public-first equity architecture. Concentric rings — core, custodian, public partners, private capital.</div>
+    </a>
+    <a class="viz" href="https://fa.mlsystemsri.com/ten-rod-road.html" target="_blank">
+      <span class="viz-tag" style="background:rgba(239,68,68,.1);color:#EF4444;border:1px solid rgba(239,68,68,.15)">Asset</span>
+      <div class="viz-name">1011 Ten Rod Road</div>
+      <div class="viz-desc">$44M state-built garage at a loss since 2012. ML Systems lease-to-own: $41.6M over 25 years.</div>
+    </a>
+  </div>
+
+  <!-- TTP -->
+  <p class="section-label">Transparency Trust Protocol — The Moat</p>
+  <div class="arch">
+    <pre><span class="g">TT</span> = We do not profit from users' compute power consumption. We optimize it.
+
+<span class="g">TTP</span> = Score-gated access (0-100):
+
+  <span class="r"> 0-10</span>  Public Record     → Name, category, status
+  <span class="o">11-30</span>  ML Verified       → Provenance chain, grading
+  <span class="y">31-60</span>  Full API          → Material feeds, valuations
+  <span class="b">61-80</span>  Double-Verified   → State cross-verified, bulk export
+  <span class="g">81-100</span> Ontology Licensed → Construction DAG, robot params
+
+  Regulators = <span class="g">automatic 100</span>  (free access seeds double-verification)
+  AI crawlers = <span class="r">402</span> without API key
+  X-TT-Score/Band/Protocol headers on every response</pre>
+  </div>
+
+  <!-- Built with -->
+  <p class="section-label">How It Was Built</p>
+  <div class="arch">
+    <pre><span class="c">Language Modeling</span> — not vibe coding.
+
+The deliberate, fiduciary-grade practice of engineering outcomes
+through language with AI as the execution layer.
+
+Stack: <span class="g">Claude Code CLI</span> + CLAUDE.md files + persistent memory system
+       + multi-agent orchestration + research-to-code pipeline
+
+  50,000+ lines of code
+  30+ database tables
+  100+ tRPC procedures
+  16 applications
+  1 human + Claude</pre>
+  </div>
+
+  <div class="footer">
+    <div class="source">
+      <a href="https://github.com/MLSystemsRI/ml-systems-yconic" target="_blank">GitHub Repository</a>
+      <a href="https://fa.mlsystemsri.com" target="_blank">All Visualizations</a>
+      <a href="https://mlsystemsri.com" target="_blank">ML Systems</a>
+    </div>
+    <p style="margin-top:20px">ML Systems LLC &mdash; Rhode Island &middot; NAICS 236115<br>Built with <a href="https://claude.ai/claude-code">Claude Code</a> by Anthropic</p>
+  </div>
+
+</div>
+</body>
+</html>
