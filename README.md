@@ -3,7 +3,7 @@
 [![CI](https://github.com/MLSystemsRI/ml-systems-yconic/actions/workflows/ci.yml/badge.svg)](https://github.com/MLSystemsRI/ml-systems-yconic/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
 [![Node](https://img.shields.io/badge/Node-%3E%3D20-green.svg)](https://nodejs.org/)
-[![Tests](https://img.shields.io/badge/Tests-465%20passing-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-470%20passing-brightgreen.svg)]()
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-0-brightgreen.svg)]()
 
 > Closed-loop construction: Finance → Deconstruct → Design → Build → repeat. Every dollar returns 4x.
@@ -140,7 +140,7 @@ src/
 |---------|-------------|
 | `npm run build` | Compile TypeScript to `dist/` |
 | `npm run typecheck` | Type-check without emitting |
-| `npm test` | Run 465 tests (`vitest run`) |
+| `npm test` | Run 470 tests (`vitest run`) |
 | `npm run demo` | Run full closed-loop demo (Maria scenario) |
 | `npm run test:coverage` | Tests with V8 coverage report |
 | `npm run lint` | Lint with ESLint (strict TS rules) |

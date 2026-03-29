@@ -297,14 +297,24 @@ export function executeToolCall(input: ToolCallInput): ToolCallResult {
     };
   }
 
-  const result = executor(input.arguments);
-  return {
-    success: true,
-    tool: input.tool,
-    result,
-    error: null,
-    executionMs: performance.now() - start,
-  };
+  try {
+    const result = executor(input.arguments);
+    return {
+      success: true,
+      tool: input.tool,
+      result,
+      error: null,
+      executionMs: performance.now() - start,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      tool: input.tool,
+      result: null,
+      error: err instanceof Error ? err.message : String(err),
+      executionMs: performance.now() - start,
+    };
+  }
 }
 
 /**

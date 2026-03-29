@@ -201,7 +201,7 @@ const CATEGORY_KEYWORDS: Record<MaterialCategory, string[]> = {
   hardware: ["hardware", "hinge", "knob", "handle", "lock", "bolt", "screw", "bracket", "brass"],
   roofing: ["roof", "shingle", "gutter", "flashing", "ridge"],
   siding: ["siding", "clapboard", "shake", "panel", "vinyl siding"],
-  concrete: ["concrete", "block", "foundation", "footing", "slab", "masonry", "brick"],
+  concrete: ["concrete", "cement", "block", "foundation", "footing", "slab", "masonry", "brick"],
   sheathing: ["sheathing", "plywood", "osb", "cdx"],
   drywall: ["drywall", "gypsum", "wallboard", "sheetrock"],
   electrical: ["wire", "outlet", "switch", "panel", "conduit", "electrical", "breaker"],

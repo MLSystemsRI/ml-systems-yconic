@@ -35,6 +35,11 @@ import { calculateDisruptionScore, validateClosedLoop } from "../disruption/engi
 import { validateInspection, classifyMaterial, ingestInspection } from "../field-data/engine.js";
 import type { InspectionReport } from "../field-data/engine.js";
 import { executeClosedLoop, buildMariaScenario } from "../closed-loop/engine.js";
+import { A2ARouter } from "../agents/a2a.js";
+import type { AgentCard } from "../agents/a2a.js";
+import { executeToolCall, executeBatch } from "../agents/runtime.js";
+import { simulateEquity } from "../rcm/simulator.js";
+import { materialCategoryToZone, zoneLabel, activeZones } from "../shared/zones.js";
 
 /* ─── Helpers ─── */
 
@@ -592,5 +597,273 @@ describe("Closed-loop pipeline runs end-to-end", () => {
 
     /* Total value created should be positive */
     expect(result.totalValueCreatedCents).toBeGreaterThan(0);
+  });
+});
+
+/* ─── Test 10: A2A Agents Orchestrate the Closed Loop via MCP Tools ─── */
+
+describe("A2A agents orchestrate closed-loop pipeline via MCP tools", () => {
+  it("agents delegate, execute tools, complete tasks through full pipeline", () => {
+    const router = new A2ARouter();
+
+    /* Register 4 agents for the closed-loop pipeline */
+    const ceoCard: AgentCard = {
+      agentId: "ceo",
+      agentName: "CEO (Sal)",
+      parentId: null,
+      capabilities: [
+        { domain: "intent", actions: ["validate"], maxHomeownerValue: 40, maxEngineValue: 30 },
+        { domain: "finance", actions: ["approve"], maxHomeownerValue: 40, maxEngineValue: 30 },
+      ],
+      delegatesTo: ["fa-agent", "pi-agent"],
+      delegatedFrom: null,
+      status: "available",
+    };
+
+    const faCard: AgentCard = {
+      agentId: "fa-agent",
+      agentName: "Financial Architect",
+      parentId: "ceo",
+      capabilities: [
+        { domain: "rcm", actions: ["calculate", "simulate"], maxHomeownerValue: 40, maxEngineValue: 20 },
+        { domain: "finance", actions: ["model"], maxHomeownerValue: 40, maxEngineValue: 20 },
+      ],
+      delegatesTo: [],
+      delegatedFrom: "ceo",
+      status: "available",
+    };
+
+    const piCard: AgentCard = {
+      agentId: "pi-agent",
+      agentName: "Project Intelligence",
+      parentId: "ceo",
+      capabilities: [
+        { domain: "ttp", actions: ["score"], maxHomeownerValue: 35, maxEngineValue: 20 },
+        { domain: "deconstruction", actions: ["grade", "value"], maxHomeownerValue: 35, maxEngineValue: 20 },
+      ],
+      delegatesTo: ["decon-agent"],
+      delegatedFrom: "ceo",
+      status: "available",
+    };
+
+    const deconCard: AgentCard = {
+      agentId: "decon-agent",
+      agentName: "Deconstruction Agent",
+      parentId: "pi-agent",
+      capabilities: [
+        { domain: "deconstruction", actions: ["assess", "recover"], maxHomeownerValue: 30, maxEngineValue: 15 },
+      ],
+      delegatesTo: [],
+      delegatedFrom: "pi-agent",
+      status: "available",
+    };
+
+    router.registerCard(ceoCard);
+    router.registerCard(faCard);
+    router.registerCard(piCard);
+    router.registerCard(deconCard);
+
+    const fullMVE = { materialValue: true, ontologyData: true, robotTraining: true, marketIntelligence: true };
+
+    /* Phase 1: CEO delegates TTP scoring to PI */
+    const ttpDelegation = router.delegate(
+      "ceo", "pi-agent", "score_homeowner", "ttp",
+      { homeowner: 30, collective: 20, engine: 10 }, fullMVE,
+    );
+    expect(ttpDelegation.allowed).toBe(true);
+
+    /* PI executes TTP scoring via MCP tool */
+    const ttpResult = executeToolCall({
+      tool: "ttp_score_entity",
+      arguments: {
+        tier: "starter", identityVerified: true, materialsContributed: 3,
+        cyclesCompleted: 1, reviewsPassed: 1, accountAgeDays: 200,
+        isRegulator: false, dataContributions: 5,
+      },
+    });
+    expect(ttpResult.success).toBe(true);
+    const ttpScore = ttpResult.result?.["score"] as number;
+    expect(ttpScore).toBeGreaterThan(20);
+
+    /* PI completes task with real score */
+    router.completeTask(ttpDelegation.delegatedTaskId!, { score: ttpScore, band: ttpResult.result?.["band"] });
+
+    /* Phase 2: CEO delegates RCM calculation to FA */
+    const rcmDelegation = router.delegate(
+      "ceo", "fa-agent", "calculate_mortgage", "rcm",
+      { homeowner: 35, collective: 15, engine: 10 }, fullMVE,
+    );
+    expect(rcmDelegation.allowed).toBe(true);
+
+    /* FA executes RCM tools via MCP batch */
+    const rcmBatch = executeBatch([
+      { tool: "rcm_resolve_tier", arguments: { creditScore: 720 } },
+      { tool: "rcm_calculate_payment", arguments: { principal: 200_000, annualRate: 0.065, termMonths: 360 } },
+    ]);
+    expect(rcmBatch.every((r) => r.success)).toBe(true);
+    expect(rcmBatch[0]!.result?.["tier"]).toBe(4);
+    expect(rcmBatch[0]!.result?.["productClass"]).toBe("preferred");
+
+    router.completeTask(rcmDelegation.delegatedTaskId!, {
+      tier: rcmBatch[0]!.result?.["tier"],
+      monthlyPayment: rcmBatch[1]!.result?.["monthlyPayment"],
+    });
+
+    /* Phase 3: CEO delegates material assessment to PI, PI sub-delegates to Decon */
+    const materialDelegation = router.delegate(
+      "ceo", "pi-agent", "assess_materials", "deconstruction",
+      { homeowner: 30, collective: 20, engine: 10 }, fullMVE,
+    );
+    expect(materialDelegation.allowed).toBe(true);
+
+    /* PI decomposes into sub-task for decon agent */
+    const subtaskResults = router.decompose(materialDelegation.delegatedTaskId!, [{
+      toId: "decon-agent",
+      action: "grade_recovered_lumber",
+      domain: "deconstruction",
+      values: { homeowner: 25, collective: 15, engine: 10 },
+      mve: fullMVE,
+    }]);
+    expect(subtaskResults[0]!.allowed).toBe(true);
+
+    /* Decon agent uses provenance MCP tools */
+    const gradeResult = executeToolCall({
+      tool: "provenance_grade_material",
+      arguments: { structuralIntegrity: 85, surfaceCondition: 75, moistureContent: 14, loadTested: true, ageYears: 15 },
+    });
+    expect(gradeResult.success).toBe(true);
+    const grade = gradeResult.result?.["grade"] as string;
+
+    const valueResult = executeToolCall({
+      tool: "provenance_estimate_value",
+      arguments: { category: "structural_lumber", grade, boardFeet: 200, contamination: "clean" },
+    });
+    expect(valueResult.success).toBe(true);
+    expect(valueResult.result?.["valueCents"]).toBeGreaterThan(0);
+
+    /* Complete task chain: decon → PI → CEO sees results */
+    router.completeTask(subtaskResults[0]!.delegatedTaskId!, {
+      grade, valueCents: valueResult.result?.["valueCents"],
+    });
+    router.completeTask(materialDelegation.delegatedTaskId!, {
+      materialsGraded: 1, totalValueCents: valueResult.result?.["valueCents"],
+    });
+
+    /* Phase 4: Equity simulation ties it all together */
+    const equityResult = executeToolCall({
+      tool: "rcm_simulate_equity",
+      arguments: {
+        loanAmount: 200_000, annualRate: 0.065, termMonths: 360,
+        propertyValue: 280_000, appreciationRate: 0.03,
+        monthlyMaterialRevenueCents: Math.round((valueResult.result?.["valueCents"] as number) / 12),
+      },
+    });
+    expect(equityResult.success).toBe(true);
+    const summary = equityResult.result?.["summary"] as Record<string, unknown>;
+    expect(summary["finalRCMEquity"]).toBeGreaterThan(summary["finalTraditionalEquity"] as number);
+
+    /* Verify full protocol state */
+    const stats = router.stats();
+    expect(stats.totalAgents).toBe(4);
+    expect(stats.completedTasks).toBe(4); /* TTP, RCM, Material assessment + subtask */
+    expect(stats.totalTasks).toBe(4); /* 3 top-level + 1 subtask */
+  });
+});
+
+/* ─── Test 11: Shared Zones Power Cross-Module Material Routing ─── */
+
+describe("Zone mapping drives cross-module material flow", () => {
+  it("field classification → zone assignment → marketplace categorization", () => {
+    /* Classify materials from field descriptions */
+    const fieldItems = [
+      "2x4 Douglas Fir stud",
+      "Solid core interior door",
+      "Portland cement bags",
+      "3-tab asphalt shingles",
+    ];
+
+    const classifications = fieldItems.map((desc) => classifyMaterial(desc));
+    expect(classifications[0]!.category).toBe("structural_lumber");
+    expect(classifications[1]!.category).toBe("doors");
+    expect(classifications[2]!.category).toBe("concrete");
+    expect(classifications[3]!.category).toBe("roofing");
+
+    /* Map to zones */
+    const zones = classifications.map((c) => materialCategoryToZone(c.category));
+    expect(zones).toEqual([2, 3, 7, 8]);
+
+    /* Verify zone labels for marketplace display */
+    expect(zoneLabel(zones[0]!)).toBe("Lumber");
+    expect(zoneLabel(zones[1]!)).toBe("Doors/Windows/Trim");
+    expect(zoneLabel(zones[2]!)).toBe("Concrete");
+    expect(zoneLabel(zones[3]!)).toBe("Roofing/Siding");
+
+    /* Active zones from a project — unique, sorted */
+    const projectZones = activeZones(classifications.map((c) => c.category));
+    expect(projectZones).toEqual([2, 3, 7, 8]);
+  });
+
+  it("zone assignments match provenance ML Material IDs", () => {
+    /* Generate ML IDs and verify zone is embedded correctly */
+    const lumberId = generateMaterialId(2026, "PRV001", materialCategoryToZone("structural_lumber"), 1);
+    expect(lumberId).toMatch(/^ML-2026-PRV001-Z2-001$/);
+
+    const doorId = generateMaterialId(2026, "PRV001", materialCategoryToZone("doors"), 1);
+    expect(doorId).toMatch(/^ML-2026-PRV001-Z3-001$/);
+
+    const concreteId = generateMaterialId(2026, "PRV001", materialCategoryToZone("concrete"), 1);
+    expect(concreteId).toMatch(/^ML-2026-PRV001-Z7-001$/);
+  });
+});
+
+/* ─── Test 12: RCM Equity Simulator with Material Revenue Integration ─── */
+
+describe("Equity simulator integrates material recovery revenue", () => {
+  it("material revenue accelerates equity growth vs traditional mortgage", () => {
+    const withMaterials = simulateEquity({
+      loanAmount: 200_000,
+      annualRate: 0.065,
+      termMonths: 360,
+      propertyValue: 280_000,
+      appreciationRate: 0.03,
+      monthlyMaterialRevenueCents: 50_000, /* $500/mo from material sales */
+      materialRevenueSharePercent: 0.51,
+    });
+
+    const withoutMaterials = simulateEquity({
+      loanAmount: 200_000,
+      annualRate: 0.065,
+      termMonths: 360,
+      propertyValue: 280_000,
+      appreciationRate: 0.03,
+      monthlyMaterialRevenueCents: 0,
+      materialRevenueSharePercent: 0.51,
+    });
+
+    /* Material revenue adds to equity */
+    expect(withMaterials.summary.totalMaterialEquity).toBeGreaterThan(0);
+    expect(withoutMaterials.summary.totalMaterialEquity).toBe(0);
+
+    /* RCM with materials beats RCM without materials */
+    expect(withMaterials.summary.finalRCMEquity).toBeGreaterThan(withoutMaterials.summary.finalRCMEquity);
+
+    /* Both beat traditional */
+    expect(withMaterials.summary.finalRCMEquity).toBeGreaterThan(withMaterials.summary.finalTraditionalEquity);
+    expect(withoutMaterials.summary.finalRCMEquity).toBeGreaterThanOrEqual(withoutMaterials.summary.finalTraditionalEquity);
+  });
+
+  it("equity multiplier increases with material revenue", () => {
+    const result = simulateEquity({
+      loanAmount: 200_000,
+      annualRate: 0.065,
+      termMonths: 360,
+      propertyValue: 280_000,
+      appreciationRate: 0.03,
+      monthlyMaterialRevenueCents: 80_000,
+      materialRevenueSharePercent: 0.51,
+    });
+
+    /* Equity multiplier = RCM equity / traditional equity at final month */
+    expect(result.summary.equityMultiplier).toBeGreaterThan(1);
   });
 });
