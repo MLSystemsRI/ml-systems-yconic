@@ -3,7 +3,7 @@
 [![CI](https://github.com/MLSystemsRI/ml-systems-yconic/actions/workflows/ci.yml/badge.svg)](https://github.com/MLSystemsRI/ml-systems-yconic/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
 [![Node](https://img.shields.io/badge/Node-%3E%3D20-green.svg)](https://nodejs.org/)
-[![Tests](https://img.shields.io/badge/Tests-363%20passing-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-396%20passing-brightgreen.svg)]()
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-0-brightgreen.svg)]()
 
 > Closed-loop construction: Finance → Deconstruct → Design → Build → repeat. Every dollar returns 4x.
@@ -38,6 +38,16 @@ passesLucentLens(lens); // { passes: true } — homeowner value leads
 // Quantify the paradigm shift
 const disruption = calculateDisruptionScore();
 // { compositeMultiplier: 4.5, category: "significant", closedLoop: true }
+
+// Run the full closed loop: Finance → Deconstruct → Design → Build
+import { executeClosedLoop, buildMariaScenario } from "@ml-systems/yconic/closed-loop";
+const scenario = buildMariaScenario();
+const loop = executeClosedLoop(
+  scenario.homeowner, scenario.deconPlan, scenario.designSpec,
+  scenario.buildPlan, scenario.mve,
+);
+// loop.loopComplete === true — all stages pass real calculations
+// loop.stages.equity.equityAdvantage > 0 — RCM beats traditional
 ```
 
 ## The 100x
@@ -50,7 +60,7 @@ const disruption = calculateDisruptionScore();
 | 16% GC margin | 25.9% margin | 1.6x |
 | Demolition = pure cost | Deconstruction = 4 revenue streams | 4x |
 
-## Eight Modules
+## Nine Modules
 
 ### [TTP](src/ttp/) — Transparency Trust Protocol
 Score 0-100 from 8 weighted factors. Five access bands gate API depth. AI crawlers detected and charged per-query verification fees. Regulators get scoped compliance access. Framework-agnostic middleware processes every request.
@@ -66,6 +76,9 @@ AgentOrchestrator manages lifecycle, validates every action through Lucent Lens 
 
 ### [Disruption](src/disruption/) — Quantified Paradigm Shift
 Five disruption multipliers (equity velocity, material recovery, cost reduction, margin improvement, revenue streams) calculated as typed functions. Composite score via geometric mean. Closed-loop validation. Traditional-vs-ML Systems paradigm comparison.
+
+### [Closed Loop](src/closed-loop/) — Full Pipeline Orchestration
+Finance → Deconstruct → Design → Build in a single executable pipeline. TTP scoring feeds credit tier resolution, provenance grading flows to marketplace listings, material revenue contributes to homeowner equity. 33 tests verify the Maria scenario end-to-end.
 
 ### [Provenance](src/provenance/) — ML Material ID System
 Every recovered material gets an ML Material ID (ML-{year}-{project}-{zone}-{seq}), structural grade (A/B/C/D/salvage), contamination assessment, and DEM export for environmental compliance. 15 material categories with zone-based pricing. Round-trip parsing. Recovery reports with value aggregation.
@@ -98,6 +111,8 @@ src/
 │   ├── a2a.ts             # A2A protocol — capability discovery + delegation
 │   ├── tools.ts           # 7 MCP-compatible tool definitions
 │   └── runtime.ts         # MCP tool executor — runs tools against real engines
+├── closed-loop/           # Full pipeline orchestration
+│   └── engine.ts          # Finance→Deconstruct→Design→Build pipeline
 ├── disruption/            # Disruption scoring engine
 │   └── engine.ts          # 5 multipliers, composite score, paradigm comparison
 ├── provenance/            # ML Material ID + grading + DEM export
@@ -117,7 +132,7 @@ src/
 |---------|-------------|
 | `npm run build` | Compile TypeScript to `dist/` |
 | `npm run typecheck` | Type-check without emitting |
-| `npm test` | Run 363 tests (`vitest run`) |
+| `npm test` | Run 396 tests (`vitest run`) |
 | `npm run demo` | Run full closed-loop demo (Maria scenario) |
 | `npm run test:coverage` | Tests with V8 coverage report |
 | `npm run lint` | Lint with ESLint (strict TS rules) |
