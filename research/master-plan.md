@@ -389,7 +389,7 @@ The hackathon deliverable is the **agentic orchestration layer** — the code in
 | Layer | Examples | Built When | In This Repo? |
 |-------|---------|-----------|---------------|
 | **Hackathon code (from scratch)** | TTP engine, RCM engine, Intent Schema, Agent Orchestrator, A2A Protocol, MCP Tools, Disruption Engine, Provenance engine, Marketplace engine, Closed-Loop Pipeline, Field Data Integration | Hackathon window | **Yes — all new TypeScript, zero dependencies** |
-| **Hackathon hardening (finalized)** | 430 tests, CI/CD pipeline, coverage gates, API docs, architecture docs, master plan, examples | Hackathon window (built on top of from-scratch code) | **Yes** |
+| **Hackathon hardening (finalized)** | 396 tests, CI/CD pipeline, coverage gates, API docs, architecture docs, master plan, examples | Hackathon window (built on top of from-scratch code) | **Yes** |
 | **Pre-existing company** | 12 live domains, production databases, 269 field days, grant pipeline, GC registration, lease negotiation | Months of prior work | **No — none of this is in this repo** |
 
 This distinction matters: a judge should evaluate this repo as a standalone artifact. The company context explains *why* the code exists, but the code stands alone — `npm install && npm test` runs 396 tests with zero external dependencies.
