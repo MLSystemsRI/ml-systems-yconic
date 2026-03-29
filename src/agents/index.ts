@@ -30,6 +30,8 @@ export {
 export type { ToolDefinition, ToolParameter } from "./tools.js";
 
 export { A2ARouter } from "./a2a.js";
+export { executeToolCall, executeBatch } from "./runtime.js";
+export type { ToolCallInput, ToolCallResult } from "./runtime.js";
 export type {
   CapabilityDomain,
   AgentCapability,
