@@ -259,3 +259,49 @@ describe("transparencyHeaders", () => {
     expect(headers["X-TT-Regulator-Scope"]).toBeUndefined();
   });
 });
+
+/* ─── Input Validation — Negative & Adversarial Inputs ─── */
+
+describe("Input validation — negative values clamped", () => {
+  it("negative materialsContributed treated as 0", () => {
+    const score = calculateTransparencyScore(makeFactors({ materialsContributed: -100 }));
+    const baseline = calculateTransparencyScore(makeFactors({ materialsContributed: 0 }));
+    expect(score).toBe(baseline);
+  });
+
+  it("negative cyclesCompleted treated as 0", () => {
+    const score = calculateTransparencyScore(makeFactors({ cyclesCompleted: -5 }));
+    const baseline = calculateTransparencyScore(makeFactors({ cyclesCompleted: 0 }));
+    expect(score).toBe(baseline);
+  });
+
+  it("negative accountAgeDays treated as 0", () => {
+    const score = calculateTransparencyScore(makeFactors({ accountAgeDays: -365 }));
+    const baseline = calculateTransparencyScore(makeFactors({ accountAgeDays: 0 }));
+    expect(score).toBe(baseline);
+  });
+
+  it("negative dataContributions treated as 0", () => {
+    const score = calculateTransparencyScore(makeFactors({ dataContributions: -50 }));
+    const baseline = calculateTransparencyScore(makeFactors({ dataContributions: 0 }));
+    expect(score).toBe(baseline);
+  });
+
+  it("negative reviewsPassed treated as 0", () => {
+    const score = calculateTransparencyScore(makeFactors({ reviewsPassed: -3 }));
+    const baseline = calculateTransparencyScore(makeFactors({ reviewsPassed: 0 }));
+    expect(score).toBe(baseline);
+  });
+
+  it("all negative inputs produce valid score ≥ tier base", () => {
+    const score = calculateTransparencyScore(makeFactors({
+      materialsContributed: -100,
+      cyclesCompleted: -10,
+      reviewsPassed: -5,
+      accountAgeDays: -999,
+      dataContributions: -50,
+    }));
+    expect(score).toBeGreaterThanOrEqual(5); // free tier base
+    expect(score).toBeLessThanOrEqual(100);
+  });
+});

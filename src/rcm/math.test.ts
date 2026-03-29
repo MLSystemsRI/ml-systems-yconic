@@ -90,4 +90,16 @@ describe("rcmEquity", () => {
   it("defaults materialRecoveryValue to 0", () => {
     expect(rcmEquity(400_000, 300_000)).toBe(rcmEquity(400_000, 300_000, 0));
   });
+
+  it("clamps negative propertyValue to 0", () => {
+    expect(rcmEquity(-100_000, 50_000)).toBe(-50_000); // 0 - 50000
+  });
+
+  it("clamps negative principalBalance to 0", () => {
+    expect(rcmEquity(300_000, -50_000)).toBe(300_000); // 300000 - 0
+  });
+
+  it("clamps negative materialRecoveryValue to 0", () => {
+    expect(rcmEquity(300_000, 200_000, -10_000)).toBe(100_000); // no negative deduction
+  });
 });
