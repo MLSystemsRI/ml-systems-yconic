@@ -113,6 +113,7 @@ export function getAccessBand(score: number): AccessBand {
   return "ontology_licensed";
 }
 
+/** Human-readable labels for each TTP access band */
 export const ACCESS_BAND_LABELS: Record<AccessBand, string> = {
   public_record: "Public Record (Level 0)",
   ml_verified: "ML Systems Verified (Level 1)",
@@ -121,6 +122,7 @@ export const ACCESS_BAND_LABELS: Record<AccessBand, string> = {
   ontology_licensed: "Ontology Licensed (Full Access)",
 };
 
+/** Score thresholds and descriptions for each TTP access band */
 export const ACCESS_BAND_THRESHOLDS: {
   band: AccessBand;
   min: number;

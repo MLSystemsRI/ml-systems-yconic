@@ -70,12 +70,14 @@ export function getKnownCrawlers(): readonly string[] {
 
 /* ─── Verification Levels ─── */
 
+/** Short label for each material verification level */
 export const VERIFICATION_LABELS: Record<VerificationLevel, string> = {
   0: "public_record",
   1: "ml_systems_verified",
   2: "double_verified",
 };
 
+/** Detailed description of what each verification level guarantees */
 export const VERIFICATION_DESCRIPTIONS: Record<VerificationLevel, string> = {
   0: "Unverified — sourced from public record only",
   1: "ML Systems verified — provenance-tracked with ML Material ID, grading, and contamination status",

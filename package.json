@@ -39,15 +39,25 @@
     "format:check": "prettier --check \"src/**/*.ts\"",
     "ci": "npm run typecheck && npm run lint && npm run test"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MLSystemsRI/ml-systems-yconic.git"
+  },
+  "homepage": "https://mlsystemsri.com",
+  "bugs": {
+    "url": "https://github.com/MLSystemsRI/ml-systems-yconic/issues"
+  },
   "keywords": [
     "construction",
     "proptech",
-    "transparency-trust-protocol",
-    "reverse-construction-mortgage",
+    "mortgage",
+    "rcm",
+    "transparency",
+    "trust-protocol",
     "deconstruction",
-    "material-provenance",
-    "ai-crawler-detection",
-    "closed-loop-construction"
+    "closed-loop",
+    "intent-schema",
+    "lucent-lens"
   ],
   "author": "ML Systems LLC",
   "license": "UNLICENSED",
@@ -62,6 +72,7 @@
     "eslint": "^9.0.0",
     "prettier": "^3.4.0",
     "typescript": "^5.7.0",
+    "@vitest/coverage-v8": "^3.0.0",
     "vitest": "^3.0.0"
   },
   "dependencies": {}

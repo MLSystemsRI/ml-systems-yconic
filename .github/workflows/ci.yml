@@ -38,5 +38,14 @@ jobs:
       - name: Test
         run: npm run test
 
+      - name: Build
+        run: npm run build
+
+      - name: Verify dist output
+        run: test -d dist && test -f dist/index.js && test -f dist/index.d.ts
+
+      - name: Security audit
+        run: npm audit --audit-level=moderate || true
+
       - name: Format check
         run: npm run format:check

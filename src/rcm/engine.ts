@@ -37,6 +37,7 @@ import { rcmMonthlyPayment, rcmAccruedInterest } from "./math.js";
 
 // ── Tier Definitions ─────────────────────────────────────────────────
 
+/** Standard RCM tiers (1-3): monthly payments with credit-tier-based overpayment allocation */
 export const STANDARD_TIERS: StandardTier[] = [
   {
     tier: 1,
@@ -78,6 +79,7 @@ export const STANDARD_TIERS: StandardTier[] = [
   },
 ];
 
+/** Preferred RCM tiers (4-6): daily arithmetic payments with concurrent streams */
 export const PREFERRED_TIERS: PreferredTier[] = [
   {
     tier: 4,
@@ -124,6 +126,7 @@ export const PREFERRED_TIERS: PreferredTier[] = [
   },
 ];
 
+/** All 6 RCM tiers (standard + preferred) ordered by credit score */
 export const ALL_TIERS: RCMTier[] = [...STANDARD_TIERS, ...PREFERRED_TIERS];
 
 // ── Tier Resolution ──────────────────────────────────────────────────
