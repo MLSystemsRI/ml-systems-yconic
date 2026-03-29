@@ -95,16 +95,20 @@ export interface DisruptionMultiplier {
  * The multiplier is literally infinite (18/0), so we cap at 18x.
  */
 export function equityVelocityMultiplier(crossoverYears: number = 0): DisruptionMultiplier {
-  const mult = crossoverYears === 0 ? INDUSTRY_BASELINE.yearsToEquityCrossover : Math.round(INDUSTRY_BASELINE.yearsToEquityCrossover / crossoverYears);
+  const mult =
+    crossoverYears === 0
+      ? INDUSTRY_BASELINE.yearsToEquityCrossover
+      : Math.round(INDUSTRY_BASELINE.yearsToEquityCrossover / crossoverYears);
   return {
     metric: "equity_velocity",
     oldWay: INDUSTRY_BASELINE.yearsToEquityCrossover,
     newWay: crossoverYears,
     multiplier: mult,
     unit: "years to equity crossover",
-    description: crossoverYears === 0
-      ? "100% to principal from day one — no crossover needed"
-      : `Equity crossover in ${crossoverYears} years vs. industry ${INDUSTRY_BASELINE.yearsToEquityCrossover}`,
+    description:
+      crossoverYears === 0
+        ? "100% to principal from day one — no crossover needed"
+        : `Equity crossover in ${crossoverYears} years vs. industry ${INDUSTRY_BASELINE.yearsToEquityCrossover}`,
   };
 }
 
@@ -256,9 +260,7 @@ export interface ClosedLoopResult {
   loopEfficiency: number;
 }
 
-export function validateClosedLoop(
-  stages: Record<LoopStage, boolean>,
-): ClosedLoopResult {
+export function validateClosedLoop(stages: Record<LoopStage, boolean>): ClosedLoopResult {
   const allStages: LoopStage[] = ["finance", "deconstruct", "design", "build"];
   const missing = allStages.filter((s) => !stages[s]);
   const present = allStages.filter((s) => stages[s]).length;

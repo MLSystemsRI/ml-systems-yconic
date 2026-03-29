@@ -443,7 +443,7 @@ export function compareAllTiers(
   // Flat RCM baseline: no overpayments, no tier allocation — pure principal paydown
   const flatPayoff = Math.ceil(loanAmount / flatM); // Months until principal = 0
   const flatInterest = rcmAccruedInterest(loanAmount, flatM, annualRate, termMonths);
-  const flatEquity5 = propertyValue - Math.max(loanAmount - 60 * flatM, 0);  // Equity at month 60
+  const flatEquity5 = propertyValue - Math.max(loanAmount - 60 * flatM, 0); // Equity at month 60
   const flatEquity10 = propertyValue - Math.max(loanAmount - 120 * flatM, 0); // Equity at month 120
 
   const standard = STANDARD_TIERS.map((tier) =>

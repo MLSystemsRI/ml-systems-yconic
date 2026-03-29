@@ -165,8 +165,10 @@ export class A2ARouter {
     const from = this.cards.get(fromId);
     const to = this.cards.get(toId);
 
-    if (!from) return { allowed: false, reason: `Sender ${fromId} not registered`, delegatedTaskId: null };
-    if (!to) return { allowed: false, reason: `Recipient ${toId} not registered`, delegatedTaskId: null };
+    if (!from)
+      return { allowed: false, reason: `Sender ${fromId} not registered`, delegatedTaskId: null };
+    if (!to)
+      return { allowed: false, reason: `Recipient ${toId} not registered`, delegatedTaskId: null };
 
     /* Rule 1: Hierarchy check */
     if (!from.delegatesTo.includes(toId)) {
@@ -310,7 +312,9 @@ export class A2ARouter {
   ): DelegationResult[] {
     const parent = this.tasks.get(parentTaskId);
     if (!parent) {
-      return [{ allowed: false, reason: `Parent task ${parentTaskId} not found`, delegatedTaskId: null }];
+      return [
+        { allowed: false, reason: `Parent task ${parentTaskId} not found`, delegatedTaskId: null },
+      ];
     }
 
     return subtasks.map((sub) =>

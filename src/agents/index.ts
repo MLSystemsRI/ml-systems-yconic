@@ -28,3 +28,14 @@ export {
   intentValidateAction,
 } from "./tools.js";
 export type { ToolDefinition, ToolParameter } from "./tools.js";
+
+export { A2ARouter } from "./a2a.js";
+export type {
+  CapabilityDomain,
+  AgentCapability,
+  AgentCard,
+  Task,
+  TaskStatus,
+  TaskPriority,
+  DelegationResult,
+} from "./a2a.js";
