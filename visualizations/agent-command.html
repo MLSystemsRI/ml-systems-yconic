@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S7L16PQTX9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-S7L16PQTX9', {
+    linker: {
+      domains: ['mlsystemsri.com','app.mlsystemsri.com','mlsystemsri.store','mlsystemsri.info','mlsystemsri.net','mlsystemsri.xyz','pit.mlsystemsri.com','collective.mlsystemsri.com','fa.mlsystemsri.com','boh.mlsystemsri.com'],
+      accept_incoming: true
+    },
+    cookie_flags: 'SameSite=None;Secure'
+  });
+  gtag('config', 'G-HXBM95YWEQ', {
+    linker: {
+      domains: ['mlsystemsri.com','app.mlsystemsri.com','mlsystemsri.store','mlsystemsri.info','mlsystemsri.net','mlsystemsri.xyz','pit.mlsystemsri.com','collective.mlsystemsri.com','fa.mlsystemsri.com','boh.mlsystemsri.com'],
+      accept_incoming: true
+    },
+    cookie_flags: 'SameSite=None;Secure'
+  });
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Command — ML Systems</title>
+<meta name="description" content="ML Systems Agent Command Center. Project Intelligence (Lucent Lens) and The Custodian (TT + LL + MVE).">
+<meta name="ml-org-structure" content="Founder: Sal (Custodian/TT) → LM + FA + AE">
+<meta name="ml-agents" content="Project Intelligence (Lucent Lens) | The Custodian (TT + LL + MVE Lens)">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0A0A0A;
+    --bg-elevated: #111111;
+    --bg-surface: #1A1A1A;
+    --border: #2A2A2A;
+    --border-subtle: #1E1E1E;
+    --text: #E8E8E8;
+    --text-dim: #777777;
+    --text-muted: #555555;
+
+    --blue: #60A5FA;
+    --orange: #F97316;
+    --red: #EF4444;
+    --teal: #14B8A6;
+    --green: #22C55E;
+    --yellow: #FFE500;
+    --purple: #A78BFA;
+    --gold: #D4AF37;
+    --slate: #94A3B8;
+    --amber: #F59E0B;
+    --violet: #8B5CF6;
+
+    --blue-dim: #60A5FA22;
+    --orange-dim: #F9731622;
+    --red-dim: #EF444422;
+    --teal-dim: #14B8A622;
+    --green-dim: #22C55E22;
+    --purple-dim: #A78BFA22;
+    --gold-dim: #D4AF3722;
+  }
+
+  html { background: var(--bg); color: var(--text); font-family: 'JetBrains Mono', monospace; }
+  body { min-height: 100vh; overflow-x: hidden; position: relative; }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 60px; }
+  @media (max-width: 900px) { .wrap { padding: 0 20px; } }
+
+  /* ── Header ────────────────────────────────── */
+  .header {
+    padding: 40px 0 20px;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .header h1 { font-family: 'Instrument Serif', serif; font-size: 32px; font-weight: 400; letter-spacing: -0.5px; }
+  .header h1 .g { color: var(--green); }
+  .header h1 .b { color: var(--blue); }
+  .header-meta { font-size: 11px; color: var(--text-muted); text-align: right; line-height: 1.6; }
+  .header-meta .tag { display: inline-block; padding: 2px 8px; border: 1px solid var(--border); border-radius: 3px; font-size: 10px; color: var(--text-dim); margin-left: 6px; }
+
+  /* ── Legend ─────────────────────────────────── */
+  .legend {
+    display: flex; gap: 20px; padding: 16px 0;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 10px; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 1.2px; flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* ── Section titles ────────────────────────── */
+  .sec-label {
+    font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--text-muted); margin: 32px 0 14px; padding-left: 2px;
+  }
+
+  /* ── Ecosystem cards (the CENTER) ──────────── */
+  .eco-ring {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 32px;
+    position: relative;
+    margin-bottom: 16px;
+  }
+  .eco-ring::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; border-radius: 10px 10px 0 0;
+    background: linear-gradient(90deg, var(--green), var(--blue), var(--teal), var(--amber), var(--violet));
+    opacity: 0.5;
+  }
+  .eco-ring:hover::before { opacity: 0.9; }
+
+  .eco-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; letter-spacing: -0.3px; }
+  .eco-subtitle { font-size: 10px; color: var(--text-dim); margin-bottom: 18px; line-height: 1.6; }
+
+  /* Domain extension cards */
+  .domain-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  @media (max-width: 700px) { .domain-row { grid-template-columns: repeat(2, 1fr); } }
+
+  .domain-card {
+    padding: 16px; border-radius: 8px; text-align: center;
+    background: var(--bg); border: 1px solid; transition: all 0.3s; cursor: default;
+    position: relative;
+  }
+  .domain-card:hover { transform: translateY(-2px); }
+  .domain-ext { font-size: 20px; font-weight: 700; display: block; margin-bottom: 4px; }
+  .domain-role { font-size: 9px; color: var(--text-muted); margin-bottom: 8px; }
+  .domain-url { font-size: 8px; color: var(--text-dim); font-style: italic; }
+
+  /* App cards */
+  .app-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
+  @media (max-width: 900px) { .app-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .app-card {
+    padding: 14px 16px; border-radius: 8px;
+    background: var(--bg); border: 1px solid var(--border-subtle);
+    transition: all 0.3s; cursor: default; position: relative; overflow: hidden;
+  }
+  .app-card::before {
+    content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+    opacity: 0.6; transition: opacity 0.3s;
+  }
+  .app-card:hover::before { opacity: 1; }
+  .app-card:hover { transform: translateY(-1px); }
+
+  .app-name { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+  .app-desc { font-size: 9px; color: var(--text-dim); line-height: 1.5; }
+  .app-port { font-size: 8px; color: var(--text-muted); margin-top: 6px; }
+
+  .app-agents { display: flex; gap: 4px; margin-top: 8px; }
+  .app-agent-dot {
+    width: 16px; height: 16px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 7px; font-weight: 700;
+  }
+
+  /* ── Agent hub cards ───────────────────────── */
+  .agent-card {
+    background: var(--bg-elevated);
+    border-radius: 10px;
+    padding: 28px 32px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .agent-card::before {
+    content: ''; position: absolute; inset: 0;
+    pointer-events: none;
+  }
+
+  .agent-card.pi-card { border: 1px solid var(--green); }
+  .agent-card.pi-card::before { background: radial-gradient(ellipse at center, var(--green-dim) 0%, transparent 70%); }
+  .agent-card.cust-card { border: 1px solid var(--blue); }
+  .agent-card.cust-card::before { background: radial-gradient(ellipse at center, var(--blue-dim) 0%, transparent 70%); }
+
+  .agent-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; position: relative; }
+
+  .agent-icon {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .agent-icon.pi { background: var(--green-dim); border: 2px solid var(--green); animation: pulse-g 3s ease-in-out infinite; }
+  .agent-icon.cust { background: var(--blue-dim); border: 2px solid var(--blue); animation: pulse-b 3s ease-in-out infinite; }
+
+  @keyframes pulse-g { 0%,100% { box-shadow: 0 0 0 0 #22C55E44; } 50% { box-shadow: 0 0 0 12px #22C55E00; } }
+  @keyframes pulse-b { 0%,100% { box-shadow: 0 0 0 0 #60A5FA44; } 50% { box-shadow: 0 0 0 12px #60A5FA00; } }
+
+  .agent-title { font-size: 18px; font-weight: 600; letter-spacing: -0.3px; }
+  .agent-subtitle { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+
+  .lens-row { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; position: relative; }
+  .lens {
+    padding: 3px 10px; border-radius: 4px;
+    font-size: 9px; font-weight: 600; letter-spacing: 0.5px;
+  }
+
+  /* ── Channel grids (5-col) ─────────────────── */
+  .ch-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; position: relative; }
+  @media (max-width: 900px) { .ch-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .ch-card {
+    background: var(--bg-surface); border: 1px solid var(--border-subtle);
+    border-radius: 6px; padding: 14px; transition: all 0.3s; cursor: default;
+  }
+  .ch-card:hover { border-color: var(--border); }
+
+  .ch-dept { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .ch-dept .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .ch-flow { font-size: 9px; color: var(--text-dim); line-height: 1.7; }
+  .ch-flow .dir { font-weight: 600; font-size: 10px; }
+
+  /* ── Score breakdown ───────────────────────── */
+  .score-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .score-label { font-size: 9px; color: var(--text-dim); width: 90px; flex-shrink: 0; }
+  .score-bar-outer { flex: 1; height: 4px; background: var(--bg); border-radius: 2px; overflow: hidden; }
+  .score-bar-inner { height: 100%; border-radius: 2px; background: var(--green); transition: width 1s; }
+  .score-pts { font-size: 9px; color: var(--text-dim); width: 35px; text-align: right; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+
+  /* ── Repo mini grid ────────────────────────── */
+  .repo-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+  @media (max-width: 700px) { .repo-grid { grid-template-columns: repeat(3, 1fr); } }
+  .repo-dot {
+    padding: 6px 4px; border-radius: 4px; text-align: center;
+    background: var(--bg); border: 1px solid var(--border-subtle);
+    font-size: 8px; color: var(--text-muted); transition: all 0.3s;
+    overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  }
+  .repo-dot:hover { border-color: var(--border); }
+  .repo-dot .rn { font-weight: 600; display: block; margin-bottom: 2px; color: var(--text-dim); }
+
+  /* ── Trigger ───────────────────────────────── */
+  .trigger {
+    background: var(--bg-elevated); border: 1px solid var(--border);
+    border-radius: 10px; padding: 24px 32px; position: relative; margin-bottom: 16px;
+  }
+  .trigger::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--green), var(--blue)); opacity: 0.5; border-radius: 10px 10px 0 0;
+  }
+  .trigger-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .trigger-desc { font-size: 10px; color: var(--text-dim); line-height: 1.6; margin-bottom: 14px; }
+  .trigger-flow { display: flex; gap: 0; flex-wrap: wrap; margin-bottom: 14px; }
+  .tf-node {
+    padding: 8px 14px; background: var(--bg-surface); border: 1px solid var(--border-subtle);
+    font-size: 9px; color: var(--text-dim); text-align: center; flex: 1; min-width: 100px;
+  }
+  .tf-node:first-child { border-radius: 6px 0 0 6px; }
+  .tf-node:last-child { border-radius: 0 6px 6px 0; }
+  .tf-node.on { border-color: var(--green); background: var(--green-dim); }
+  .tf-node .tfl { font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .tf-node.on .tfl { color: var(--green); }
+  .tf-node .tfd { font-size: 8px; color: var(--text-muted); }
+  .trigger-cmd {
+    padding: 8px 14px; background: var(--bg); border: 1px solid var(--border-subtle);
+    border-radius: 6px; font-size: 10px; color: var(--blue);
+    cursor: pointer; transition: all 0.2s; display: inline-block;
+  }
+  .trigger-cmd:hover { border-color: var(--blue); background: var(--blue-dim); }
+
+  /* ── Sub labels ────────────────────────────── */
+  .sub-label {
+    font-size: 9px; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--text-muted); margin-bottom: 8px; padding-left: 2px;
+  }
+
+  /* ── Footer ────────────────────────────────── */
+  .footer {
+    padding: 30px 0; border-top: 1px solid var(--border-subtle);
+    display: flex; justify-content: space-between;
+    font-size: 10px; color: var(--text-muted); margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="header">
+  <div>
+    <h1>Agent <span class="g">Command</span></h1>
+  </div>
+  <div class="header-meta">
+    <span class="g">PI</span> + <span class="b">Custodian</span> around the ecosystem<span class="tag">v2</span><br>
+    <span id="scanMeta" style="font-size:9px">Loading...</span>
+  </div>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> Project Intelligence</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div> The Custodian</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div> Builders Collective</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Loan Pit</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div> Decon Lab</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div> Builder's Open House</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- ECOSYSTEM 1 — DOMAIN EXTENSIONS (center focus)                 -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<p class="sec-label">Ecosystem 1 — Domain Extensions</p>
+
+<div class="eco-ring">
+  <div class="eco-title">mlsystemsri.<span style="color:var(--green)">*</span></div>
+  <div class="eco-subtitle">Five TLDs, one closed loop. Each domain is a public surface of the ML Systems engine. PI watches the data flows between them. The Custodian watches their repos.</div>
+
+  <div class="domain-row">
+    <div class="domain-card" style="border-color:#22C55E44">
+      <span class="domain-ext" style="color:var(--green)">.com</span>
+      <span class="domain-role">Apply & Manage</span>
+      <span class="domain-url">mlsystemsri.com</span>
+      <div class="app-agents" style="justify-content:center;margin-top:8px">
+        <span class="app-agent-dot" style="background:var(--green-dim);border:1px solid #22C55E44;color:var(--green)">PI</span>
+        <span class="app-agent-dot" style="background:var(--blue-dim);border:1px solid #60A5FA44;color:var(--blue)">C</span>
+      </div>
+    </div>
+    <div class="domain-card" style="border-color:#94A3B844">
+      <span class="domain-ext" style="color:var(--slate)">.info</span>
+      <span class="domain-role">Learn & Verify</span>
+      <span class="domain-url">mlsystemsri.info</span>
+      <div class="app-agents" style="justify-content:center;margin-top:8px">
+        <span class="app-agent-dot" style="background:var(--green-dim);border:1px solid #22C55E44;color:var(--green)">PI</span>
+        <span class="app-agent-dot" style="background:var(--blue-dim);border:1px solid #60A5FA44;color:var(--blue)">C</span>
+      </div>
+    </div>
+    <div class="domain-card" style="border-color:#14B8A644">
+      <span class="domain-ext" style="color:var(--teal)">.store</span>
+      <span class="domain-role">Buy Materials</span>
+      <span class="domain-url">mlsystemsri.store</span>
+      <div class="app-agents" style="justify-content:center;margin-top:8px">
+        <span class="app-agent-dot" style="background:var(--green-dim);border:1px solid #22C55E44;color:var(--green)">PI</span>
+        <span class="app-agent-dot" style="background:var(--blue-dim);border:1px solid #60A5FA44;color:var(--blue)">C</span>
+      </div>
+    </div>
+    <div class="domain-card" style="border-color:#F59E0B44">
+      <span class="domain-ext" style="color:var(--amber)">.net</span>
+      <span class="domain-role">Connect & Build</span>
+      <span class="domain-url">mlsystemsri.net</span>
+      <div class="app-agents" style="justify-content:center;margin-top:8px">
+        <span class="app-agent-dot" style="background:var(--green-dim);border:1px solid #22C55E44;color:var(--green)">PI</span>
+        <span class="app-agent-dot" style="background:var(--blue-dim);border:1px solid #60A5FA44;color:var(--blue)">C</span>
+      </div>
+    </div>
+    <div class="domain-card" style="border-color:#8B5CF644">
+      <span class="domain-ext" style="color:var(--violet)">.xyz</span>
+      <span class="domain-role">See & Experience</span>
+      <span class="domain-url">mlsystemsri.xyz</span>
+      <div class="app-agents" style="justify-content:center;margin-top:8px">
+        <span class="app-agent-dot" style="background:var(--green-dim);border:1px solid #22C55E44;color:var(--green)">PI</span>
+        <span class="app-agent-dot" style="background:var(--blue-dim);border:1px solid #60A5FA44;color:var(--blue)">C</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- ECOSYSTEM 2 — APPS (center focus)                              -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<p class="sec-label">Ecosystem 2 — Applications</p>
+
+<div class="eco-ring">
+  <div class="eco-title">Inner Network — <span style="color:var(--green)">5 departments</span> + <span style="color:var(--blue)">4 surfaces</span></div>
+  <div class="eco-subtitle">The departments do the work. The surfaces make it public. PI observes data flowing between departments. The Custodian keeps every repo healthy.</div>
+
+  <div class="app-grid">
+    <div class="app-card" style="--c:var(--blue)"><div style="position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--blue);opacity:0.6"></div>
+      <div class="app-name" style="color:var(--blue)">Design Studio</div>
+      <div class="app-desc">CDA curriculum → 45-sheet plan stack. Steel-first, DfD-native.</div>
+      <div class="app-port">:3000 · design-studio</div>
+      <div class="app-agents"><span class="app-agent-dot" style="background:var(--green-dim);border:1px solid #22C55E44;color:var(--green)">PI</span><span class="app-agent-dot" style="background:var(--blue-dim);border:1px solid #60A5FA44;color:var(--blue)">C</span></div>
+    </div>
+    <div class="app-card"><div style="position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--gold);opacity:0.6"></div>
+      <div class="app-name" style="color:var(--gold)">Builders Collective</div>
+      <div class="app-desc">PE/RA verification of plan stack. Every correction trains CDA.</div>
+      <div class="app-port">:3013 · builders-collective</div>
+      <div class="app-agents"><span class="app-agent-dot" style="background:var(--green-dim);border:1px solid #22C55E44;color:var(--green)">PI</span><span class="app-agent-dot" style="background:var(--blue-dim);border:1px solid #60A5FA44;color:var(--blue)">C</span></div>
+    </div>
+    <div class="app-card"><div style="position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--red);opacity:0.6"></div>
+      <div class="app-name" style="color:var(--red)">The Pit</div>
+      <div class="app-desc">Reverse auction for construction loans. 6-tier fees. RCM integration.</div>
+      <div class="app-port">:3012 · loan-pit</div>
+      <div class="app-agents"><span class="app-agent-dot" style="background:var(--green-dim);border:1px solid #22C55E44;color:var(--green)">PI</span><span class="app-agent-dot" style="background:var(--blue-dim);border:1px solid #60A5FA44;color:var(--blue)">C</span></div>
+    </div>
+    <div class="app-card"><div style="position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--orange);opacity:0.6"></div>
+      <div class="app-name" style="color:var(--orange)">Decon Lab</div>
+      <div class="app-desc">Reverse engineering assemblies. 80–90% recovery. ML Material IDs.</div>
+      <div class="app-port">:3003 · deconstruction-lab</div>
+      <div class="app-agents"><span class="app-agent-dot" style="background:var(--green-dim);border:1px solid #22C55E44;color:var(--green)">PI</span><span class="app-agent-dot" style="background:var(--blue-dim);border:1px solid #60A5FA44;color:var(--blue)">C</span></div>
+    </div>
+    <div class="app-card"><div style="position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--teal);opacity:0.6"></div>
+      <div class="app-name" style="color:var(--teal)">Builder's Open House</div>
+      <div class="app-desc">Secondary materials marketplace. 10 zones. Physical + digital.</div>
+      <div class="app-port">:3004 · builders-open-house</div>
+      <div class="app-agents"><span class="app-agent-dot" style="background:var(--green-dim);border:1px solid #22C55E44;color:var(--green)">PI</span><span class="app-agent-dot" style="background:var(--blue-dim);border:1px solid #60A5FA44;color:var(--blue)">C</span></div>
+    </div>
+    <div class="app-card"><div style="position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--blue);opacity:0.3"></div>
+      <div class="app-name" style="color:var(--blue);opacity:0.7">Financial Architect</div>
+      <div class="app-desc">Visualizations, pitch docs, operations timeline. Static + 3D.</div>
+      <div class="app-port">:4000 · fa.mlsystemsri.com</div>
+      <div class="app-agents"><span class="app-agent-dot" style="background:var(--blue-dim);border:1px solid #60A5FA44;color:var(--blue)">C</span></div>
+    </div>
+    <div class="app-card"><div style="position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--slate);opacity:0.3"></div>
+      <div class="app-name" style="color:var(--slate)">.info</div>
+      <div class="app-desc">Knowledge, provenance, ontology. Public intelligence portal.</div>
+      <div class="app-port">:3009 · ml-systems-info</div>
+      <div class="app-agents"><span class="app-agent-dot" style="background:var(--blue-dim);border:1px solid #60A5FA44;color:var(--blue)">C</span></div>
+    </div>
+    <div class="app-card"><div style="position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--amber);opacity:0.3"></div>
+      <div class="app-name" style="color:var(--amber)">.net</div>
+      <div class="app-desc">Contractor network, partnerships, workforce connections.</div>
+      <div class="app-port">:3010 · ml-systems-net</div>
+      <div class="app-agents"><span class="app-agent-dot" style="background:var(--blue-dim);border:1px solid #60A5FA44;color:var(--blue)">C</span></div>
+    </div>
+    <div class="app-card"><div style="position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--violet);opacity:0.3"></div>
+      <div class="app-name" style="color:var(--violet)">.xyz</div>
+      <div class="app-desc">3D experiences, virtual tours, immersive visualization.</div>
+      <div class="app-port">:3011 · ml-systems-xyz</div>
+      <div class="app-agents"><span class="app-agent-dot" style="background:var(--blue-dim);border:1px solid #60A5FA44;color:var(--blue)">C</span></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- PI — wraps around ecosystem with data channels                 -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<p class="sec-label">Agent 1 — Project Intelligence (Lucent Lens)</p>
+
+<div class="agent-card pi-card">
+  <div class="agent-header">
+    <div class="agent-icon pi">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+    </div>
+    <div>
+      <div class="agent-title" style="color:var(--green)">Project Intelligence <span style="font-size:12px;opacity:0.5;font-weight:400">equipped with</span> Lucent Lens</div>
+      <div class="agent-subtitle">How well is the homeowner being served? Glow within to help humans.</div>
+    </div>
+  </div>
+
+  <div class="lens-row">
+    <span class="lens" style="background:var(--green-dim);color:var(--green);border:1px solid #22C55E44">LL — Lucent Lens</span>
+  </div>
+
+  <div class="sub-label">Tier 1 — Homeowner Value (0–40)</div>
+  <div style="margin-bottom:12px">
+    <div class="score-row"><span class="score-label">Verification</span><div class="score-bar-outer"><div class="score-bar-inner" style="width:0%"></div></div><span class="score-pts">0/15</span></div>
+    <div class="score-row"><span class="score-label">DfD Commits</span><div class="score-bar-outer"><div class="score-bar-inner" style="width:0%"></div></div><span class="score-pts">0/10</span></div>
+    <div class="score-row"><span class="score-label">Regulatory</span><div class="score-bar-outer"><div class="score-bar-inner" style="width:0%"></div></div><span class="score-pts">0/8</span></div>
+    <div class="score-row"><span class="score-label">Recovery/Reuse</span><div class="score-bar-outer"><div class="score-bar-inner" style="width:0%"></div></div><span class="score-pts">0/7</span></div>
+  </div>
+
+  <div class="sub-label">Tier 2 — Collective Value (0–30)</div>
+  <div style="margin-bottom:12px">
+    <div class="score-row"><span class="score-label">Prof. Depth</span><div class="score-bar-outer"><div class="score-bar-inner" style="width:0%;background:var(--gold)"></div></div><span class="score-pts">0/12</span></div>
+    <div class="score-row"><span class="score-label">Training Quality</span><div class="score-bar-outer"><div class="score-bar-inner" style="width:0%;background:var(--gold)"></div></div><span class="score-pts">0/10</span></div>
+    <div class="score-row"><span class="score-label">Agency Ready</span><div class="score-bar-outer"><div class="score-bar-inner" style="width:0%;background:var(--gold)"></div></div><span class="score-pts">0/8</span></div>
+  </div>
+
+  <div class="sub-label">Tier 3 — Engine Value (0–30)</div>
+  <div style="margin-bottom:16px">
+    <div class="score-row"><span class="score-label">Token Efficiency</span><div class="score-bar-outer"><div class="score-bar-inner" style="width:0%;background:var(--blue)"></div></div><span class="score-pts">0/10</span></div>
+    <div class="score-row"><span class="score-label">Session Depth</span><div class="score-bar-outer"><div class="score-bar-inner" style="width:0%;background:var(--blue)"></div></div><span class="score-pts">0/8</span></div>
+    <div class="score-row"><span class="score-label">Data Yield</span><div class="score-bar-outer"><div class="score-bar-inner" style="width:0%;background:var(--blue)"></div></div><span class="score-pts">0/7</span></div>
+    <div class="score-row"><span class="score-label">Conversion</span><div class="score-bar-outer"><div class="score-bar-inner" style="width:0%;background:var(--blue)"></div></div><span class="score-pts">0/5</span></div>
+  </div>
+
+  <div class="sub-label">Data Channels — What PI Sees in Each Department</div>
+  <div class="ch-grid">
+    <div class="ch-card" style="border-top:2px solid var(--blue)">
+      <div class="ch-dept"><span class="dot" style="background:var(--blue)"></span><span style="color:var(--blue)">Design Studio</span></div>
+      <div class="ch-flow">
+        <span class="dir" style="color:var(--green)">IN →</span> DrawingData, DfD status, sustainability score<br>
+        <span class="dir" style="color:var(--green)">← OUT</span> recovery context, prior cycle data
+      </div>
+    </div>
+    <div class="ch-card" style="border-top:2px solid var(--gold)">
+      <div class="ch-dept"><span class="dot" style="background:var(--gold)"></span><span style="color:var(--gold)">Builders Collective</span></div>
+      <div class="ch-flow">
+        <span class="dir" style="color:var(--green)">IN →</span> verification scores, corrections<br>
+        <span class="dir" style="color:var(--green)">← OUT</span> CDA accuracy trends
+      </div>
+    </div>
+    <div class="ch-card" style="border-top:2px solid var(--red)">
+      <div class="ch-dept"><span class="dot" style="background:var(--red)"></span><span style="color:var(--red)">Loan Pit</span></div>
+      <div class="ch-flow">
+        <span class="dir" style="color:var(--green)">IN →</span> loan terms, subsidies<br>
+        <span class="dir" style="color:var(--green)">← OUT</span> cost estimates, equity
+      </div>
+    </div>
+    <div class="ch-card" style="border-top:2px solid var(--orange)">
+      <div class="ch-dept"><span class="dot" style="background:var(--orange)"></span><span style="color:var(--orange)">Decon Lab</span></div>
+      <div class="ch-flow">
+        <span class="dir" style="color:var(--green)">IN →</span> recovery score, ML IDs<br>
+        <span class="dir" style="color:var(--green)">← OUT</span> value benchmarks
+      </div>
+    </div>
+    <div class="ch-card" style="border-top:2px solid var(--teal)">
+      <div class="ch-dept"><span class="dot" style="background:var(--teal)"></span><span style="color:var(--teal)">Builder's OH</span></div>
+      <div class="ch-flow">
+        <span class="dir" style="color:var(--green)">IN →</span> sales, inventory<br>
+        <span class="dir" style="color:var(--green)">← OUT</span> price intelligence
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- CUSTODIAN — wraps around ecosystem with repo health            -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<p class="sec-label">Agent 2 — The Custodian (TT + LL + MVE)</p>
+
+<div class="agent-card cust-card">
+  <div class="agent-header">
+    <div class="agent-icon cust">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#60A5FA" stroke-width="2" width="20" height="20"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <div>
+      <div class="agent-title" style="color:var(--blue)">The Custodian <span style="font-size:12px;opacity:0.5;font-weight:400">equipped with</span> TT + LL + MVE</div>
+      <div class="agent-subtitle">Custodian of transactions, backend health, ecosystem integrity. Operated by Sal (Founder/TT).</div>
+    </div>
+    <div style="margin-left:auto"><a href="ecosystem-status.html" style="font-size:9px;color:var(--blue);text-decoration:none;border:1px solid #60A5FA44;padding:4px 10px;border-radius:4px">Full Detail →</a></div>
+  </div>
+
+  <div class="lens-row">
+    <span class="lens" style="background:var(--purple-dim);color:var(--purple);border:1px solid #A78BFA44">TT — Trustee</span>
+    <span class="lens" style="background:var(--green-dim);color:var(--green);border:1px solid #22C55E44">LL — Lucent Lens</span>
+    <span class="lens" style="background:var(--blue-dim);color:var(--blue);border:1px solid #60A5FA44">MVE — Min Viable Expense</span>
+  </div>
+
+  <div class="sub-label">Org Structure (Building)</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">
+    <div style="padding:10px;background:var(--bg);border:1px solid #A78BFA44;border-radius:6px;text-align:center">
+      <div style="font-size:12px;font-weight:700;color:var(--purple)">TT</div>
+      <div style="font-size:8px;color:var(--text-muted)">Sal — Founder</div>
+    </div>
+    <div style="padding:10px;background:var(--bg);border:1px solid var(--border-subtle);border-radius:6px;text-align:center">
+      <div style="font-size:12px;font-weight:700;color:var(--text-dim)">LM</div>
+      <div style="font-size:8px;color:var(--text-muted)">Language Modeler</div>
+    </div>
+    <div style="padding:10px;background:var(--bg);border:1px solid var(--border-subtle);border-radius:6px;text-align:center">
+      <div style="font-size:12px;font-weight:700;color:var(--text-dim)">FA</div>
+      <div style="font-size:8px;color:var(--text-muted)">Financial Architect</div>
+    </div>
+    <div style="padding:10px;background:var(--bg);border:1px solid var(--border-subtle);border-radius:6px;text-align:center">
+      <div style="font-size:12px;font-weight:700;color:var(--text-dim)">AE</div>
+      <div style="font-size:8px;color:var(--text-muted)">Accounting Engineer</div>
+    </div>
+  </div>
+
+  <div class="sub-label">Ecosystem Health (Live)</div>
+  <div style="display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap">
+    <span style="font-size:11px"><span style="color:var(--green);font-weight:700" id="statClean">—</span> <span style="color:var(--text-dim)">clean</span></span>
+    <span style="font-size:11px"><span style="color:var(--amber);font-weight:700" id="statDirty">—</span> <span style="color:var(--text-dim)">uncommitted</span></span>
+    <span style="font-size:11px"><span style="color:var(--orange);font-weight:700" id="statUnpushed">—</span> <span style="color:var(--text-dim)">unpushed</span></span>
+    <span style="font-size:11px"><span style="color:var(--blue);font-weight:700" id="statTotal">—</span> <span style="color:var(--text-dim)">total</span></span>
+    <span style="font-size:11px"><span style="font-weight:700" id="statResearch" style="color:var(--text-dim)">—</span> <span style="color:var(--text-dim)">pending research</span></span>
+  </div>
+
+  <div class="sub-label">Staleness (TT Lens — neglect detection)</div>
+  <div id="stalenessGrid" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;font-size:10px">Loading...</div>
+
+  <div class="sub-label">Dependency Drift (MVE Lens — Next.js versions)</div>
+  <div id="depDriftGrid" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;font-size:10px">Loading...</div>
+
+  <div class="sub-label">All Repositories</div>
+  <div class="repo-grid" id="repoGrid"><div class="repo-dot"><span class="rn">Loading...</span></div></div>
+
+  <div style="margin-top:14px">
+    <div class="sub-label">Push Queue</div>
+    <div id="pushQueue" style="font-size:10px;color:var(--text-dim)">Loading...</div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- TRIGGER                                                        -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<p class="sec-label">Trigger — The Custodian's Post-Commit Hooks</p>
+
+<div class="trigger">
+  <div class="trigger-title">Every commit triggers The Custodian</div>
+  <div class="trigger-desc">Background scan + dashboard regeneration. Zero wait. 10 repos hooked.</div>
+  <div class="trigger-flow">
+    <div class="tf-node on"><div class="tfl">Commit</div><div class="tfd">any repo</div></div>
+    <div class="tf-node"><div class="tfl">Hook</div><div class="tfd">post-commit &</div></div>
+    <div class="tf-node"><div class="tfl">Scan</div><div class="tfd">15 repos</div></div>
+    <div class="tf-node"><div class="tfl">Generate</div><div class="tfd">HTML</div></div>
+    <div class="tf-node on"><div class="tfl">Fresh</div><div class="tfd">open this page</div></div>
+  </div>
+  <div class="trigger-cmd" onclick="navigator.clipboard.writeText('bash C:/Users/salma/financial-architect/scripts/install-hooks.sh')">
+    <code>bash scripts/install-hooks.sh</code> <span style="font-size:8px;color:var(--text-muted);margin-left:8px">(click to copy)</span>
+  </div>
+  <span style="font-size:8px;color:var(--text-muted);margin-left:12px">Remove: <code style="color:var(--blue)">--remove</code></span>
+</div>
+
+<footer class="footer">
+  <span>ML Systems LLC — Agent Command v2</span>
+  <span><span style="color:var(--green)">PI</span> (LL) + <span style="color:var(--blue)">Custodian</span> (TT + LL + MVE)</span>
+</footer>
+
+</div><!-- .wrap -->
+
+<script>
+let STATE = null;
+
+fetch('ecosystem-state.json')
+  .then(r => r.ok ? r.json() : null)
+  .then(data => { if (data) { STATE = data; render(); } })
+  .catch(() => {});
+
+fetch('../scripts/ecosystem-state.json')
+  .then(r => r.ok ? r.json() : null)
+  .then(data => { if (data && !STATE) { STATE = data; render(); } })
+  .catch(() => {});
+
+function render() {
+  if (!STATE) return;
+  const repos = STATE.repos || [];
+  const git = repos.filter(r => r.isGit);
+  const clean = git.filter(r => r.status === 'clean' && r.ahead === 0);
+  const dirty = git.filter(r => r.status === 'dirty');
+  const unpushed = git.filter(r => r.ahead > 0);
+
+  document.getElementById('scanMeta').innerHTML = `Last scan: ${new Date(STATE.scanTime).toLocaleString()} · ${repos.length} repos`;
+  document.getElementById('statClean').textContent = clean.length;
+  document.getElementById('statDirty').textContent = dirty.length;
+  document.getElementById('statUnpushed').textContent = unpushed.length;
+  document.getElementById('statTotal').textContent = git.length;
+  document.getElementById('statResearch').textContent = STATE.pendingResearch;
+
+  const sc = { clean:'#22C55E', dirty:'#F59E0B', unpushed:'#F97316', nogit:'#555', missing:'#EF4444' };
+  function gs(r) { if(!r.exists)return'missing'; if(!r.isGit)return'nogit'; if(r.ahead>0)return'unpushed'; if(r.status==='dirty')return'dirty'; return'clean'; }
+
+  document.getElementById('repoGrid').innerHTML = repos.map(r => {
+    const s = gs(r);
+    return `<div class="repo-dot" style="border-color:${sc[s]}44"><span class="rn" style="color:${sc[s]}">${r.name}</span><span style="color:${sc[s]}">${s}</span></div>`;
+  }).join('');
+
+  const pq = document.getElementById('pushQueue');
+  if (!unpushed.length) { pq.innerHTML = '<span style="color:var(--green)">All repos in sync.</span>'; }
+  else { pq.innerHTML = unpushed.map(r => `<span style="color:var(--orange);margin-right:14px">${r.name} ↑${r.ahead}</span>`).join(''); }
+
+  // Staleness — flag repos going cold (TT lens: detect neglect)
+  const staleEl = document.getElementById('stalenessGrid');
+  if (staleEl) {
+    const stale = git
+      .filter(r => r.daysSinceCommit != null)
+      .sort((a, b) => b.daysSinceCommit - a.daysSinceCommit);
+    staleEl.innerHTML = stale.map(r => {
+      const d = r.daysSinceCommit;
+      const color = d > 14 ? '#EF4444' : d > 7 ? '#F97316' : d > 3 ? '#F59E0B' : '#22C55E';
+      const label = d === 0 ? 'today' : d === 1 ? '1d' : d + 'd';
+      return `<span style="padding:3px 8px;border-radius:4px;border:1px solid ${color}44;color:${color}">${r.name} <span style="font-weight:700">${label}</span></span>`;
+    }).join('');
+  }
+
+  // Dependency drift — flag Next.js version mismatches (MVE lens)
+  const depEl = document.getElementById('depDriftGrid');
+  if (depEl) {
+    const withNext = git.filter(r => r.nextVersion && r.nextVersion !== 'none');
+    if (withNext.length === 0) {
+      depEl.innerHTML = '<span style="color:var(--text-muted)">No Next.js apps detected</span>';
+    } else {
+      const versions = [...new Set(withNext.map(r => r.nextVersion))];
+      const latest = versions.sort().pop();
+      depEl.innerHTML = withNext.map(r => {
+        const match = r.nextVersion === latest;
+        const color = match ? '#22C55E' : '#F97316';
+        return `<span style="padding:3px 8px;border-radius:4px;border:1px solid ${color}44;color:${color}">${r.name} <span style="font-weight:700">${r.nextVersion}</span></span>`;
+      }).join('');
+    }
+  }
+}
+
+setTimeout(() => { if (!STATE) { document.getElementById('scanMeta').textContent = 'No scan data — run ecosystem-scan.sh'; } }, 2000);
+</script>
+</body>
+</html>

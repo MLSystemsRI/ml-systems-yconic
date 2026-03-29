@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S7L16PQTX9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-S7L16PQTX9', {
+    linker: {
+      domains: ['mlsystemsri.com','app.mlsystemsri.com','mlsystemsri.store','mlsystemsri.info','mlsystemsri.net','mlsystemsri.xyz','pit.mlsystemsri.com','collective.mlsystemsri.com','fa.mlsystemsri.com','boh.mlsystemsri.com'],
+      accept_incoming: true
+    },
+    cookie_flags: 'SameSite=None;Secure'
+  });
+  gtag('config', 'G-HXBM95YWEQ', {
+    linker: {
+      domains: ['mlsystemsri.com','app.mlsystemsri.com','mlsystemsri.store','mlsystemsri.info','mlsystemsri.net','mlsystemsri.xyz','pit.mlsystemsri.com','collective.mlsystemsri.com','fa.mlsystemsri.com','boh.mlsystemsri.com'],
+      accept_incoming: true
+    },
+    cookie_flags: 'SameSite=None;Secure'
+  });
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Partnership Opportunity — ML Systems</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --teal:#14B8A6;--teal-dim:rgba(20,184,166,.15);--teal-glow:rgba(20,184,166,.35);
+    --bg:#0b0f14;--card:rgba(12,18,28,.7);--border:rgba(20,184,166,.12);
+    --text:#d0cbbc;--muted:#6b7280;--white:#f1f0eb;
+  }
+  body{background:var(--bg);color:var(--text);font-family:'SF Pro Display','Inter',system-ui,sans-serif;line-height:1.6;overflow-x:hidden}
+  ::selection{background:var(--teal);color:#000}
+
+  /* Noise overlay */
+  body::before{content:'';position:fixed;inset:0;opacity:.03;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none;z-index:9999}
+
+  .container{max-width:880px;margin:0 auto;padding:60px 28px 80px}
+
+  /* Hero */
+  .hero{text-align:center;margin-bottom:72px}
+  .logo{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:20px}
+  .hero h1{font-size:clamp(28px,5vw,42px);font-weight:700;color:var(--white);line-height:1.15;margin-bottom:12px}
+  .hero h1 span{color:var(--teal);text-shadow:0 0 24px var(--teal-glow)}
+  .hero .subtitle{font-size:14px;color:var(--muted);max-width:520px;margin:0 auto}
+
+  /* Section */
+  .section{margin-bottom:56px}
+  .section-label{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);margin-bottom:20px;display:flex;align-items:center;gap:12px}
+  .section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
+  .section h2{font-size:22px;font-weight:700;color:var(--white);margin-bottom:8px}
+  .section .lead{font-size:14px;color:var(--muted);margin-bottom:24px;max-width:660px}
+
+  /* Glass cards */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);margin-bottom:16px;transition:border-color .3s}
+  .card:hover{border-color:var(--teal-glow)}
+  .card h3{font-size:15px;font-weight:700;color:var(--white);margin-bottom:6px}
+  .card p{font-size:13px;color:var(--muted);line-height:1.6}
+
+  /* Stats grid */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px}
+  .stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;backdrop-filter:blur(12px)}
+  .stat .num{font-size:28px;font-weight:800;color:var(--teal);text-shadow:0 0 16px var(--teal-glow);line-height:1.1}
+  .stat .label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+  /* Building table */
+  .building-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:16px}
+  .building{font-size:11px;padding:10px 14px;background:rgba(12,18,28,.5);border:1px solid rgba(255,255,255,.04);border-radius:8px;display:flex;justify-content:space-between;align-items:center}
+  .building .name{color:var(--text)}
+  .building .tags{display:flex;gap:4px}
+  .building .tag{font-size:8px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 6px;border-radius:3px}
+  .tag-facp{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.15)}
+  .tag-res{background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.15)}
+
+  /* Timeline */
+  .timeline{position:relative;padding-left:28px}
+  .timeline::before{content:'';position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--teal),var(--border))}
+  .timeline .event{position:relative;margin-bottom:20px}
+  .timeline .event::before{content:'';position:absolute;left:-24px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--teal);box-shadow:0 0 8px var(--teal-glow)}
+  .timeline .date{font-size:11px;font-weight:700;color:var(--teal);letter-spacing:.04em}
+  .timeline .desc{font-size:13px;color:var(--muted)}
+
+  /* Value list */
+  .value-list{list-style:none;padding:0}
+  .value-list li{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:var(--text);display:flex;align-items:flex-start;gap:12px}
+  .value-list li:last-child{border-bottom:none}
+  .value-list .icon{flex-shrink:0;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;background:var(--teal-dim);color:var(--teal)}
+
+  /* Deal tiers */
+  .tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .tier{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;backdrop-filter:blur(12px);position:relative;overflow:hidden}
+  .tier.recommended{border-color:var(--teal-glow)}
+  .tier.recommended::before{content:'RECOMMENDED';position:absolute;top:12px;right:-28px;background:var(--teal);color:#000;font-size:8px;font-weight:800;letter-spacing:.08em;padding:3px 32px;transform:rotate(45deg)}
+  .tier h3{font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px}
+  .tier .tier-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:12px}
+  .tier ul{list-style:none;padding:0}
+  .tier li{font-size:12px;color:var(--muted);padding:4px 0;padding-left:16px;position:relative}
+  .tier li::before{content:'→';position:absolute;left:0;color:var(--teal)}
+
+  /* CTA */
+  .cta-section{text-align:center;padding:48px 28px;background:var(--card);border:1px solid var(--teal-glow);border-radius:18px;backdrop-filter:blur(12px)}
+  .cta-section h2{font-size:24px;font-weight:700;color:var(--white);margin-bottom:8px}
+  .cta-section p{font-size:13px;color:var(--muted);margin-bottom:24px;max-width:480px;margin-left:auto;margin-right:auto}
+  .cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:400px;margin:0 auto}
+  .cta-item{font-size:12px;color:var(--text);padding:12px;background:rgba(20,184,166,.06);border:1px solid var(--border);border-radius:8px}
+  .cta-item .cta-label{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);margin-bottom:2px}
+
+  /* Footer */
+  footer{text-align:center;margin-top:60px;padding-top:32px;border-top:1px solid rgba(255,255,255,.04)}
+  footer .brand{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  footer .url{font-size:11px;color:var(--teal)}
+  footer .legal{font-size:9px;color:rgba(255,255,255,.15);margin-top:8px}
+
+  /* Responsive */
+  @media(max-width:600px){
+    .container{padding:40px 18px 60px}
+    .stats{grid-template-columns:1fr 1fr}
+    .tiers{grid-template-columns:1fr}
+    .cta-grid{grid-template-columns:1fr}
+    .building-grid{grid-template-columns:1fr}
+  }
+
+  /* Expand/collapse */
+  .expandable{max-height:0;overflow:hidden;transition:max-height .4s ease}
+  .expandable.open{max-height:2000px}
+  .expand-btn{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--teal);background:none;border:1px solid var(--border);border-radius:6px;padding:6px 14px;cursor:pointer;transition:all .2s;margin-top:12px}
+  .expand-btn:hover{border-color:var(--teal-glow);background:var(--teal-dim)}
+  .expand-btn .arrow{transition:transform .3s;display:inline-block}
+  .expand-btn.active .arrow{transform:rotate(180deg)}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="logo">ML Systems LLC</div>
+    <h1>Strategic <span>Partnership</span> Opportunity</h1>
+    <p class="subtitle">URI Kingston Campus — Wireless Fire Alarm Conversion Phase 3. Pre-packaged intelligence and institutional access for the right general contractor.</p>
+  </div>
+
+  <!-- The Opportunity -->
+  <div class="section">
+    <div class="section-label">The Opportunity</div>
+    <h2>RFQ26006432 — URI Wireless Fire Alarm Phase 3</h2>
+    <p class="lead">State of Rhode Island is converting URI Kingston Campus fire alarm reporting from hardwire Gamewell boxes to wireless mesh. Phase 3 of a campus-wide mandate. Single-source GC contract.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="num">36</div>
+        <div class="label">Buildings</div>
+      </div>
+      <div class="stat">
+        <div class="num">11</div>
+        <div class="label">FACP Replacements</div>
+      </div>
+      <div class="stat">
+        <div class="num">5</div>
+        <div class="label">Residence Halls</div>
+      </div>
+      <div class="stat">
+        <div class="num">7 mo</div>
+        <div class="label">Construction Window</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Key Financial Details</h3>
+      <p>$200K in built-in allowances (4 × $50K — architectural, electrical, fire alarm, programming). 10% markup cap on allowance work. Prevailing wage. $500/day liquidated damages after 12/15/2026. 0.33% administrative fee on all invoices (new RI law, Jan 2026).</p>
+    </div>
+
+    <div class="card">
+      <h3>Contract Requirements</h3>
+      <p>Tier 1 prequalification, RI GC registration, 5% bid surety bond, 100% payment &amp; performance bonds, $1M GL + workers comp + auto + builders risk, 15% MBE participation, domestic steel, DLT apprenticeship certification.</p>
+    </div>
+  </div>
+
+  <!-- Building Scope -->
+  <div class="section">
+    <div class="section-label">Scope Analysis</div>
+    <h2>36-Building Scope — Fully Mapped</h2>
+    <p class="lead">Every building identified and categorized. FACP replacements and residence hall access constraints flagged. This analysis is ready to drop into your bid.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="num">25</div>
+        <div class="label">Standard Access</div>
+      </div>
+      <div class="stat">
+        <div class="num">11</div>
+        <div class="label">Panel Upgrades</div>
+      </div>
+      <div class="stat">
+        <div class="num">5</div>
+        <div class="label">Break-Time Only</div>
+      </div>
+      <div class="stat">
+        <div class="num">36</div>
+        <div class="label">Building Permits</div>
+      </div>
+    </div>
+
+    <button class="expand-btn" onclick="toggleBuildings(this)">
+      <span class="arrow">▼</span> View Full Building List
+    </button>
+    <div class="expandable" id="building-list">
+      <div class="building-grid" style="margin-top:16px">
+        <div class="building"><span class="name">Alumni Center</span><span class="tags"><span class="tag tag-facp">FACP</span></span></div>
+        <div class="building"><span class="name">Automotive Garage</span><span class="tags"></span></div>
+        <div class="building"><span class="name">Beck Batting Building</span><span class="tags"><span class="tag tag-facp">FACP</span></span></div>
+        <div class="building"><span class="name">Bliss Hall</span><span class="tags"></span></div>
+        <div class="building"><span class="name">Chafee Hall</span><span class="tags"></span></div>
+        <div class="building"><span class="name">Coastal Institute</span><span class="tags"></span></div>
+        <div class="building"><span class="name">Davis Hall</span><span class="tags"></span></div>
+        <div class="building"><span class="name">Facilities Storage</span><span class="tags"><span class="tag tag-facp">FACP</span></span></div>
+        <div class="building"><span class="name">Fascitelli Wellness</span><span class="tags"></span></div>
+        <div class="building"><span class="name">Fine Arts Center</span><span class="tags"></span></div>
+        <div class="building"><span class="name">Fogarty Hall</span><span class="tags"></span></div>
+        <div class="building"><span class="name">GH Gardner Building</span><span class="tags"><span class="tag tag-facp">FACP</span></span></div>
+        <div class="building"><span class="name">Green Hall</span><span class="tags"></span></div>
+        <div class="building"><span class="name">Hope Dining Hall</span><span class="tags"><span class="tag tag-facp">FACP</span></span></div>
+        <div class="building"><span class="name">Hopkins Hall</span><span class="tags"><span class="tag tag-res">RES</span></span></div>
+        <div class="building"><span class="name">Human Resource Admin</span><span class="tags"></span></div>
+        <div class="building"><span class="name">Hutchinson Hall</span><span class="tags"><span class="tag tag-res">RES</span></span></div>
+        <div class="building"><span class="name">Intl Student Center</span><span class="tags"></span></div>
+        <div class="building"><span class="name">Lands &amp; Grounds Garage</span><span class="tags"></span></div>
+        <div class="building"><span class="name">Memorial Union</span><span class="tags"></span></div>
+        <div class="building"><span class="name">Merrow Hall</span><span class="tags"><span class="tag tag-res">RES</span></span></div>
+        <div class="building"><span class="name">Morrill Hall</span><span class="tags"></span></div>
+        <div class="building"><span class="name">Newman Hall</span><span class="tags"><span class="tag tag-facp">FACP</span></span></div>
+        <div class="building"><span class="name">Pastore Hall</span><span class="tags"></span></div>
+        <div class="building"><span class="name">Peck Hall</span><span class="tags"><span class="tag tag-res">RES</span></span></div>
+        <div class="building"><span class="name">Roosevelt Hall</span><span class="tags"></span></div>
+        <div class="building"><span class="name">Skogley Turfgrass</span><span class="tags"><span class="tag tag-facp">FACP</span></span></div>
+        <div class="building"><span class="name">Surge Building</span><span class="tags"><span class="tag tag-facp">FACP</span></span></div>
+        <div class="building"><span class="name">Taft Hall</span><span class="tags"><span class="tag tag-facp">FACP</span></span></div>
+        <div class="building"><span class="name">Texas Instruments Bldg</span><span class="tags"><span class="tag tag-facp">FACP</span></span></div>
+        <div class="building"><span class="name">Tucker Hall</span><span class="tags"><span class="tag tag-res">RES</span></span></div>
+        <div class="building"><span class="name">Tyler Hall</span><span class="tags"><span class="tag tag-facp">FACP</span></span></div>
+        <div class="building"><span class="name">URI Foundation Bldg</span><span class="tags"></span></div>
+        <div class="building"><span class="name">Washburn Hall</span><span class="tags"></span></div>
+        <div class="building"><span class="name">White Hall</span><span class="tags"></span></div>
+        <div class="building"><span class="name">Woodward Hall</span><span class="tags"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- What We Bring -->
+  <div class="section">
+    <div class="section-label">What ML Systems Brings</div>
+    <h2>Intelligence + Institutional Access</h2>
+    <p class="lead">We've done the work. Full RFQ analysis, scope mapping, financial breakdowns, and compliance checklists — ready to accelerate your bid preparation.</p>
+
+    <ul class="value-list">
+      <li>
+        <div class="icon">1</div>
+        <div><strong style="color:var(--white)">Complete RFQ Analysis</strong><br>27-page solicitation fully extracted. Scope of work mapped. All 8 required bid attachments identified. Vendor certification questionnaire decoded. You get a head start measured in days, not hours.</div>
+      </li>
+      <li>
+        <div class="icon">2</div>
+        <div><strong style="color:var(--white)">URI Alumni Relationship</strong><br>ML Systems' founder is a URI RISEUP alumni with an active institutional relationship. We know the campus, the culture, and the people. This isn't a cold bid — it's a warm introduction.</div>
+      </li>
+      <li>
+        <div class="icon">3</div>
+        <div><strong style="color:var(--white)">State Procurement Registration</strong><br>ML Systems is registered on Ocean State Procures and actively monitors RI solicitations. We identify opportunities before most contractors know they exist.</div>
+      </li>
+      <li>
+        <div class="icon">4</div>
+        <div><strong style="color:var(--white)">Future Pipeline</strong><br>This is Phase 3. Phases 4, 5, and beyond are coming. URI is one campus — CCRI, RIC, and other state institutions have similar needs. The partner who works with us now gets first access to every future opportunity we scout.</div>
+      </li>
+      <li>
+        <div class="icon">5</div>
+        <div><strong style="color:var(--white)">Technology Platform</strong><br>ML Systems builds construction intelligence software — project visualization, building ontology, financial modeling. We're investing in tools that make construction data actionable.</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- The Deal -->
+  <div class="section">
+    <div class="section-label">The Partnership</div>
+    <h2>What We're Looking For</h2>
+    <p class="lead">We're building toward being a general contractor ourselves. Right now, we bring intelligence and relationships. Here's what a partnership looks like.</p>
+
+    <div class="tiers">
+      <div class="tier">
+        <div class="tier-label">Tier 1 — Referral</div>
+        <h3>Finder's Fee</h3>
+        <ul>
+          <li>Flat referral fee on contract award</li>
+          <li>Full intelligence package delivered</li>
+          <li>URI introduction facilitated</li>
+          <li>Clean, simple, no ongoing obligations</li>
+        </ul>
+      </div>
+      <div class="tier recommended">
+        <div class="tier-label">Tier 2 — Referral + Access</div>
+        <h3>Learning Partnership</h3>
+        <ul>
+          <li>Everything in Tier 1</li>
+          <li>Job site observation access</li>
+          <li>Bid preparation shadowing</li>
+          <li>Network introductions (bonding, insurance, subs)</li>
+          <li>Mutual investment in long-term relationship</li>
+        </ul>
+      </div>
+      <div class="tier">
+        <div class="tier-label">Tier 3 — Strategic Alliance</div>
+        <h3>Full Partnership</h3>
+        <ul>
+          <li>Everything in Tier 2</li>
+          <li>Ongoing project intelligence consulting</li>
+          <li>Building infrastructure data sharing</li>
+          <li>First-right-of-refusal on future phases</li>
+          <li>Path to joint venture on future projects</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="section">
+    <div class="section-label">Timeline</div>
+    <h2>Critical Dates</h2>
+    <p class="lead">The clock is ticking. Pre-bid conference is in one week. Bid deadline is three weeks out.</p>
+
+    <div class="timeline">
+      <div class="event">
+        <div class="date">March 12, 2026</div>
+        <div class="desc">RFQ released. ML Systems completes full analysis — same day.</div>
+      </div>
+      <div class="event">
+        <div class="date">March 19, 2026 — 1:00 PM</div>
+        <div class="desc">Pre-bid conference at URI Kingston (210 Flagg Rd, Suite 205). Non-mandatory but critical for scope clarification and networking.</div>
+      </div>
+      <div class="event">
+        <div class="date">March 24, 2026 — 2:00 PM</div>
+        <div class="desc">Vendor Q&A window closes. Last chance for written questions to Division of Purchases.</div>
+      </div>
+      <div class="event">
+        <div class="date">April 2, 2026 — 1:30 PM</div>
+        <div class="desc">Bid submission deadline. No exceptions.</div>
+      </div>
+      <div class="event">
+        <div class="date">May 18, 2026</div>
+        <div class="desc">Construction start. 36 buildings, 7-month window to substantial completion.</div>
+      </div>
+      <div class="event">
+        <div class="date">December 15, 2026</div>
+        <div class="desc">Substantial completion deadline. $500/day liquidated damages begin after this date.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Let's Talk</h2>
+    <p>This opportunity is live. The pre-bid conference is March 19. If this fits your capabilities, let's connect this week.</p>
+    <div class="cta-grid">
+      <div class="cta-item">
+        <div class="cta-label">Contact</div>
+        Sal — ML Systems LLC
+      </div>
+      <div class="cta-item">
+        <div class="cta-label">Web</div>
+        mlsystemsri.com
+      </div>
+      <div class="cta-item">
+        <div class="cta-label">Pre-Bid Conference</div>
+        March 19 @ 1:00 PM
+      </div>
+      <div class="cta-item">
+        <div class="cta-label">Bid Deadline</div>
+        April 2 @ 1:30 PM
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="brand">ML Systems LLC</div>
+    <div class="url">mlsystemsri.com</div>
+    <div class="legal">Construction Technology &amp; Project Intelligence — Rhode Island</div>
+  </footer>
+
+</div>
+
+<script>
+function toggleBuildings(btn){
+  const list=document.getElementById('building-list');
+  list.classList.toggle('open');
+  btn.classList.toggle('active');
+  btn.querySelector('.arrow').style.transform=list.classList.contains('open')?'rotate(180deg)':'';
+}
+</script>
+</body>
+</html>

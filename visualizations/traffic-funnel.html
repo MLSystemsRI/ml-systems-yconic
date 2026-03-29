@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S7L16PQTX9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-S7L16PQTX9', {
+    linker: {
+      domains: ['mlsystemsri.com','app.mlsystemsri.com','mlsystemsri.store','mlsystemsri.info','mlsystemsri.net','mlsystemsri.xyz','pit.mlsystemsri.com','collective.mlsystemsri.com','fa.mlsystemsri.com','boh.mlsystemsri.com'],
+      accept_incoming: true
+    },
+    cookie_flags: 'SameSite=None;Secure'
+  });
+  gtag('config', 'G-HXBM95YWEQ', {
+    linker: {
+      domains: ['mlsystemsri.com','app.mlsystemsri.com','mlsystemsri.store','mlsystemsri.info','mlsystemsri.net','mlsystemsri.xyz','pit.mlsystemsri.com','collective.mlsystemsri.com','fa.mlsystemsri.com','boh.mlsystemsri.com'],
+      accept_incoming: true
+    },
+    cookie_flags: 'SameSite=None;Secure'
+  });
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ML Systems — Internet Traffic Funnel · All-Party Integration</title>
+<style>
+  :root {
+    --bg: #0A0A0A;
+    --surface: #141414;
+    --border: #222;
+    --text: #E5E5E5;
+    --muted: #666;
+    --green: #22C55E;
+    --blue: #60A5FA;
+    --orange: #F97316;
+    --teal: #14B8A6;
+    --purple: #A78BFA;
+    --red: #EF4444;
+    --yellow: #FFE500;
+    --slate: #94A3B8;
+    --amber: #F59E0B;
+    --violet: #8B5CF6;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'Inter','SF Pro Display',-apple-system,sans-serif; min-height:100vh; overflow-x:hidden; }
+
+  .container { max-width:1200px; margin:0 auto; padding:40px 24px 80px; }
+
+  /* Header */
+  .header { margin-bottom:48px; }
+  .header .tag { display:inline-flex; align-items:center; gap:6px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--yellow); margin-bottom:12px; }
+  .header .tag::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--yellow); }
+  .header h1 { font-size:36px; font-weight:800; letter-spacing:-1px; line-height:1.1; margin-bottom:8px; }
+  .header h1 span { color:var(--green); }
+  .header .sub { color:var(--muted); font-size:14px; max-width:600px; line-height:1.6; }
+
+  /* Funnel layers */
+  .funnel { display:flex; flex-direction:column; gap:4px; margin-bottom:48px; }
+  .funnel-layer {
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    padding:28px 32px; position:relative; overflow:hidden;
+    transition:border-color 0.3s;
+  }
+  .funnel-layer:hover { border-color:var(--green); }
+  .funnel-layer .layer-num {
+    position:absolute; top:16px; right:24px; font-size:64px; font-weight:800;
+    color:rgba(255,255,255,0.03); line-height:1; pointer-events:none;
+  }
+  .funnel-layer .layer-tag {
+    font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.12em;
+    margin-bottom:10px; display:flex; align-items:center; gap:8px;
+  }
+  .funnel-layer .layer-title { font-size:20px; font-weight:800; margin-bottom:6px; letter-spacing:-0.3px; }
+  .funnel-layer .layer-desc { color:var(--muted); font-size:13px; line-height:1.5; margin-bottom:16px; max-width:700px; }
+
+  /* Domain chips */
+  .domains { display:flex; flex-wrap:wrap; gap:8px; }
+  .domain-chip {
+    display:inline-flex; align-items:center; gap:8px; padding:8px 14px;
+    border-radius:10px; font-size:12px; font-weight:600;
+    border:1px solid; transition:all 0.2s; cursor:default;
+  }
+  .domain-chip .dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+  .domain-chip .role { font-size:10px; font-weight:400; opacity:0.6; }
+
+  /* Color classes */
+  .c-green { color:var(--green); border-color:rgba(34,197,94,0.2); background:rgba(34,197,94,0.06); }
+  .c-green .dot { background:var(--green); }
+  .c-blue { color:var(--blue); border-color:rgba(96,165,250,0.2); background:rgba(96,165,250,0.06); }
+  .c-blue .dot { background:var(--blue); }
+  .c-orange { color:var(--orange); border-color:rgba(249,115,22,0.2); background:rgba(249,115,22,0.06); }
+  .c-orange .dot { background:var(--orange); }
+  .c-teal { color:var(--teal); border-color:rgba(20,184,166,0.2); background:rgba(20,184,166,0.06); }
+  .c-teal .dot { background:var(--teal); }
+  .c-purple { color:var(--purple); border-color:rgba(167,139,250,0.2); background:rgba(167,139,250,0.06); }
+  .c-purple .dot { background:var(--purple); }
+  .c-slate { color:var(--slate); border-color:rgba(148,163,184,0.2); background:rgba(148,163,184,0.06); }
+  .c-slate .dot { background:var(--slate); }
+  .c-amber { color:var(--amber); border-color:rgba(245,158,11,0.2); background:rgba(245,158,11,0.06); }
+  .c-amber .dot { background:var(--amber); }
+  .c-violet { color:var(--violet); border-color:rgba(139,92,246,0.2); background:rgba(139,92,246,0.06); }
+  .c-violet .dot { background:var(--violet); }
+  .c-red { color:var(--red); border-color:rgba(239,68,68,0.2); background:rgba(239,68,68,0.06); }
+  .c-red .dot { background:var(--red); }
+  .c-yellow { color:var(--yellow); border-color:rgba(255,229,0,0.2); background:rgba(255,229,0,0.06); }
+  .c-yellow .dot { background:var(--yellow); }
+
+  /* Arrow between layers */
+  .funnel-arrow {
+    display:flex; align-items:center; justify-content:center; padding:4px 0;
+    color:rgba(34,197,94,0.3); font-size:18px; letter-spacing:4px;
+  }
+
+  /* Integration map */
+  .integration-section { margin-bottom:48px; }
+  .section-title {
+    font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.12em;
+    color:var(--green); margin-bottom:16px;
+  }
+  .integration-grid {
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:12px;
+  }
+  .integration-card {
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:20px 24px; transition:border-color 0.3s;
+  }
+  .integration-card:hover { border-color:var(--green); }
+  .integration-card .ic-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .integration-card .ic-from { font-size:12px; font-weight:700; }
+  .integration-card .ic-arrow { color:var(--muted); font-size:10px; }
+  .integration-card .ic-to { font-size:12px; font-weight:700; }
+  .integration-card .ic-desc { color:var(--muted); font-size:12px; line-height:1.5; }
+  .integration-card .ic-metric { margin-top:8px; font-size:11px; font-weight:600; color:var(--yellow); }
+
+  /* Conversion gates */
+  .gates-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:12px; }
+  .gate-card {
+    background:var(--surface); border:1px solid var(--border); border-radius:12px;
+    padding:20px 24px; border-left:3px solid;
+  }
+  .gate-card .gate-name { font-size:14px; font-weight:700; margin-bottom:4px; }
+  .gate-card .gate-action { color:var(--muted); font-size:12px; line-height:1.5; }
+  .gate-card .gate-value { margin-top:8px; font-size:13px; font-weight:700; }
+
+  /* Revenue endpoints */
+  .revenue-bar {
+    display:flex; gap:12px; flex-wrap:wrap; margin-top:24px;
+  }
+  .rev-chip {
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding:14px 20px; flex:1; min-width:180px; text-align:center;
+  }
+  .rev-chip .rev-amount { font-size:20px; font-weight:800; color:var(--green); }
+  .rev-chip .rev-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; margin-top:4px; }
+
+  /* Footer */
+  .footer { border-top:1px solid var(--border); padding-top:24px; margin-top:48px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+  .footer .f-brand { font-size:12px; font-weight:700; color:var(--muted); }
+  .footer .f-date { font-size:11px; color:var(--muted); font-family:monospace; }
+
+  @media (max-width:768px) {
+    .container { padding:24px 16px 60px; }
+    .header h1 { font-size:26px; }
+    .funnel-layer { padding:20px; }
+    .integration-grid, .gates-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="tag">Financial Architect · Traffic Intelligence</div>
+    <h1>Internet Traffic Funnel<br><span>All-Party Integration</span></h1>
+    <p class="sub">How every ML Systems property — 5 TLDs, 4 standalone apps, 3 APIs, and 12 social channels — feeds a single conversion engine. Every visitor enters a loop. Every loop compounds.</p>
+  </div>
+
+  <!-- Funnel -->
+  <div class="funnel">
+
+    <!-- L1: Awareness -->
+    <div class="funnel-layer">
+      <span class="layer-num">01</span>
+      <div class="layer-tag" style="color:var(--yellow)">⚡ Layer 1 — Awareness</div>
+      <div class="layer-title">First Contact · 12 Channels</div>
+      <div class="layer-desc">Physical cards, social media, search, referrals, and events. Every channel routes to a digital property. The 300 Dot.Card campaign is the physical anchor — $55 total spend, 85% engagement baseline.</div>
+      <div class="domains">
+        <span class="domain-chip c-yellow"><span class="dot"></span>300 Dot.Cards <span class="role">Physical → Digital</span></span>
+        <span class="domain-chip c-green"><span class="dot"></span>Instagram <span class="role">@ml_systemsllc</span></span>
+        <span class="domain-chip c-green"><span class="dot"></span>LinkedIn <span class="role">Language Modeler</span></span>
+        <span class="domain-chip c-green"><span class="dot"></span>X <span class="role">@ML_SystemsLLC</span></span>
+        <span class="domain-chip c-green"><span class="dot"></span>Facebook <span class="role">Local community</span></span>
+        <span class="domain-chip c-green"><span class="dot"></span>Google Search <span class="role">SEO + GMB</span></span>
+        <span class="domain-chip c-purple"><span class="dot"></span>WCS Events <span class="role">Dance Neural Net</span></span>
+        <span class="domain-chip c-green"><span class="dot"></span>URI Network <span class="role">Alumni + RISEUP</span></span>
+      </div>
+    </div>
+
+    <div class="funnel-arrow">▼ ▼ ▼</div>
+
+    <!-- L2: Landing -->
+    <div class="funnel-layer">
+      <span class="layer-num">02</span>
+      <div class="layer-tag" style="color:var(--green)">◉ Layer 2 — Landing Properties</div>
+      <div class="layer-title">5 TLDs · Each With a Mission</div>
+      <div class="layer-desc">Traffic lands on one of five domains. Each TLD has a distinct purpose and color — but all cross-link to each other. The visitor decides their entry point; the ecosystem pulls them deeper.</div>
+      <div class="domains">
+        <span class="domain-chip c-green"><span class="dot"></span>mlsystemsri.com <span class="role">Apply & Manage</span></span>
+        <span class="domain-chip c-slate"><span class="dot"></span>mlsystemsri.info <span class="role">Learn & Verify</span></span>
+        <span class="domain-chip c-teal"><span class="dot"></span>mlsystemsri.store <span class="role">Buy Materials</span></span>
+        <span class="domain-chip c-amber"><span class="dot"></span>mlsystemsri.net <span class="role">Connect & Build</span></span>
+        <span class="domain-chip c-violet"><span class="dot"></span>mlsystemsri.xyz <span class="role">See & Experience</span></span>
+      </div>
+    </div>
+
+    <div class="funnel-arrow">▼ ▼ ▼</div>
+
+    <!-- L3: Engagement -->
+    <div class="funnel-layer">
+      <span class="layer-num">03</span>
+      <div class="layer-tag" style="color:var(--blue)">◎ Layer 3 — Product Engagement</div>
+      <div class="layer-title">4 Standalone Apps · Interactive Demos</div>
+      <div class="layer-desc">Landing pages route visitors into product demos. AUTH_MODE=demo means zero friction — no sign-up required. Every demo session generates intent signal and trains the visitor on ML Systems' capabilities.</div>
+      <div class="domains">
+        <span class="domain-chip c-blue"><span class="dot"></span>Design Studio <span class="role">design.mlsystemsri.com</span></span>
+        <span class="domain-chip c-orange"><span class="dot"></span>Decon Lab <span class="role">decon.mlsystemsri.com</span></span>
+        <span class="domain-chip c-teal"><span class="dot"></span>Builder's Open House <span class="role">mlsystemsri.store</span></span>
+        <span class="domain-chip c-purple"><span class="dot"></span>Financial Architect <span class="role">fa.mlsystemsri.com</span></span>
+      </div>
+    </div>
+
+    <div class="funnel-arrow">▼ ▼ ▼</div>
+
+    <!-- L4: Conversion -->
+    <div class="funnel-layer">
+      <span class="layer-num">04</span>
+      <div class="layer-tag" style="color:var(--orange)">⬡ Layer 4 — Conversion Gates</div>
+      <div class="layer-title">3 Authentication Walls · 3 Revenue Streams</div>
+      <div class="layer-desc">Visitors convert when they hit a gate that requires identity. Each gate unlocks a different revenue path. Clerk auth across all properties means one account = full ecosystem access.</div>
+      <div class="domains">
+        <span class="domain-chip c-green"><span class="dot"></span>Client Portal <span class="role">app.mlsystemsri.com — Clerk auth</span></span>
+        <span class="domain-chip c-green"><span class="dot"></span>API Key <span class="role">api.mlsystemsri.com — Tier signup</span></span>
+        <span class="domain-chip c-teal"><span class="dot"></span>Store Checkout <span class="role">mlsystemsri.store — Stripe</span></span>
+      </div>
+    </div>
+
+    <div class="funnel-arrow">▼ ▼ ▼</div>
+
+    <!-- L5: Revenue -->
+    <div class="funnel-layer" style="border-color:rgba(34,197,94,0.3)">
+      <span class="layer-num">05</span>
+      <div class="layer-tag" style="color:var(--green)">$ Layer 5 — Revenue Capture</div>
+      <div class="layer-title">Every Path Leads Here</div>
+      <div class="layer-desc">Four revenue streams, each compounding. The RCM generates the client. Deconstruction generates the material. The material feeds the store. The data feeds the API. The loop never stops.</div>
+      <div class="revenue-bar">
+        <div class="rev-chip">
+          <div class="rev-amount">RCM</div>
+          <div class="rev-label">Loan Origination · Interest Income</div>
+        </div>
+        <div class="rev-chip">
+          <div class="rev-amount">$49–$10K+</div>
+          <div class="rev-label">Data API · L1–L4 Tiers</div>
+        </div>
+        <div class="rev-chip">
+          <div class="rev-amount">49% off</div>
+          <div class="rev-label">BOH Material Sales</div>
+        </div>
+        <div class="rev-chip">
+          <div class="rev-amount">$500M</div>
+          <div class="rev-label">Construction · 2035 Base</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Cross-Domain Integration Map -->
+  <div class="integration-section">
+    <div class="section-title">Cross-Domain Integration Routes</div>
+    <div class="integration-grid">
+      <div class="integration-card">
+        <div class="ic-header">
+          <span class="ic-from" style="color:var(--green)">.com</span>
+          <span class="ic-arrow">→</span>
+          <span class="ic-to" style="color:var(--blue)">Design Studio</span>
+        </div>
+        <div class="ic-desc">Construction page CTA → design.mlsystemsri.com demo. Visitor designs a home with zero auth. Session data persists in localStorage until portal signup.</div>
+        <div class="ic-metric">Intent signal: curriculum completion rate</div>
+      </div>
+      <div class="integration-card">
+        <div class="ic-header">
+          <span class="ic-from" style="color:var(--green)">.com</span>
+          <span class="ic-arrow">→</span>
+          <span class="ic-to" style="color:var(--orange)">Decon Lab</span>
+        </div>
+        <div class="ic-desc">Deconstruction page CTA → decon.mlsystemsri.com analysis. AI assembly analysis runs client-side. Recovery score = lead quality signal.</div>
+        <div class="ic-metric">Intent signal: analysis submitted to backlog</div>
+      </div>
+      <div class="integration-card">
+        <div class="ic-header">
+          <span class="ic-from" style="color:var(--orange)">Decon Lab</span>
+          <span class="ic-arrow">→</span>
+          <span class="ic-to" style="color:var(--teal)">BOH Store</span>
+        </div>
+        <div class="ic-desc">Recovered materials from decon sessions flow into BOH inventory. Material ID provenance chain links lab analysis to marketplace listing.</div>
+        <div class="ic-metric">Loop: analysis → recovery → listing → sale</div>
+      </div>
+      <div class="integration-card">
+        <div class="ic-header">
+          <span class="ic-from" style="color:var(--teal)">BOH Store</span>
+          <span class="ic-arrow">→</span>
+          <span class="ic-to" style="color:var(--green)">.com Portal</span>
+        </div>
+        <div class="ic-desc">Material buyers discover ML Systems through the store. Store checkout → Clerk account → full portal access. Buyer becomes a construction lead.</div>
+        <div class="ic-metric">Cross-sell: material buyer → homeowner client</div>
+      </div>
+      <div class="integration-card">
+        <div class="ic-header">
+          <span class="ic-from" style="color:var(--slate)">.info</span>
+          <span class="ic-arrow">→</span>
+          <span class="ic-to" style="color:var(--green)">Data API</span>
+        </div>
+        <div class="ic-desc">Knowledge base and provenance viewer on .info establishes authority. Technical visitors discover API docs → sign up for API tier access.</div>
+        <div class="ic-metric">Conversion: researcher → API subscriber</div>
+      </div>
+      <div class="integration-card">
+        <div class="ic-header">
+          <span class="ic-from" style="color:var(--amber)">.net</span>
+          <span class="ic-arrow">→</span>
+          <span class="ic-to" style="color:var(--green)">.com Portal</span>
+        </div>
+        <div class="ic-desc">Contractor network → partnership onboarding. Lenders discover RCM structure. API partners discover integration depth. All route to portal signup.</div>
+        <div class="ic-metric">B2B conversion: partner → integration customer</div>
+      </div>
+      <div class="integration-card">
+        <div class="ic-header">
+          <span class="ic-from" style="color:var(--violet)">.xyz</span>
+          <span class="ic-arrow">→</span>
+          <span class="ic-to" style="color:var(--blue)">Design Studio</span>
+        </div>
+        <div class="ic-desc">3D tours and digital twins create emotional engagement. Visitor experiences the end product → "I want this" → enters Design Studio curriculum.</div>
+        <div class="ic-metric">Emotional trigger: 3D experience → design intent</div>
+      </div>
+      <div class="integration-card">
+        <div class="ic-header">
+          <span class="ic-from" style="color:var(--purple)">FA</span>
+          <span class="ic-arrow">→</span>
+          <span class="ic-to" style="color:var(--green)">Investors Page</span>
+        </div>
+        <div class="ic-desc">Financial Architect visualizations linked from investors page. 3D equity models, Norse Hall, Genesis — all build investor confidence through transparency.</div>
+        <div class="ic-metric">Investor conversion: visualization → "Request the Full Memo"</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Conversion Gates -->
+  <div class="integration-section">
+    <div class="section-title">Conversion Gates · Where Free → Paid</div>
+    <div class="gates-grid">
+      <div class="gate-card" style="border-left-color:var(--green)">
+        <div class="gate-name" style="color:var(--green)">Client Portal Signup</div>
+        <div class="gate-action">Clerk auth wall on app.mlsystemsri.com. Unlocks: Design Studio saves, decon backlog, project tracking, equity dashboard, loan application.</div>
+        <div class="gate-value" style="color:var(--green)">→ RCM loan origination</div>
+      </div>
+      <div class="gate-card" style="border-left-color:var(--green)">
+        <div class="gate-name" style="color:var(--green)">API Key Generation</div>
+        <div class="gate-action">Stripe checkout on api.mlsystemsri.com. Tiers: Free (100 calls) → Starter $49/mo → Pro $149/mo → Enterprise (custom). Unlocks: design data, material data, efficiency scores, ontology.</div>
+        <div class="gate-value" style="color:var(--green)">→ $49–$10K+/mo recurring</div>
+      </div>
+      <div class="gate-card" style="border-left-color:var(--teal)">
+        <div class="gate-name" style="color:var(--teal)">Store Checkout</div>
+        <div class="gate-action">Stripe payment on mlsystemsri.store. No account required to browse. Checkout creates Clerk account + processes payment. Cart persists in localStorage.</div>
+        <div class="gate-value" style="color:var(--teal)">→ Material sale + account creation</div>
+      </div>
+      <div class="gate-card" style="border-left-color:var(--red)">
+        <div class="gate-name" style="color:var(--red)">Loan Application</div>
+        <div class="gate-action">RCM calculator on .com/loan-origination → form submission → partner lender (Stage 1). ML Systems retains client relationship and all data. Highest-value conversion in the funnel.</div>
+        <div class="gate-value" style="color:var(--red)">→ Full value chain entry</div>
+      </div>
+      <div class="gate-card" style="border-left-color:var(--purple)">
+        <div class="gate-name" style="color:var(--purple)">Investor Contact</div>
+        <div class="gate-action">/investors page → "Request the Full Memo" or "Schedule a Conversation" → contact form. FA visualizations build conviction before the ask.</div>
+        <div class="gate-value" style="color:var(--purple)">→ $1.69M raise</div>
+      </div>
+      <div class="gate-card" style="border-left-color:var(--orange)">
+        <div class="gate-name" style="color:var(--orange)">Decon Backlog Submit</div>
+        <div class="gate-action">Decon Lab analysis → "Submit to Portfolio" → requires auth. Creates property + project + seeds phases. Highest-intent signal for construction pipeline.</div>
+        <div class="gate-value" style="color:var(--orange)">→ Construction pipeline lead</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- The Loop -->
+  <div class="integration-section">
+    <div class="section-title">The Equity Loop · Why Traffic Never Leaves</div>
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:32px; text-align:center;">
+      <div style="display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; font-size:14px; font-weight:700;">
+        <span style="color:var(--red)">Loan</span>
+        <span style="color:var(--muted)">→</span>
+        <span style="color:var(--orange)">Decon</span>
+        <span style="color:var(--muted)">→</span>
+        <span style="color:var(--teal)">Materials → BOH</span>
+        <span style="color:var(--muted)">→</span>
+        <span style="color:var(--blue)">Design</span>
+        <span style="color:var(--muted)">→</span>
+        <span style="color:var(--green)">Build</span>
+        <span style="color:var(--muted)">→</span>
+        <span style="color:var(--green)">Equity ↑</span>
+        <span style="color:var(--muted)">→</span>
+        <span style="color:var(--red)">New Loan</span>
+        <span style="color:rgba(255,229,0,0.5)">⟲</span>
+      </div>
+      <p style="color:var(--muted); font-size:12px; margin-top:16px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.6;">
+        The client who enters through any property eventually cycles through all of them.
+        Each cycle increases property value by ~9% (calibrated). Each cycle generates material for BOH,
+        data for the API, and training data for ML3. The funnel is a loop — not a line.
+      </p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="f-brand">ML Systems · Financial Architect</span>
+    <span class="f-date">2026-03-16</span>
+  </div>
+
+</div>
+</body>
+</html>

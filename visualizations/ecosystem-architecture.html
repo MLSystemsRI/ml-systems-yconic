@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S7L16PQTX9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-S7L16PQTX9', {
+    linker: { domains: ['mlsystemsri.com','app.mlsystemsri.com','mlsystemsri.store','mlsystemsri.info','mlsystemsri.net','mlsystemsri.xyz','pit.mlsystemsri.com','collective.mlsystemsri.com','fa.mlsystemsri.com','boh.mlsystemsri.com','ae.mlsystemsri.com','lm.mlsystemsri.com'], accept_incoming: true },
+    cookie_flags: 'SameSite=None;Secure'
+  });
+  gtag('config', 'G-HXBM95YWEQ', {
+    linker: { domains: ['mlsystemsri.com','app.mlsystemsri.com','mlsystemsri.store','mlsystemsri.info','mlsystemsri.net','mlsystemsri.xyz','pit.mlsystemsri.com','collective.mlsystemsri.com','fa.mlsystemsri.com','boh.mlsystemsri.com','ae.mlsystemsri.com','lm.mlsystemsri.com'], accept_incoming: true },
+    cookie_flags: 'SameSite=None;Secure'
+  });
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecosystem Architecture — ML Systems</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0b0a0f;color:#d0cbbc;font-family:'SF Pro Display','Inter',system-ui,sans-serif;overflow:hidden;height:100vh;width:100vw}
+  canvas{display:block}
+  #tooltip{position:fixed;pointer-events:none;background:rgba(14,12,20,.92);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(12px);border-radius:10px;padding:14px 18px;font-size:12px;line-height:1.6;max-width:320px;opacity:0;transition:opacity .2s;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+  #tooltip .tt-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+  #tooltip .tt-name{font-size:16px;font-weight:700;margin-bottom:6px}
+  #tooltip .tt-desc{font-size:11px;color:#8a8594;line-height:1.5}
+  #tooltip .tt-url{font-size:10px;color:#5a566a;margin-top:6px}
+  #legend{position:fixed;bottom:20px;left:20px;display:flex;flex-wrap:wrap;gap:12px;z-index:10}
+  .leg{display:flex;align-items:center;gap:6px;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:#5a566a;cursor:pointer;transition:color .2s}
+  .leg:hover{color:#d0cbbc}
+  .leg .dot{width:8px;height:8px;border-radius:50%}
+  #title{position:fixed;top:24px;left:24px;z-index:10}
+  #title h1{font-size:20px;font-weight:700;letter-spacing:.03em}
+  #title h1 span{color:#22C55E;text-shadow:0 0 16px rgba(34,197,94,.35)}
+  #title p{font-size:9px;color:#5a566a;letter-spacing:.12em;text-transform:uppercase;margin-top:4px}
+  #controls{position:fixed;top:24px;right:24px;display:flex;gap:8px;z-index:10}
+  .ctrl-btn{background:rgba(14,12,20,.6);border:1px solid rgba(255,255,255,.08);color:#5a566a;font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:6px 12px;border-radius:6px;cursor:pointer;transition:all .2s;backdrop-filter:blur(8px)}
+  .ctrl-btn:hover,.ctrl-btn.active{border-color:rgba(34,197,94,.3);color:#d0cbbc}
+  #stats{position:fixed;bottom:20px;right:20px;font-size:10px;color:#3a3644;z-index:10;text-align:right;line-height:1.8}
+  #back{position:fixed;top:24px;left:24px;z-index:20;text-decoration:none;font-size:10px;color:#5a566a;letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+  #back:hover{color:#22C55E}
+</style>
+</head>
+<body>
+<a id="back" href="index.html">&larr; Hub</a>
+<div id="title" style="left:80px">
+  <h1>Ecosystem <span>Architecture</span></h1>
+  <p>3 Neural Nets &bull; 9 Nodes &bull; 14 Repos &bull; 12 Domains &bull; 2 Agents</p>
+</div>
+<div id="controls">
+  <button class="ctrl-btn active" onclick="setView('all')">All</button>
+  <button class="ctrl-btn" onclick="setView('physical')">Physical</button>
+  <button class="ctrl-btn" onclick="setView('financial')">Financial</button>
+  <button class="ctrl-btn" onclick="setView('dance')">Dance</button>
+  <button class="ctrl-btn" onclick="setView('infra')">Infra</button>
+</div>
+<div id="tooltip">
+  <div class="tt-label"></div>
+  <div class="tt-name"></div>
+  <div class="tt-desc"></div>
+  <div class="tt-url"></div>
+</div>
+<div id="legend"></div>
+<div id="stats"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// === DATA ===
+const COLORS = {
+  green: 0x22C55E, blue: 0x60A5FA, orange: 0xF97316, teal: 0x14B8A6,
+  red: 0xEF4444, slate: 0x94A3B8, amber: 0xF59E0B, violet: 0x8B5CF6,
+  emerald: 0x10B981, cyan: 0x06B6D4, yellow: 0xFFE500, purple: 0xA78BFA,
+  white: 0xd0cbbc, dim: 0x3a3644
+};
+
+// Core node at center
+const CORE = { id: 'ml-systems', name: 'ML Systems', desc: 'Construction proptech — closed-loop system that finances, deconstructs, designs and builds.', color: COLORS.green, url: 'mlsystemsri.com', type: 'core' };
+
+// Neural Net nodes (inner ring)
+const NEURAL_NETS = [
+  { id: 'physical', name: 'Physical Net', color: COLORS.green, nodes: [
+    { id: 'ML1', name: 'ML1 — Deconstruction', desc: 'Reverse engineering building assemblies. 80-90% material recovery, 51% resale value. Dried adhesives, polyurethane, composite fasteners.', color: COLORS.orange, type: 'neural' },
+    { id: 'ML2', name: 'ML2 — Design', desc: 'AI-powered residential design. Curriculum generation, sustainability scoring, 45+ sheet plan stacks.', color: COLORS.blue, type: 'neural' },
+    { id: 'ML3', name: 'ML3 — Construction', desc: 'Physical build operations. Zone-based tracking, Day N scheduling, AI scoring, phase management.', color: COLORS.green, type: 'neural' },
+  ]},
+  { id: 'financial', name: 'Financial Net', color: COLORS.blue, nodes: [
+    { id: 'LM', name: 'LM — Language Modeler', desc: 'AI-native development, prompt engineering, system intelligence architecture. The CEO\'s language layer — engineering outcomes through language with AI as execution layer.', color: COLORS.cyan, type: 'neural', url: 'lm.mlsystemsri.com' },
+    { id: 'FA', name: 'FA — Financial Architect', desc: 'Biaxial time matrix, financial topology, 3D visualizations. Investment thesis, equity structure, partnership mapping.', color: COLORS.blue, type: 'neural', url: 'fa.mlsystemsri.com' },
+    { id: 'AE', name: 'AE — Accounting Engineer', desc: 'GAAP compliance, construction accounting, cost segregation, C-Corp tax strategy. ASC 606/350-40/310-20/718.', color: COLORS.emerald, type: 'neural', url: 'ae.mlsystemsri.com' },
+  ]},
+  { id: 'dance', name: 'Dance Net', color: COLORS.purple, nodes: [
+    { id: 'EV', name: 'EV — Events', desc: 'WSDC event management. Northeast Swing Classic, 6 event cities, competition infrastructure.', color: COLORS.purple, type: 'neural' },
+    { id: 'CR', name: 'CR — Healthcare Subsidy', desc: '$1/WSDC point/month healthcare subsidy. Linear formula, no tiers. 1 rental property supports ~15.4 dancers.', color: COLORS.red, type: 'neural' },
+    { id: 'GW', name: 'GW — Growth', desc: 'Community growth engine. Dance + construction crossover. Warwick pilot, 501(c)(3) Phase 2.', color: COLORS.yellow, type: 'neural' },
+  ]}
+];
+
+// Apps / Portals (middle ring)
+const APPS = [
+  { id: 'marketing', name: 'Marketing Site', desc: 'Primary marketing — mlsystemsri.com. Next.js 15, the front door.', color: COLORS.green, url: 'mlsystemsri.com', type: 'app', net: 'all', ga: 'G-HXBM95YWEQ' },
+  { id: 'app', name: 'Platform App', desc: 'Core application — tRPC, Clerk auth, Drizzle ORM. Neural net RBAC, token system.', color: COLORS.green, url: 'app.mlsystemsri.com', type: 'app', net: 'all', ga: 'G-HXBM95YWEQ' },
+  { id: 'design-studio', name: 'Design Studio', desc: 'AI residential design platform. Claude-powered curriculum, DALL-E renders, sustainability scoring.', color: COLORS.blue, url: '—', type: 'app', net: 'physical', ga: 'G-HXBM95YWEQ' },
+  { id: 'decon-lab', name: 'Deconstruction Lab', desc: 'AI R&D for reverse engineering building assemblies. Material separation science, recovery scoring.', color: COLORS.orange, url: '—', type: 'app', net: 'physical', ga: 'G-HXBM95YWEQ' },
+  { id: 'boh', name: "Builder's Open House", desc: 'Secondary building materials marketplace + gear shop. 10 zone-based categories, cart system.', color: COLORS.teal, url: 'mlsystemsri.store / boh.mlsystemsri.com', type: 'app', net: 'physical', ga: 'G-DYJKC01BE2' },
+  { id: 'loan-pit', name: 'The Pit', desc: 'Reverse auction for construction loans. 7-tier fee system, 3 integration modes, subsidy programs.', color: COLORS.red, url: 'pit.mlsystemsri.com', type: 'app', net: 'financial', ga: 'G-S9TDSKK053' },
+  { id: 'builders-collective', name: 'Builders Collective', desc: 'Design verification gate. 10/10 plan stack validation before loan origination. Dual: verify + train CDA.', color: COLORS.green, url: 'collective.mlsystemsri.com', type: 'app', net: 'physical', ga: 'G-9G140WJRMS' },
+  { id: 'financial-architect', name: 'Financial Architect', desc: '3D visualizations hub. 19 HTML pages with Three.js. Time matrices, topology, pitch decks.', color: COLORS.blue, url: 'fa.mlsystemsri.com', type: 'app', net: 'financial', ga: 'G-S7L16PQTX9' },
+  { id: 'accounting-engineer', name: 'Accounting Engineer', desc: 'GAAP compliance, construction accounting, cost segregation. 13 topic cards.', color: COLORS.emerald, url: 'ae.mlsystemsri.com', type: 'app', net: 'financial', ga: 'G-71VH5N8N73' },
+  { id: 'language-modeler', name: 'Language Modeler', desc: 'AI-native development, prompt engineering, system intelligence. 14 topic cards.', color: COLORS.cyan, url: 'lm.mlsystemsri.com', type: 'app', net: 'financial', ga: 'G-RGQ617ET82' },
+  { id: 'info', name: 'Intelligence (.info)', desc: 'DEM exports, salvage value codices, state agency compliance. Intelligence portal.', color: COLORS.slate, url: 'mlsystemsri.info', type: 'app', net: 'all', ga: 'G-2G9G01XBRH' },
+  { id: 'net', name: 'Network (.net)', desc: 'Partnership network, institutional connections, community hub.', color: COLORS.amber, url: 'mlsystemsri.net', type: 'app', net: 'all', ga: 'G-48JFPTS94Z' },
+  { id: 'xyz', name: 'Experience (.xyz)', desc: 'Immersive 3D experiences. Property tours, digital twins, innovation lab. Three.js scenes.', color: COLORS.violet, url: 'mlsystemsri.xyz', type: 'app', net: 'all', ga: 'G-QW9ELDBM2W' },
+  { id: 'design-architect', name: 'Design Architect (CDA)', desc: 'Creative Design Agent — steel mastery, creative problem-solving, construction documents. 9 knowledge files.', color: COLORS.blue, url: '—', type: 'app', net: 'physical' },
+];
+
+// Agents (special orbit)
+const AGENTS = [
+  { id: 'pi', name: 'Project Intelligence', desc: 'Lucent Lens equipped. Finds value-increasing tasks across the ecosystem. Priority: homeowner > ecosystem > ML Systems. Information before profit.', color: COLORS.yellow, type: 'agent', sub: 'Lucent Lens' },
+  { id: 'custodian', name: 'The Custodian', desc: 'Sal\'s operational agent — TT (Trustee) + LL (Lucent Lens) + MVE (Minimum Viable Expense). Fiduciary duty to public equity. Deploys LM + FA + AE.', color: COLORS.green, type: 'agent', sub: 'TT + LL + MVE' },
+];
+
+// Infrastructure (outer ring)
+const INFRA = [
+  { id: 'vercel', name: 'Vercel', desc: 'Hosting for all 14 web properties. Auto-deploy from GitHub. SSL, edge functions, preview deployments.', color: COLORS.white, type: 'infra' },
+  { id: 'supabase', name: 'Supabase', desc: 'PostgreSQL — mtvfydcwtdmchptktxrv, us-west-2. Pooled connections (port 6543) for serverless.', color: COLORS.emerald, type: 'infra' },
+  { id: 'flyio', name: 'Fly.io', desc: 'Python scorer service — ml-systems-scorer, ewr region. FastAPI + XGBoost, always warm.', color: COLORS.violet, type: 'infra' },
+  { id: 'clerk', name: 'Clerk', desc: 'Authentication provider. Neural Net RBAC layer. Production mode only — standalone apps use demo mode.', color: COLORS.blue, type: 'infra' },
+  { id: 'stripe', name: 'Stripe', desc: 'Payment processing. Token packs, subscription billing. Currently test mode.', color: COLORS.purple, type: 'infra' },
+  { id: 'inngest', name: 'Inngest', desc: 'Background job orchestration. Event-driven workflows, retry logic.', color: COLORS.amber, type: 'infra' },
+  { id: 'r2', name: 'Cloudflare R2', desc: 'Object storage — ml-systems-documents bucket. Document uploads, material photos.', color: COLORS.orange, type: 'infra' },
+  { id: 'ga4', name: 'Google Analytics 4', desc: 'Unified cross-domain tracking (G-HXBM95YWEQ) + 10 domain-specific properties. 12 domains linked.', color: COLORS.yellow, type: 'infra' },
+  { id: 'github', name: 'GitHub', desc: 'MLSystemsRI org. Monorepo + satellite repos. Private repositories.', color: COLORS.white, type: 'infra' },
+];
+
+// 3D Scenes
+const SCENES_3D = [
+  { id: 'boh-3d-tour', name: '3D Tour — The House', desc: 'React Three Fiber. Complete house walkthrough. Challenge 0: house intact.', color: COLORS.teal, type: '3d', port: 3005 },
+  { id: 'boh-3d-decon', name: '3D Decon — The Yard', desc: 'Materials yard visualization. Zone-based material sorting. Challenge 0.', color: COLORS.orange, type: '3d', port: 3006 },
+  { id: 'boh-3d-site', name: '3D Site — The Foundation', desc: 'Job site + foundation. Challenge 0a. 300-year asset base.', color: COLORS.green, type: '3d', port: 3007 },
+];
+
+// APIs
+const APIS = [
+  { id: 'data-api', name: 'Data API', desc: 'Integration depth L1-L4. Transparency Trust Protocol. X-TT-Score headers. AI crawlers gated (402).', color: COLORS.green, url: 'api.mlsystemsri.com', type: 'api' },
+  { id: 'scorer', name: 'Scorer API', desc: 'Python FastAPI + XGBoost. Credit scoring, risk assessment. Not publicly accessible.', color: COLORS.red, url: 'scorer.mlsystemsri.com', type: 'api' },
+  { id: 'trpc', name: 'tRPC Gateway', desc: 'Type-safe API at /api/trpc. Mobile + web connect to same endpoint. Full neural net RBAC.', color: COLORS.blue, type: 'api' },
+];
+
+// === THREE.JS SCENE ===
+let scene, camera, renderer, raycaster, mouse, hoveredObj = null;
+let allObjects = [], connections = [], particles = [];
+let time = 0, activeView = 'all';
+
+function init() {
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.set(0, 8, 18);
+  camera.lookAt(0, 0, 0);
+
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x0b0a0f);
+  document.body.appendChild(renderer.domElement);
+
+  raycaster = new THREE.Raycaster();
+  mouse = new THREE.Vector2(-999, -999);
+
+  // Ambient light
+  scene.add(new THREE.AmbientLight(0x222222, 0.5));
+
+  // Core glow
+  createCore();
+  // Neural net rings
+  createNeuralNets();
+  // Apps ring
+  createAppsRing();
+  // Agents
+  createAgents();
+  // Infrastructure ring
+  createInfraRing();
+  // 3D scenes
+  createScenesRing();
+  // APIs
+  createAPIs();
+  // Connections
+  createConnections();
+  // Orbital rings (visual)
+  createOrbitalRings();
+  // Star field
+  createStarField();
+
+  // Legend
+  buildLegend();
+  // Stats
+  updateStats();
+
+  // Events
+  window.addEventListener('resize', onResize);
+  window.addEventListener('mousemove', onMouseMove);
+
+  animate();
+}
+
+function createNode(x, y, z, color, size, data) {
+  const geo = new THREE.SphereGeometry(size, 16, 16);
+  const mat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.9 });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.set(x, y, z);
+  mesh.userData = data;
+  scene.add(mesh);
+  allObjects.push(mesh);
+
+  // Glow
+  const glowGeo = new THREE.SphereGeometry(size * 2, 16, 16);
+  const glowMat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.08 });
+  const glow = new THREE.Mesh(glowGeo, glowMat);
+  mesh.add(glow);
+
+  // Label
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 256; canvas.height = 64;
+  ctx.fillStyle = '#d0cbbc';
+  ctx.font = 'bold 18px Inter, system-ui, sans-serif';
+  ctx.textAlign = 'center';
+  const label = data.id || data.name;
+  ctx.fillText(label.length > 20 ? label.substring(0, 18) + '…' : label, 128, 36);
+  const tex = new THREE.CanvasTexture(canvas);
+  const spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true, opacity: 0.7 });
+  const sprite = new THREE.Sprite(spriteMat);
+  sprite.scale.set(3, 0.75, 1);
+  sprite.position.y = size + 0.5;
+  mesh.add(sprite);
+
+  return mesh;
+}
+
+function createCore() {
+  const core = createNode(0, 0, 0, COLORS.green, 0.6, CORE);
+  // Pulsing ring
+  const ringGeo = new THREE.RingGeometry(0.9, 1.0, 64);
+  const ringMat = new THREE.MeshBasicMaterial({ color: COLORS.green, transparent: true, opacity: 0.2, side: THREE.DoubleSide });
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.rotation.x = Math.PI / 2;
+  core.add(ring);
+  core.userData._ring = ring;
+}
+
+function createNeuralNets() {
+  const radius = 3.5;
+  const netAngles = [0, Math.PI * 2 / 3, Math.PI * 4 / 3];
+
+  NEURAL_NETS.forEach((net, ni) => {
+    const baseAngle = netAngles[ni];
+    net.nodes.forEach((node, i) => {
+      const angle = baseAngle + (i - 1) * 0.35;
+      const x = Math.cos(angle) * radius;
+      const z = Math.sin(angle) * radius;
+      const y = (i - 1) * 0.4;
+      createNode(x, y, z, node.color, 0.3, { ...node, net: net.id });
+    });
+  });
+}
+
+function createAppsRing() {
+  const radius = 7.5;
+  APPS.forEach((app, i) => {
+    const angle = (i / APPS.length) * Math.PI * 2 - Math.PI / 2;
+    const x = Math.cos(angle) * radius;
+    const z = Math.sin(angle) * radius;
+    const y = Math.sin(angle * 2) * 0.3;
+    createNode(x, y, z, app.color, 0.22, app);
+  });
+}
+
+function createAgents() {
+  AGENTS.forEach((agent, i) => {
+    const angle = i * Math.PI + Math.PI / 4;
+    const x = Math.cos(angle) * 2;
+    const z = Math.sin(angle) * 2;
+    createNode(x, 2.5, z, agent.color, 0.35, agent);
+  });
+}
+
+function createInfraRing() {
+  const radius = 11;
+  INFRA.forEach((inf, i) => {
+    const angle = (i / INFRA.length) * Math.PI * 2;
+    const x = Math.cos(angle) * radius;
+    const z = Math.sin(angle) * radius;
+    createNode(x, -0.5, z, inf.color, 0.15, inf);
+  });
+}
+
+function createScenesRing() {
+  SCENES_3D.forEach((sc, i) => {
+    const angle = (i / 3) * Math.PI * 2 + Math.PI / 6;
+    const x = Math.cos(angle) * 5.5;
+    const z = Math.sin(angle) * 5.5;
+    createNode(x, -1.5, z, sc.color, 0.18, sc);
+  });
+}
+
+function createAPIs() {
+  APIS.forEach((api, i) => {
+    const angle = (i / 3) * Math.PI * 2 + Math.PI / 2;
+    const x = Math.cos(angle) * 5.5;
+    const z = Math.sin(angle) * 5.5;
+    createNode(x, 1.8, z, api.color, 0.18, api);
+  });
+}
+
+function createConnections() {
+  // Neural net to core
+  allObjects.forEach(obj => {
+    if (obj.userData.type === 'neural') {
+      addConnection(new THREE.Vector3(0,0,0), obj.position, COLORS.dim, 0.06);
+    }
+    // Agent to core
+    if (obj.userData.type === 'agent') {
+      addConnection(new THREE.Vector3(0,0,0), obj.position, COLORS.yellow, 0.04);
+    }
+  });
+
+  // Apps to their neural net nodes
+  allObjects.forEach(obj => {
+    if (obj.userData.type === 'app' && obj.userData.net) {
+      // Find closest neural node of matching net
+      const netNodes = allObjects.filter(o => o.userData.type === 'neural');
+      if (netNodes.length > 0) {
+        let closest = netNodes[0], minDist = Infinity;
+        netNodes.forEach(n => {
+          const d = obj.position.distanceTo(n.position);
+          if (d < minDist) { minDist = d; closest = n; }
+        });
+        addConnection(closest.position, obj.position, COLORS.dim, 0.03);
+      }
+    }
+  });
+}
+
+function addConnection(from, to, color, opacity) {
+  const points = [from.clone(), to.clone()];
+  const geo = new THREE.BufferGeometry().setFromPoints(points);
+  const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity });
+  const line = new THREE.Line(geo, mat);
+  scene.add(line);
+  connections.push(line);
+}
+
+function createOrbitalRings() {
+  [3.5, 7.5, 11].forEach((radius, i) => {
+    const geo = new THREE.RingGeometry(radius - 0.02, radius + 0.02, 128);
+    const mat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.03, side: THREE.DoubleSide });
+    const ring = new THREE.Mesh(geo, mat);
+    ring.rotation.x = Math.PI / 2;
+    ring.position.y = i === 0 ? 0 : i === 1 ? 0 : -0.5;
+    scene.add(ring);
+  });
+  // Agent orbit (tilted)
+  const agentRing = new THREE.RingGeometry(1.98, 2.02, 64);
+  const agentMat = new THREE.MeshBasicMaterial({ color: COLORS.yellow, transparent: true, opacity: 0.06, side: THREE.DoubleSide });
+  const ar = new THREE.Mesh(agentRing, agentMat);
+  ar.rotation.x = Math.PI / 3;
+  ar.position.y = 2.5;
+  scene.add(ar);
+}
+
+function createStarField() {
+  const geo = new THREE.BufferGeometry();
+  const positions = new Float32Array(3000 * 3);
+  for (let i = 0; i < 3000; i++) {
+    positions[i*3] = (Math.random() - 0.5) * 80;
+    positions[i*3+1] = (Math.random() - 0.5) * 80;
+    positions[i*3+2] = (Math.random() - 0.5) * 80;
+  }
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const mat = new THREE.PointsMaterial({ color: 0x444444, size: 0.05, transparent: true, opacity: 0.6 });
+  scene.add(new THREE.Points(geo, mat));
+}
+
+// === INTERACTION ===
+function onMouseMove(e) {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(allObjects);
+
+  const tooltip = document.getElementById('tooltip');
+
+  if (intersects.length > 0) {
+    const obj = intersects[0].object;
+    if (hoveredObj !== obj) {
+      if (hoveredObj) hoveredObj.material.opacity = 0.9;
+      hoveredObj = obj;
+      obj.material.opacity = 1;
+    }
+
+    const d = obj.userData;
+    const typeLabels = { core: 'Core', neural: 'Neural Net Node', app: 'Application', agent: 'Agent', infra: 'Infrastructure', '3d': '3D Scene', api: 'API' };
+    tooltip.querySelector('.tt-label').textContent = typeLabels[d.type] || d.type;
+    tooltip.querySelector('.tt-label').style.color = '#' + (d.color || COLORS.white).toString(16).padStart(6, '0');
+    tooltip.querySelector('.tt-name').textContent = d.name;
+    tooltip.querySelector('.tt-desc').textContent = d.desc || '';
+    const urlLine = [];
+    if (d.url) urlLine.push(d.url);
+    if (d.ga) urlLine.push('GA4: ' + d.ga);
+    if (d.sub) urlLine.push(d.sub);
+    if (d.port) urlLine.push('Port: ' + d.port);
+    tooltip.querySelector('.tt-url').textContent = urlLine.join(' · ');
+
+    tooltip.style.opacity = '1';
+    tooltip.style.left = Math.min(e.clientX + 16, window.innerWidth - 340) + 'px';
+    tooltip.style.top = Math.min(e.clientY + 16, window.innerHeight - 200) + 'px';
+  } else {
+    if (hoveredObj) { hoveredObj.material.opacity = 0.9; hoveredObj = null; }
+    tooltip.style.opacity = '0';
+  }
+}
+
+function setView(view) {
+  activeView = view;
+  document.querySelectorAll('.ctrl-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  allObjects.forEach(obj => {
+    const d = obj.userData;
+    let visible = true;
+    if (view !== 'all' && view !== 'infra') {
+      if (d.type === 'neural' && d.net !== view) visible = false;
+      if (d.type === 'app' && d.net && d.net !== view && d.net !== 'all') visible = false;
+    }
+    if (view === 'infra') {
+      visible = d.type === 'infra' || d.type === 'core' || d.type === 'api';
+    }
+    obj.visible = visible;
+    obj.children.forEach(c => c.visible = visible);
+  });
+
+  connections.forEach(c => {
+    c.visible = view === 'all';
+  });
+}
+
+function onResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function buildLegend() {
+  const legend = document.getElementById('legend');
+  const items = [
+    { label: 'Neural Node', color: '#22C55E' },
+    { label: 'Application', color: '#60A5FA' },
+    { label: 'Agent', color: '#FFE500' },
+    { label: 'Infrastructure', color: '#94A3B8' },
+    { label: 'API', color: '#EF4444' },
+    { label: '3D Scene', color: '#14B8A6' },
+  ];
+  items.forEach(it => {
+    const el = document.createElement('div');
+    el.className = 'leg';
+    el.innerHTML = `<span class="dot" style="background:${it.color}"></span>${it.label}`;
+    legend.appendChild(el);
+  });
+}
+
+function updateStats() {
+  document.getElementById('stats').innerHTML = [
+    `${NEURAL_NETS.reduce((a,n) => a + n.nodes.length, 0)} neural nodes`,
+    `${APPS.length} applications`,
+    `${AGENTS.length} agents`,
+    `${APIS.length} APIs`,
+    `${SCENES_3D.length} 3D scenes`,
+    `${INFRA.length} infrastructure`,
+    `12 domains · 1 unified analytics`
+  ].join('<br>');
+}
+
+// === ANIMATE ===
+function animate() {
+  requestAnimationFrame(animate);
+  time += 0.005;
+
+  // Slow orbit camera
+  camera.position.x = Math.cos(time * 0.15) * 18;
+  camera.position.z = Math.sin(time * 0.15) * 18;
+  camera.position.y = 8 + Math.sin(time * 0.3) * 1.5;
+  camera.lookAt(0, 0, 0);
+
+  // Pulse core
+  allObjects.forEach(obj => {
+    if (obj.userData.type === 'core') {
+      const s = 1 + Math.sin(time * 3) * 0.08;
+      obj.scale.set(s, s, s);
+    }
+    // Gentle float on agents
+    if (obj.userData.type === 'agent') {
+      obj.position.y = 2.5 + Math.sin(time * 2 + allObjects.indexOf(obj)) * 0.15;
+    }
+  });
+
+  renderer.render(scene, camera);
+}
+
+init();
+</script>
+</body>
+</html>

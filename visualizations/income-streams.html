@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S7L16PQTX9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-S7L16PQTX9', {
+    linker: {
+      domains: ['mlsystemsri.com','app.mlsystemsri.com','mlsystemsri.store','mlsystemsri.info','mlsystemsri.net','mlsystemsri.xyz','pit.mlsystemsri.com','collective.mlsystemsri.com','fa.mlsystemsri.com','boh.mlsystemsri.com'],
+      accept_incoming: true
+    },
+    cookie_flags: 'SameSite=None;Secure'
+  });
+  gtag('config', 'G-HXBM95YWEQ', {
+    linker: {
+      domains: ['mlsystemsri.com','app.mlsystemsri.com','mlsystemsri.store','mlsystemsri.info','mlsystemsri.net','mlsystemsri.xyz','pit.mlsystemsri.com','collective.mlsystemsri.com','fa.mlsystemsri.com','boh.mlsystemsri.com'],
+      accept_incoming: true
+    },
+    cookie_flags: 'SameSite=None;Secure'
+  });
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Income Streams — Financial Architect</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#030208;color:#d0cbbc;font-family:'SF Pro Display','Inter',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+
+  .hud{text-align:center;padding:20px 20px 4px;z-index:10;position:relative}
+  .hud h1{font-size:26px;font-weight:700;letter-spacing:.03em}
+  .hud h1 span{color:#22C55E;text-shadow:0 0 20px rgba(34,197,94,.4)}
+  .hud .sub{font-size:9px;color:#5a566a;letter-spacing:.12em;text-transform:uppercase;margin-top:4px}
+
+  .legend{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;padding:4px 20px 2px;z-index:10;position:relative}
+  .legend-item{display:flex;align-items:center;gap:5px;font-size:9px;font-weight:600}
+  .legend-line{width:20px;height:2px;border-radius:1px}
+  .legend-line.glow{box-shadow:0 0 6px rgba(34,197,94,.5)}
+
+  .zones{display:flex;align-items:center;gap:8px;justify-content:center;padding:2px 20px 0;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;z-index:10;position:relative}
+  .zone{padding:4px 14px;border-radius:4px}
+  .z-lo{color:#60A5FA;background:rgba(96,165,250,.06)}
+  .z-dc{color:#F97316;background:rgba(249,115,22,.08)}
+  .z-co{color:#22C55E;background:rgba(34,197,94,.06)}
+  .z-arrow{color:rgba(255,255,255,.15);font-size:14px}
+
+  #container{width:100%;flex:1;min-height:520px;cursor:grab;position:relative}
+  #container:active{cursor:grabbing}
+
+  .bottom-hud{z-index:10;position:relative;text-align:center;padding:4px 20px 16px}
+  .desc{max-width:600px;margin:0 auto;font-size:10px;color:#5a566a;line-height:1.6}
+  .desc em{color:#d0cbbc;font-style:normal;font-weight:600}
+  .desc .green{color:#22C55E;font-weight:700}
+  .back{margin-top:6px}
+  .back a{font-size:9px;color:#5a566a;text-decoration:none;letter-spacing:.08em;text-transform:uppercase;transition:color .3s}
+  .back a:hover{color:#22C55E}
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+
+<div class="hud">
+  <h1>Income <span>Streams</span></h1>
+  <p class="sub">Wormhole &mdash; Every Income Level Through the Value Chain</p>
+</div>
+<div class="legend">
+  <div class="legend-item"><div class="legend-line glow" style="background:#22C55E"></div> Primary Customers</div>
+  <div class="legend-item"><div class="legend-line" style="background:rgba(160,160,170,.5)"></div> Portfolio</div>
+</div>
+<div class="zones">
+  <span class="zone z-lo">Loan Origination</span>
+  <span class="z-arrow">&#8250;</span>
+  <span class="zone z-dc">Deconstruction</span>
+  <span class="z-arrow">&#8250;</span>
+  <span class="zone z-co">Construction</span>
+</div>
+
+<div id="container"></div>
+
+<div class="bottom-hud">
+  <div class="desc">
+    Every income level enters the wormhole. Strands <em>interweave and compound</em> through the equity cycle &mdash;
+    <span class="green">easier to go down the mountain than up</span>.
+  </div>
+  <div class="back"><a href="index.html">&larr; Financial Architect</a></div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+
+// ── Seeded PRNG ──
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const rng = mulberry32(42);
+
+// ── Scene ──
+const container = document.getElementById('container');
+const W0 = container.clientWidth, H0 = container.clientHeight;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x020110);
+scene.fog = new THREE.FogExp2(0x020110, 0.002);
+
+const camera = new THREE.PerspectiveCamera(52, W0 / H0, 0.1, 500);
+camera.position.set(6, 5, 30);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+renderer.setSize(W0, H0);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.8;
+container.appendChild(renderer.domElement);
+
+// ── Post-processing: Bloom + Vignette ──
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+
+const bloom = new UnrealBloomPass(new THREE.Vector2(W0, H0), 0.8, 0.45, 0.5);
+composer.addPass(bloom);
+
+// Vignette shader
+const vignettePass = new ShaderPass({
+  uniforms: { tDiffuse: { value: null }, darkness: { value: 0.6 }, offset: { value: 1.2 } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader: `uniform sampler2D tDiffuse; uniform float darkness; uniform float offset; varying vec2 vUv;
+    void main(){ vec4 c=texture2D(tDiffuse,vUv); vec2 uv=(vUv-0.5)*vec2(offset); gl_FragColor=vec4(c.rgb*clamp(1.0-dot(uv,uv)*darkness,0.0,1.0),c.a); }`
+});
+composer.addPass(vignettePass);
+
+// ── Controls ──
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.04;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.3;
+controls.target.set(0, 0, 0);
+controls.maxDistance = 70;
+controls.minDistance = 8;
+
+// ── Lights ──
+scene.add(new THREE.AmbientLight(0x404060, 2.5));
+
+const keyLight = new THREE.PointLight(0x22C55E, 3.0, 100);
+keyLight.position.set(-24, 2, 0);
+scene.add(keyLight);
+
+const fillLight = new THREE.PointLight(0x60A5FA, 2.0, 90);
+fillLight.position.set(20, 6, 8);
+scene.add(fillLight);
+
+const rimLight = new THREE.PointLight(0xA78BFA, 1.5, 80);
+rimLight.position.set(0, -8, -12);
+scene.add(rimLight);
+
+const topLight = new THREE.DirectionalLight(0xffffff, 0.15);
+topLight.position.set(0, 20, 0);
+scene.add(topLight);
+
+// Traveling highlight — sweeps along tube
+const travelLight = new THREE.PointLight(0x22C55E, 2.5, 20);
+scene.add(travelLight);
+
+// ══════════════════════════════════════════
+// ██  STARFIELD
+// ══════════════════════════════════════════
+const STAR_COUNT = 3000;
+const starPos = new Float32Array(STAR_COUNT * 3);
+const starCol = new Float32Array(STAR_COUNT * 3);
+const starSizes = new Float32Array(STAR_COUNT);
+for (let i = 0; i < STAR_COUNT; i++) {
+  const theta = rng() * Math.PI * 2;
+  const phi = Math.acos(2 * rng() - 1);
+  const rad = 80 + rng() * 60;
+  starPos[i*3]   = rad * Math.sin(phi) * Math.cos(theta);
+  starPos[i*3+1] = rad * Math.sin(phi) * Math.sin(theta);
+  starPos[i*3+2] = rad * Math.cos(phi);
+  const b = 0.2 + rng() * 0.8;
+  const tint = rng();
+  starCol[i*3]   = b * (tint > 0.7 ? 0.7 : 1);
+  starCol[i*3+1] = b * (tint > 0.4 ? 0.85 : 1);
+  starCol[i*3+2] = b;
+  starSizes[i] = 0.15 + rng() * 0.4;
+}
+const starGeo = new THREE.BufferGeometry();
+starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+starGeo.setAttribute('color', new THREE.BufferAttribute(starCol, 3));
+starGeo.setAttribute('size', new THREE.BufferAttribute(starSizes, 1));
+scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ size: 0.3, vertexColors: true, sizeAttenuation: true })));
+
+// ══════════════════════════════════════════
+// ██  NEBULA CLOUDS
+// ══════════════════════════════════════════
+function makeNebula(color, x, y, z, size, opacity) {
+  const c = document.createElement('canvas');
+  c.width = 256; c.height = 256;
+  const cx = c.getContext('2d');
+  const g = cx.createRadialGradient(128, 128, 0, 128, 128, 128);
+  g.addColorStop(0, color);
+  g.addColorStop(0.4, color.replace(')', ',0.3)').replace('rgb', 'rgba'));
+  g.addColorStop(1, 'transparent');
+  cx.fillStyle = g;
+  cx.fillRect(0, 0, 256, 256);
+  const mat = new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), transparent: true, opacity, blending: THREE.AdditiveBlending, depthWrite: false });
+  const s = new THREE.Sprite(mat);
+  s.position.set(x, y, z);
+  s.scale.set(size, size, 1);
+  scene.add(s);
+  return s;
+}
+makeNebula('rgb(34,197,94)',  -30, 5, -25, 45, 0.12);
+makeNebula('rgb(96,165,250)',  25, -8, -30, 55, 0.10);
+makeNebula('rgb(167,139,250)', -5, 12, -35, 40, 0.08);
+makeNebula('rgb(249,115,22)',  10, -4, -28, 35, 0.07);
+makeNebula('rgb(34,197,94)',  -20, -10, -20, 30, 0.09);
+
+// ══════════════════════════════════════════
+// ██  STRANDS
+// ══════════════════════════════════════════
+const TUBE_LEN = 44;
+const TUBE_R = 5.5;
+const SEGMENTS = 120;
+
+function makeStrandCurve(cfg) {
+  const pts = [];
+  for (let i = 0; i <= SEGMENTS; i++) {
+    const t = i / SEGMENTS;
+    const amp = cfg.ampStart + (cfg.ampEnd - cfg.ampStart) * t * t;
+    const x = -TUBE_LEN / 2 + t * TUBE_LEN;
+    const r = cfg.baseR + amp * cfg.rAmp * Math.sin(cfg.freq * Math.PI * 2 * t + cfg.phase);
+    const theta = cfg.baseAngle + cfg.twist * t * Math.PI * 2
+      + amp * cfg.thetaAmp * Math.sin(cfg.freq2 * Math.PI * 2 * t + cfg.phase2);
+    pts.push(new THREE.Vector3(x, r * Math.cos(theta), r * Math.sin(theta)));
+  }
+  return new THREE.CatmullRomCurve3(pts);
+}
+
+// 3 Green primary
+const primaryConfigs = [
+  { baseR: 1.0, baseAngle: 0,           twist: 1.2, rAmp: 1.5, thetaAmp: 0.8, ampStart: 0.01, ampEnd: 0.35, freq: 2.2, phase: 0.0, freq2: 1.3, phase2: 0.5 },
+  { baseR: 2.8, baseAngle: Math.PI*2/3, twist: 0.8, rAmp: 1.2, thetaAmp: 1.0, ampStart: 0.01, ampEnd: 0.30, freq: 2.5, phase: 1.6, freq2: 1.1, phase2: 3.0 },
+  { baseR: 4.2, baseAngle: Math.PI*4/3, twist: 1.5, rAmp: 0.8, thetaAmp: 0.6, ampStart: 0.01, ampEnd: 0.25, freq: 2.0, phase: 3.4, freq2: 1.5, phase2: 1.2 },
+];
+const greenMat = new THREE.MeshStandardMaterial({
+  color: 0x22C55E, emissive: 0x22C55E, emissiveIntensity: 1.2, roughness: 0.25, metalness: 0.1,
+});
+for (const cfg of primaryConfigs) {
+  const curve = makeStrandCurve(cfg);
+  scene.add(new THREE.Mesh(new THREE.TubeGeometry(curve, SEGMENTS, 0.045, 6, false), greenMat));
+}
+
+// 90 Portfolio — visible gray
+const PORTFOLIO_COUNT = 90;
+const portfolioMat = new THREE.MeshStandardMaterial({
+  color: 0xaaaaae, emissive: 0x888890, emissiveIntensity: 0.6, roughness: 0.3,
+});
+for (let i = 0; i < PORTFOLIO_COUNT; i++) {
+  const cfg = {
+    baseR: 0.5 + (i / (PORTFOLIO_COUNT - 1)) * (TUBE_R - 1.0),
+    baseAngle: rng() * Math.PI * 2, twist: 0.5 + rng() * 2.0,
+    rAmp: 0.6 + rng() * 1.2, thetaAmp: 0.4 + rng() * 1.0,
+    ampStart: 0.005 + rng() * 0.01, ampEnd: 0.15 + rng() * 0.25,
+    freq: 1.4 + rng() * 2.0, phase: rng() * Math.PI * 2,
+    freq2: 0.7 + rng() * 1.5, phase2: rng() * Math.PI * 2,
+  };
+  scene.add(new THREE.Mesh(new THREE.TubeGeometry(makeStrandCurve(cfg), 80, 0.025, 4, false), portfolioMat));
+}
+
+// ══════════════════════════════════════════
+// ██  ENTRY RING COMPLEX (Loan Origination)
+// ══════════════════════════════════════════
+const whX = -TUBE_LEN / 2;
+
+// Ring 1 — main
+const ring1 = new THREE.Mesh(
+  new THREE.TorusGeometry(TUBE_R * 1.05, 0.12, 16, 100),
+  new THREE.MeshStandardMaterial({ color: 0x22C55E, emissive: 0x22C55E, emissiveIntensity: 1.5, roughness: 0.2 })
+);
+ring1.position.x = whX; ring1.rotation.y = Math.PI / 2;
+scene.add(ring1);
+
+// Ring 2 — inner, spins opposite
+const ring2 = new THREE.Mesh(
+  new THREE.TorusGeometry(TUBE_R * 0.75, 0.06, 12, 80),
+  new THREE.MeshStandardMaterial({ color: 0x22C55E, emissive: 0x22C55E, emissiveIntensity: 1.0, roughness: 0.3, transparent: true, opacity: 0.8 })
+);
+ring2.position.x = whX; ring2.rotation.y = Math.PI / 2;
+scene.add(ring2);
+
+// Ring 3 — outer halo
+const ring3 = new THREE.Mesh(
+  new THREE.TorusGeometry(TUBE_R * 1.4, 0.04, 8, 100),
+  new THREE.MeshBasicMaterial({ color: 0x22C55E, transparent: true, opacity: 0.3 })
+);
+ring3.position.x = whX; ring3.rotation.y = Math.PI / 2;
+scene.add(ring3);
+
+// ══════════════════════════════════════════
+// ██  ENERGY TENDRILS (outer wisps)
+// ══════════════════════════════════════════
+const tendrilMat = new THREE.MeshBasicMaterial({ color: 0x22C55E, transparent: true, opacity: 0.35 });
+const tendrilMat2 = new THREE.MeshBasicMaterial({ color: 0x60A5FA, transparent: true, opacity: 0.25 });
+for (let i = 0; i < 10; i++) {
+  const pts = [];
+  const baseAngle = (i / 10) * Math.PI * 2;
+  const outerR = TUBE_R * (1.15 + rng() * 0.3);
+  const twistRate = 2 + rng() * 3;
+  for (let j = 0; j <= 160; j++) {
+    const t = j / 160;
+    const x = -TUBE_LEN / 2 + t * TUBE_LEN;
+    const wobble = Math.sin(t * 12 + baseAngle) * (0.5 + rng() * 1.5);
+    const r = outerR + wobble;
+    const theta = baseAngle + t * twistRate;
+    pts.push(new THREE.Vector3(x, r * Math.cos(theta), r * Math.sin(theta)));
+  }
+  const curve = new THREE.CatmullRomCurve3(pts);
+  const mat = i % 3 === 0 ? tendrilMat2 : tendrilMat;
+  scene.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 160, 0.012, 3, false), mat));
+}
+
+// ══════════════════════════════════════════
+// ██  PARTICLES (500 spiraling through)
+// ══════════════════════════════════════════
+const PARTICLE_COUNT = 500;
+const pPositions = new Float32Array(PARTICLE_COUNT * 3);
+const pColors = new Float32Array(PARTICLE_COUNT * 3);
+const particleData = [];
+
+for (let i = 0; i < PARTICLE_COUNT; i++) {
+  const angle = rng() * Math.PI * 2;
+  const r = TUBE_R * (0.15 + rng() * 0.9);
+  const xOff = (rng() - 0.5) * TUBE_LEN * 1.2;
+  pPositions[i*3] = whX + xOff;
+  pPositions[i*3+1] = r * Math.cos(angle);
+  pPositions[i*3+2] = r * Math.sin(angle);
+  // Color: green, blue, or white
+  const roll = rng();
+  if (roll < 0.35) { pColors[i*3]=0.13; pColors[i*3+1]=0.77; pColors[i*3+2]=0.37; }
+  else if (roll < 0.65) { pColors[i*3]=0.37; pColors[i*3+1]=0.65; pColors[i*3+2]=0.98; }
+  else { pColors[i*3]=0.7; pColors[i*3+1]=0.7; pColors[i*3+2]=0.75; }
+  particleData.push({ angle, r, speed: 0.15 + rng() * 0.7, xSpeed: 0.3 + rng() * 2.0, xBase: xOff });
+}
+const pGeo = new THREE.BufferGeometry();
+pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+pGeo.setAttribute('color', new THREE.BufferAttribute(pColors, 3));
+const pMat = new THREE.PointsMaterial({ size: 0.18, vertexColors: true, sizeAttenuation: true });
+const particles = new THREE.Points(pGeo, pMat);
+scene.add(particles);
+
+// ══════════════════════════════════════════
+// ██  ZONE LABELS (3D sprites)
+// ══════════════════════════════════════════
+function makeLabel(text, color, x) {
+  const c = document.createElement('canvas');
+  c.width = 512; c.height = 64;
+  const cx = c.getContext('2d');
+  cx.font = '700 30px system-ui, sans-serif';
+  cx.textAlign = 'center'; cx.textBaseline = 'middle';
+  cx.fillStyle = color; cx.globalAlpha = 0.3;
+  cx.fillText(text, 256, 32);
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), transparent: true }));
+  s.position.set(x, -TUBE_R - 2.8, 0);
+  s.scale.set(10, 1.3, 1);
+  scene.add(s);
+}
+makeLabel('LOAN ORIGINATION', '#60A5FA', -TUBE_LEN / 3);
+makeLabel('DECONSTRUCTION', '#F97316', 0);
+makeLabel('CONSTRUCTION', '#22C55E', TUBE_LEN / 3);
+
+// ══════════════════════════════════════════
+// ██  RESIZE
+// ══════════════════════════════════════════
+window.addEventListener('resize', () => {
+  const w = container.clientWidth, h = container.clientHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+  composer.setSize(w, h);
+});
+
+// ══════════════════════════════════════════
+// ██  ANIMATION LOOP
+// ══════════════════════════════════════════
+const clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+
+  // Particles spiral
+  const pos = particles.geometry.attributes.position.array;
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    const d = particleData[i];
+    d.angle += d.speed * 0.016;
+    const xOff = ((d.xBase + d.xSpeed * t * 2) % (TUBE_LEN * 1.2)) - TUBE_LEN * 0.6;
+    pos[i*3]   = whX + xOff;
+    pos[i*3+1] = d.r * Math.cos(d.angle);
+    pos[i*3+2] = d.r * Math.sin(d.angle);
+  }
+  particles.geometry.attributes.position.needsUpdate = true;
+
+  // Entry ring complex animation
+  ring1.material.emissiveIntensity = 0.6 + 0.3 * Math.sin(t * 1.2);
+  ring2.rotation.z = t * 0.4;
+  ring2.rotation.x = Math.PI / 2 + Math.sin(t * 0.3) * 0.15;
+  ring3.rotation.z = -t * 0.2;
+  ring3.material.opacity = 0.08 + 0.05 * Math.sin(t * 0.8);
+
+  // Traveling highlight sweeps along tube
+  const travelX = -TUBE_LEN / 2 + ((t * 4) % TUBE_LEN);
+  travelLight.position.set(travelX, Math.sin(t * 0.7) * 2, Math.cos(t * 0.5) * 2);
+  travelLight.intensity = 2.0 + 1.0 * Math.sin(t * 2);
+
+  controls.update();
+  composer.render();
+}
+animate();
+</script>
+</body>
+</html>
