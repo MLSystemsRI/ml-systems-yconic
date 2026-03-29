@@ -410,3 +410,52 @@ describe("executeBatch", () => {
     expect(results[1]!.success).toBe(true);
   });
 });
+
+/* ─── Error Boundary — Runtime Exception Handling ─── */
+
+describe("error boundary — executor exceptions", () => {
+  it("catches executor exception and returns structured error", () => {
+    // Pass an invalid tier that fails parameter validation
+    const result = executeToolCall({
+      tool: "ttp_score_entity",
+      arguments: {
+        tier: "nonexistent_tier",
+        identityVerified: true,
+        materialsContributed: 5,
+        cyclesCompleted: 2,
+        reviewsPassed: 3,
+        accountAgeDays: 180,
+        isRegulator: false,
+        dataContributions: 10,
+      },
+    });
+    // Should not crash — returns structured error from validation or try-catch
+    expect(result.success).toBe(false);
+    expect(result.error).toBeTruthy();
+    expect(result.executionMs).toBeGreaterThanOrEqual(0);
+  });
+
+  it("handles missing optional params gracefully", () => {
+    const result = executeToolCall({
+      tool: "ttp_check_access",
+      arguments: {
+        path: "/api/v1/materials/provenance",
+        userAgent: "TestBot/1.0",
+        apiTier: "free",
+        isRegulator: false,
+        // ttScore intentionally omitted (optional)
+      },
+    });
+    expect(result.success).toBe(true);
+    expect(result.result).toBeTruthy();
+  });
+
+  it("returns error for completely empty arguments on required-param tool", () => {
+    const result = executeToolCall({
+      tool: "rcm_calculate_payment",
+      arguments: {},
+    });
+    expect(result.success).toBe(false);
+    expect(result.error).toContain("Missing required parameter");
+  });
+});
