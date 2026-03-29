@@ -49,6 +49,10 @@
     "./field-data": {
       "types": "./dist/field-data/index.d.ts",
       "import": "./dist/field-data/index.js"
+    },
+    "./shared": {
+      "types": "./dist/shared/zones.d.ts",
+      "import": "./dist/shared/zones.js"
     }
   },
   "scripts": {
